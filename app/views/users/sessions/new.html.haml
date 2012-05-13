@@ -1,0 +1,30 @@
+.login_block#login_form_detailed
+  = form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f|
+    .login_block_body
+      .lable_input
+        .lable
+          Ваш E-mail:
+          %span *
+        .input_left_side
+        .input_style
+          = f.email_field :email
+        .input_right_side
+      .lable_input
+        .lable
+          Пароль:
+          %span *
+        .input_left_side
+        .input_style
+          = f.password_field :password
+        .input_right_side
+      .help_text_style1
+        .checkbox_style
+          = f.check_box :remember_me
+        .help_text_style_login Запомнить меня
+        %span
+          = link_to 'Напомнить пароль?', new_user_password_path
+      .button_right_functional
+        %a.button{:href => "#", :id => 'login_submit_detailed'}
+          %span.button_left
+          %span.button_mid Готово
+          %span.button_right

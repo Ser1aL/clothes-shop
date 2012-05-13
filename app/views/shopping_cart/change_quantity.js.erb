@@ -1,0 +1,2 @@
+$("#cart_item_row_<%= @shopping_cart_line.id.to_s %> #line_total").html("<%= @shopping_cart_line.total %>");
+$("#cart_total span").html("<%= @shopping_cart_line.shopping_cart.total %>");

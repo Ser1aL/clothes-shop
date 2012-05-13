@@ -1,0 +1,17 @@
+<% 
+  rendered_content = escape_javascript(render :partial => 'search_tip')
+  if @products.size > 0
+    rendered_content += escape_javascript(render :partial => 'product', :collection => @products)
+    rendered_content += escape_javascript(paginate(@products, :window => 6))
+  else
+    rendered_content += escape_javascript(render :partial => 'products_not_found')
+  end
+%>
+
+$('#ajax_content').html("<%= rendered_content %>");
+
+prepare_paginated_links('search');
+$.history.load('search/<%= params[:search_query]%>/<%= params[:page] %>');
+jQuery('html, body').animate( { scrollTop: 0 }, 'slow' );
+
+$('#loader').hide();

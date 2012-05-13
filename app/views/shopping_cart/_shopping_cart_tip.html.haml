@@ -1,0 +1,8 @@
+.tips
+  %a.shopping_cart_icon{:href => "#"}
+  %p.text1 В вашей корзине товаров:
+  %a.text1_price_quantity#total_cart_quantity{:href => "#"} 
+    = item_count
+.filter_tips
+  = link_to 'Вернуться к покупкам', {}, :id => 'back_link'
+.separator_content

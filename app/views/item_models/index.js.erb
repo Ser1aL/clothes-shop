@@ -1,0 +1,10 @@
+<%
+  rendered_content = escape_javascript(render :partial => 'tips')
+  rendered_content += escape_javascript(render :partial => 'product', :collection => @products)
+%>
+
+$('#ajax_content').html("<%= rendered_content %>");
+
+prepare_paginated_links('top');
+
+$('#loader').hide();

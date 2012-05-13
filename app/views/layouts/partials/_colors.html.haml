@@ -1,0 +1,24 @@
+.selection_wrapper
+  .pop_up_style_choice_color
+    .functional_container_brands
+      .functional_block_brands
+        .functional_block_brands_header
+          .functional_block_brands_header_left_top
+          .functional_block_brands_header_right_top
+        .functional_block_brands_body
+          .brand_watch_block
+            %a.brand_watch{:href => "/#cat/#{params[:brand]}/#{params[:category]}/#{params[:sub_category]}/"}
+              %span.brand_name ВСЕ ЦВЕТА
+              %span.brand_quantity
+                = @color_total_counts
+          - @color_counts.each_with_index do |color, index|
+            %div{:class => "brand_watch_block#{index % 2 == 0 ? '1' : ''}"}
+              %a.brand_changable.brand_watch{:href => "/#cat/#{params[:brand]}/#{params[:category]}/#{params[:sub_category]}/#{color['id']}"}
+                %span.brand_name
+                  = color['name'].upcase
+                %span.brand_quantity 
+                  = color['item_count']
+        .functional_block_brands_footer
+          .functional_block_brands_footer_left_bottom
+          .functional_block_brands_footer_right_bottom
+    %div{:style => 'clear: both'}

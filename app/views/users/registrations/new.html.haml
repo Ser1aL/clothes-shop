@@ -1,0 +1,86 @@
+.tips
+  .tips_text Регистрация
+  .image_arrow
+.separator_content
+.registration_block#form
+  = form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f|
+    .registration_block_body
+      .lable_input
+        .lable
+          Фамилия:
+          %span *
+        .input_left_side
+        .input_style
+          = f.text_field :last_name
+        .input_right_side
+      .lable_input
+        .lable
+          Имя:
+          %span *
+        .input_left_side
+        .input_style
+          = f.text_field :first_name
+        .input_right_side
+      .lable_input
+        .lable Отчество:
+        .input_left_side
+        .input_style
+          = f.text_field :middle_name
+        .input_right_side
+      .lable_input
+        .lable 
+          Телефон:
+          %span *
+        .input_left_side
+        .input_style
+          = f.text_field :phone_number
+        .input_right_side
+      .lable_input
+      .lable_input
+        .lable
+          E-mail:
+          %span *
+        .input_left_side
+        .input_style
+          = f.email_field :email, :placeholder => "Используется как логин(нужна активация)!)"
+        .input_right_side
+      .lable_input
+        .lable
+          Пароль:
+          %span *
+        .input_left_side
+        .input_style
+          = f.password_field :password
+        .input_right_side
+      .lable_input
+        .lable
+          Повтор пароля:
+          %span *
+        .input_left_side
+        .input_style
+          = f.password_field :password_confirmation
+        .input_right_side
+      .help_text_style На указанный Вами почтовый адрес, будет отправлен запрос на активацию.
+      .button_right_functional
+        %a.button{:href => "#", :id => 'registration_submit_detailed'}
+          %span.button_left
+          %span.button_mid Готово
+          %span.button_right
+.registration_block#validations
+  .registration_block_body
+    .lable_input.error_message
+      = resource.errors[:last_name][0]
+    .lable_input.error_message
+      = resource.errors[:first_name][0]
+    .lable_input.error_message
+      = resource.errors[:middle_name][0]
+    .lable_input.error_message
+      = resource.errors[:phone_number][0]
+    .lable_input
+    .lable_input.error_message
+      = resource.errors[:email][0]
+    .lable_input.error_message
+      = resource.errors[:password][0]
+    .lable_input.error_message
+      = resource.errors[:password_confirmation][0]
+    .lable_input.error_message

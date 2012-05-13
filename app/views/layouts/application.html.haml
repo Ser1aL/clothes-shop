@@ -1,0 +1,171 @@
+!!!
+%html{:lang => "en"}
+  %head
+    %meta{:content => "text/html; charset=utf-8", "http-equiv" => "Content-Type"}/
+    %meta{:name => 'subject', :content => t('meta_subject')}
+    %meta{:name => 'description', :content => t('meta_description')}
+    %meta{:name => 'keywords', :content => t('meta_keywords')}
+    %meta{:name => 'robots', :content => 'all'}
+    %meta{:name => 'language', :content => 'ru'}
+    %meta{:name => 'yandex-verification', :content => '771e09055d004f9a'}
+    %title
+      = t('meta_title')
+    = stylesheet_link_tag :all
+    = javascript_include_tag 'jquery.min', 'jquery.simplemodal', 'jquery.log', 'rails', 'jquery.history', 'url.parser', 'jquery.lightbox-0.5', 'application'
+    = csrf_meta_tag
+    = render :partial => '/layouts/partials/google_analytics'
+  %body
+    - if flash[:message_type]
+      = render :partial => "/flash/#{flash[:message_type]}"
+    #loader
+    #top_line
+      #top_line_wraper
+        #color
+          %a.color_pink{:href => "#"}
+          %a.color_orange{:href => "#"}
+          %a.color_green{:href => "#"}
+          %a.color_blue{:href => "#"}
+    / Header
+    #conteiner_wraper
+      #selection_top_wrapper
+        = render :partial => '/layouts/partials/brands'
+        = render :partial => '/layouts/partials/categories'
+        = render :partial => '/layouts/partials/sub_categories'
+        = render :partial => '/layouts/partials/colors'
+      - if !current_user
+        = render :partial => '/layouts/partials/registration_form'
+        = render :partial => '/layouts/partials/login_form'
+      #content_wraper_header
+        #header
+          %a#logo{:href => "/"}
+          #menu
+            = link_to 'О нас', about_us_path, :class => 'link_menu'
+            = link_to 'Гарантия', guarantee_path, :class => 'link_menu'
+            = link_to 'Оплата', payments_path, :class => 'link_menu'
+            = link_to 'Доставка', deliveries_path, :class => 'link_menu'
+            = link_to 'Контакты', contacts_path, :class => 'link_menu'
+            - if !current_user
+              %a.login_button.button{:href => "#"}
+                .button_left
+                .button_mid Войти
+                .button_right
+            - else
+              %a.button{:href => destroy_user_session_path}
+                .button_left
+                .button_mid Выйти
+                .button_right
+          .separator_header
+          .gray_area_conteiner_header
+            .gray_area_content_header
+              - if current_user
+                = link_to current_user.full_name, user_path(current_user)
+              - else
+                = link_to 'Зарегистрироваться?', new_user_registration_path, :id => 'register_link'
+              #shopping_cart
+                %a.shopping_cart_icon{:href => checkout_path}
+                %p.text1 В корзине товаров:
+                = link_to @cart_line_count, checkout_path, :class => 'text1_price_quantity'
+                %p.text1,   на сумму
+                = link_to @shopping_cart.total, checkout_path, :class => 'text1_price_quantity'
+                %p.text1 грн.
+          .separator_header
+        #navigation
+          .navigation_buttons
+            %a#brand.button{:href => "#"}
+              .button_left
+              .button_mid Все бренды
+              .button_right
+          .navigation_buttons
+            %a#category.button{:href => "#"}
+              .button_left_idle
+              .button_mid_idle Все категории
+              .button_right_idle
+          .navigation_buttons
+            %a#sub_category.button{:href => "#"}
+              .button_left_idle
+              .button_mid_idle Все подкатегории
+              .button_right_idle
+          .navigation_buttons
+            %a#color.button{:href => "#"}
+              .button_left_idle
+              .button_mid_idle Все цвета
+              .button_right_idle
+          #navigation_search
+            = form_tag search_path, :method => 'post', :id => 'search_form', :remote => true do
+              %a#search_button.button{:href => "#"}
+                .button_left
+                .button_mid.submit_search Найти
+                .button_right
+              .input_bg
+                .input_left_bg
+                = text_field_tag 'search_query', '', :class => 'input_style'
+                .input_right_bg
+      #content_wraper
+        #ajax_content
+          = yield
+    #delimeter
+    / Footer
+    #footer
+      #footer_top_line
+      #footer_conteiner_wraper
+        #footer_content_wraper
+          .footer_blok_content
+            %p.title_text Карта сайта
+            %p.footer_help_text Знакомство с магазином
+            .footer_separator
+            .sitemap_link
+              = link_to 'Главная', root_path, :class => 'link_menu'
+              = link_to 'Контакты', contacts_path, :class => 'link_menu'
+            .sitemap_link
+              = link_to 'Оплата', payments_path, :class => 'link_menu'
+              = link_to 'Доставка', deliveries_path, :class => 'link_menu'
+            .sitemap_link
+              = link_to 'Гарантия', guarantee_path, :class => 'link_menu'
+              = link_to 'О нас', about_us_path, :class => 'link_menu'
+            .footer_blok_content
+              %p.title_text Горячая линия
+              %p.footer_help_text По этим контактам Вы можете связатся с нами
+              .footer_separator
+              .footer_label_input
+                .footer_labe2
+                  %p.text1 Телефон:  (096)604-85-25
+                .footer_labe3
+                  %p.text1 E-mail:
+                  %a{:href => "#"}
+                    %img#email_image{:src => "/images/email.gif"}/
+                .footer_labe4
+                  %p.text1 Skype:
+                  %a.text3 MQShop
+          .footer_h_sep
+          .footer_blok_content
+            %p.title_text Обратная связь
+            %p.footer_help_text Вы можете задать свой вопрос нашему менеджеру
+            .footer_separator
+            .footer_label_input
+              .footer_label
+                %p.text1 Ваш e-mail:
+              #footer_input
+                .input_bg
+                  .input_left_bg
+                  %input.footer_input_style{:type => "text"}/
+                  .input_right_bg
+            .footer_label_input1
+              .footer_label
+                %p.text1 Сообщение:
+              #footer_text_area
+                .text_area_bg
+                  .text_area_left_bg
+                  .text_area_style
+                    %textarea{:type => "text"}
+                  .text_area_right_bg
+            .footer_button_send
+              %a.button{:href => "#"}
+                .button_left
+                .button_mid Отправить
+                .button_right
+        .footer_separator1
+        #footer_end_wraper
+          .coperait
+            %p.link_menu © 2011 MQShop.com.ua
+          %a{:href => "http://designcraft.com.ua"}
+            %img#logo_dc{:src => "/images/designcraft_logo.png"}/

@@ -1,0 +1,76 @@
+.functional_container#registration_popup
+  .functional_block
+    .functional_block_header
+      .functional_block_header_left_top
+      .functional_block_header_right_top
+    .functional_block_body
+      = form_tag user_registration_path, :method => 'post', :id => :registration_form do
+        .lable_input
+          .lable
+            Фамилия:
+            %span *
+          .input_left_side
+          .input_style
+            = text_field_tag 'user[last_name]'
+          .input_right_side
+        .lable_input
+          .lable
+            Имя:
+            %span *
+          .input_left_side
+          .input_style
+            = text_field_tag 'user[first_name]'
+          .input_right_side
+        .lable_input
+          .lable Отчество:
+          .input_left_side
+          .input_style
+            = text_field_tag 'user[middle_name]'
+          .input_right_side
+        .lable_input
+          .lable
+            Телефон:
+            %span *
+          .input_left_side
+          .input_style
+            = text_field_tag 'user[phone_number]'
+          .input_right_side
+        .lable_input
+        .lable_input
+          .lable
+            E-mail:
+            %span *
+          .input_left_side
+          .input_style
+            = text_field_tag 'user[email]', '', :placeholder => "Используется как логин (нужна активация!)"
+          .input_right_side
+        .lable_input
+          .lable
+            Пароль:
+            %span *
+          .input_left_side
+          .input_style
+            = password_field_tag 'user[password]'
+          .input_right_side
+        .lable_input
+          .lable
+            Повтор пароля:
+            %span *
+          .input_left_side
+          .input_style
+            = password_field_tag 'user[password_confirmation]'
+          .input_right_side
+        .help_text_style На указанный Вами почтовый адрес будет отправлен запрос на активацию.
+        .button_right_functional#registration_submit_button
+          %a.button{:href => "#"}
+            %span.button_left
+            %span.button_mid#registration_submit Регистрация
+            %span.button_right
+        .button_right_functional#registration_popup_close
+          %a.button{:href => "#"}
+            %span.button_left
+            %span.button_mid Отмена
+            %span.button_right
+    .functional_block_footer
+      .functional_block_footer_left_bottom
+      .functional_block_footer_right_bottom

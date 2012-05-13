@@ -1,0 +1,7 @@
+Ув.,
+= @resource.full_name
+%p Для подтверждения вашего аккаунта, пожалуйста, перейдите по ссылке:
+%p= link_to 'Подтвердить мой аккаунт', confirmation_url(@resource, :confirmation_token => @resource.confirmation_token)
+%p
+  %br
+  Администрация MQShop.com.ua

@@ -1,0 +1,22 @@
+%span.path_link
+  %span.short_link
+    = t('chosen_brand')
+  - if params[:brand]
+    %span.short_link
+      = link_to Brand.find(params[:brand]).name, "/#cat/#{params[:brand]}///"
+  - if params[:category]
+    %span.short_link
+      = link_to Category.find(params[:category]).name, "/#cat/#{params[:brand]}/#{params[:category]}/#{params[:sub_category]}/#{params[:color]}"
+  - if params[:sub_category]
+    %span.short_link
+      = link_to SubCategory.find(params[:sub_category]).name, "/#cat/#{params[:brand]}//#{params[:sub_category]}/#{params[:color]}"
+  - if params[:color]
+    %span.short_link
+      = link_to Color.find(params[:color]).name, "/#cat/#{params[:brand]}///#{params[:color]}"
+
+/
+  .filter_tips
+    %a.arrow_down{:href => "#"}
+    %a.arrow_up{:href => "#"}
+    .filter_tips_text Сортировать по цене
+.separator_content

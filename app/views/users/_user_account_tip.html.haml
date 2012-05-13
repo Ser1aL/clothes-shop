@@ -1,0 +1,8 @@
+%span.path_link
+  %span.short_link
+    = t('my_account')
+.filter_tips
+  = link_to t("edit_user"), {}, :href => "#", :id => 'show_user_edit_form'
+  \|
+  = link_to t("hide_user_edit_form"), {}, :href => "#", :id => 'hide_user_edit_form'
+.separator_content

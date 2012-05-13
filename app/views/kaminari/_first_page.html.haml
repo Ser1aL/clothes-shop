@@ -1,0 +1,5 @@
+.pager_idle_style
+  .pager_idle_left
+  .pager_idle_mid
+    = link_to_unless current_page.first?, raw(t 'views.pagination.first'), url, :remote => remote
+  .pager_idle_right

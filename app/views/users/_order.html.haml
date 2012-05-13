@@ -1,0 +1,35 @@
+.tips
+  %a.shopping_cart_icon{:href => "#"}
+  %p.text1 
+    = "Мой заказ"
+    %b
+      = "##{"%05d" % order.id}"
+    = " от #{l(order.created_at, :format => :shopping_cart_date)},"
+    %b
+      = t(order.status)
+.filter_tips
+  = link_to t("show_user_order"), {}, :href => "#", :class => 'show_user_order', :id => order.id
+.separator_content
+%div.hidden{:id => 'order_table_wrapper_' + order.id.to_s}
+  %table#shopping_card_order_block
+    %tr.table_order_header
+      %td.table_header_mane.real_mane{:colspan => 2} Товар
+      %td.table_header_quantity Количество
+      %td.table_header_price Цена
+      %td.table_header_total Итого
+    = render :partial => 'order_line', :collection => order.order_lines
+    %tr.table_total.user_order_total
+      %td.table_total_price
+        .price грн.
+        .sum-a#cart_total
+          %span
+            0.00
+        .price 
+          = "Доставка(#{t(order.delivery_type)}):"
+    %tr.table_total.user_order_total
+      %td.table_total_price
+        .price грн.
+        .sum-a#cart_total
+          %span
+            = order.total
+        .price Общая стоимость заказа:

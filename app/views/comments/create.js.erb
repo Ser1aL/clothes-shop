@@ -1,0 +1,11 @@
+$('#new_comment_form').hide();
+$('#comment_wrapper').append('<%= escape_javascript(render :partial => '/item_models/comment', :locals => { :comment => @comment }) %>');
+//$('#comments_toggle').html()
+
+incrementCommentCount();
+
+$('.delete_comment').click(function(){
+  $('#comment_loader').show();
+});
+
+$('#comment_loader').hide();

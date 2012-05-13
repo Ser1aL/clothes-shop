@@ -1,0 +1,94 @@
+= render :partial => 'shopping_cart_tip', :locals => { :item_count => @cart_line_count }
+%table#shopping_card_block
+  %tr.table_header
+    %td.table_header_mane Товар
+    %td.table_header_quantity Количество
+    %td.table_header_price Цена
+    %td.table_header_total Итого
+  = render :partial => 'shopping_cart_line', :collection => @shopping_cart.shopping_cart_lines
+  %tr.table_total
+    %td.table_total_price
+      .price грн.
+      .sum-a#cart_total
+        %span
+          = @shopping_cart.total
+      .price Общая стоимость заказа:
+  - if @shopping_cart.total > 0
+    %tr.table_end_order
+      %td.table_end_order_help_text Оформление Заказа
+- if @shopping_cart.total > 0
+  .tips
+    .tips_text
+      = t('delivery_header')
+  .filter_tips
+    %a.arrow_up{:href => "#"}
+    .filter_tips_text#hide
+      = link_to t('hide')
+  = form_tag payment_path, :id => 'prepayment_form' do
+    .separator_content
+    #delivery_options
+      .shipping_metod_block
+        - ['nova_pochta', 'night_express', 'autolux', 'intime', 'postal_service'].each_with_index do |delivery_type, index|
+          .shipping_metod
+            .radiobutton_style
+              = radio_button_tag 'delivery_type', delivery_type, index == 0
+              %span 
+                = t('delivery') + ' ' + t(delivery_type)
+            %a.shipping_metod_help_icon{:href => "#", 'info_type' => delivery_type, :class => 'delivery_hint'}
+      .shipping_method_hint
+        .delivery_hint_message.nova_pochta
+          = t('detailed_night_express')
+        .delivery_hint_message.night_express
+          = t('detailed_nova_pochta')
+        .delivery_hint_message.autolux
+          = t('detailed_autolux')
+        .delivery_hint_message.intime
+          = t('detailed_intime')
+        .delivery_hint_message.postal_service
+          = t('detailed_postal_service')
+      .shipping_method_price
+        - ['nova_pochta', 'night_express', 'autolux', 'intime', 'postal_service'].each_with_index do |delivery_type, index|
+          %p
+            = '0.00'
+            грн
+    .delimiter
+    .tips
+      .tips_text
+        Адрес доставки
+    .separator_content
+    .shipping_adres
+      #payment
+        - if @address_validation_errors
+          .lable_input
+            = @address_validation_errors[0]
+        .lable_input
+          .lable
+            Телефон:
+            %span *
+          .input_left_side
+          .input_style
+            = text_field_tag 'phone_number', current_user ? current_user.phone_number : ''
+          .input_right_side
+        .lable_input
+          .lable
+            Город:
+            %span *
+          .input_left_side
+          .input_style
+            = text_field_tag 'city', current_user ? current_user.city : ''
+          .input_right_side
+        .lable_input
+          .lable
+            Адрес:
+            %span *
+          .input_left_side
+          .input_style
+            = text_field_tag 'address', current_user ? current_user.address : ''
+          .input_right_side
+    .delimiter
+    .shipping_adres_order_button
+      %a.button{:href => "#", :id => 'payment_button'}
+        %span.button_left
+        %span.button_mid
+          = t('payment_button')
+        %span.button_right

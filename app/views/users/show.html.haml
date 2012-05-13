@@ -1,0 +1,85 @@
+= render 'user_account_tip'
+.shipping_adres.toggle
+  .lable_input
+    .lable Фамилия:
+    .order_shipping_adres
+      = current_user.last_name
+  .lable_input
+    .lable Имя:
+    .order_shipping_adres
+      = current_user.first_name
+  .lable_input
+    .lable Отчество:
+    .order_shipping_adres 
+      = current_user.middle_name
+  .lable_input
+    .lable Телефон:
+    .order_shipping_adres
+      = current_user.phone_number
+  .lable_input
+    .lable Адрес:
+    .order_shipping_adres
+      = current_user.address
+  .lable_input
+    .lable Город:
+    .order_shipping_adres
+      = current_user.city
+= form_for current_user do |f|
+  .registration_block.user_edit_form.hidden
+    .registration_block_body
+      .lable_input
+        .lable
+          Фамилия:
+          %span *
+        .input_left_side
+        .input_style
+          = f.text_field :last_name
+        .input_right_side
+      .lable_input
+        .lable
+          Имя:
+          %span *
+        .input_left_side
+        .input_style
+          = f.text_field :first_name
+        .input_right_side
+      .lable_input
+        .lable Отчество:
+        .input_left_side
+        .input_style
+          = f.text_field :middle_name
+        .input_right_side
+      .lable_input
+        .lable 
+          Телефон:
+          %span *
+        .input_left_side
+        .input_style
+          = f.text_field :phone_number
+        .input_right_side
+      .lable_input
+        .lable 
+          Адрес:
+        .input_left_side
+        .input_style
+          = f.text_field :address
+        .input_right_side
+      .lable_input
+        .lable 
+          Город:
+        .input_left_side
+        .input_style
+          = f.text_field :city
+        .input_right_side
+      .button_right_functional
+        %a.button{:href => "#", :id => 'edit_user'}
+          %span.button_left
+          %span.button_mid Готово
+          %span.button_right
+.separator_content.toggle
+.user_orders_header
+  .orders_hint_header
+    = t("user_orders")
+- if current_user.orders.size > 0
+  .user_orders
+    = render :partial => 'order', :collection => current_user.orders

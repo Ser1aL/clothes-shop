@@ -1,0 +1,45 @@
+#login_wrapper
+  = form_tag user_session_path, :method => 'post', :id => 'login_form' do
+    .pop_up_style_login
+      .functional_container_2
+        .functional_block_login
+          .functional_block_login_header
+            .functional_block_login_header_left_top
+            .functional_block_login_header_right_top
+          .functional_block_login_body
+            .pop_up_delimeter
+            .lable_input
+              .lable
+                Ваш e-mail:
+                %span *
+              .input_left_side
+              .input_style
+                = text_field_tag 'user[email]'
+              .input_right_side
+            .lable_input
+              .lable
+                Пароль:
+                %span *
+              .input_left_side
+              .input_style
+                = password_field_tag 'user[password]'
+              .input_right_side
+            .help_text_style1
+              .checkbox_style
+                %input{:name => "shipping_adres", :type => "checkbox"}/
+              .help_text_style_login Запомнить меня
+              %span
+                = link_to 'Напомнить пароль?', new_user_password_path, :target => '_blank'
+            .button_right_login_functional
+              %a#login_submit.button{:href => "#"}
+                %span.button_left
+                %span.button_mid Готово
+                %span.button_right
+            .button_right_functional
+              %a.login_button.button{:href => "#"}
+                %span.button_left
+                %span.button_mid Отмена
+                %span.button_right
+          .functional_block_login_footer
+            .functional_block_login_footer_left_bottom
+            .functional_block_login_footer_right_bottom

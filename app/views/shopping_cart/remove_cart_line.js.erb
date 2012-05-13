@@ -1,0 +1,4 @@
+$('#cart_item_row_<%= @shopping_cart_line.id %>').slideUp();
+$('#total_cart_quantity').html(<%= @shopping_cart.shopping_cart_lines.size %>);
+$("#cart_total span").html("<%= @shopping_cart.total %>");
+

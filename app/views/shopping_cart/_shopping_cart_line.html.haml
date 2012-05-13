@@ -1,0 +1,32 @@
+%tr.shopping_card_content{:id => 'cart_item_row_' + shopping_cart_line.id.to_s}
+  %td.shopping_card_content_image
+    - if shopping_cart_line.product.item_model.image_attachments.empty?
+      %a{:href => "/#/single/#{shopping_cart_line.product.item_model.id}"}
+        .sc_clock_image{:style => "background: url('#{ImageAttachment.new.image.url(:thumb)}') no-repeat"}
+    - else
+      %a{:href => "/#/single/#{shopping_cart_line.product.item_model.id}"}
+        .sc_clock_image
+          .sc_clock_image{:style => "background: url('#{shopping_cart_line.product.item_model.image_attachments[0].image.url(:thumb)}') no-repeat"}
+  %td.shopping_card_content_description
+    .shopping_card_content_title_product
+      %a.shopping_card_content_title_product-a{:href => "/#/single/#{shopping_cart_line.product.item_model.id}"}
+        = shopping_cart_line.product.item_model.brand.name
+    .shopping_card_content_product_description 
+      = shopping_cart_line.product.item_model.full_description
+  %td.shopping_card_content_quantity
+    .quantity_input#quantity
+      = form_tag change_quantity_path(shopping_cart_line), {:remote => true} do
+        .quantity_input_left_side
+        .quantity_input_style
+          = text_field_tag 'quantity', shopping_cart_line.quantity, :class => 'cart_quantity'
+        .quantity_input_right_side
+    = form_tag remove_cart_line_path(shopping_cart_line.id), :id => "remove_cart_line_form_#{shopping_cart_line.id}", :remote => true, :method => 'post' do
+      = link_to '', '', :class => 'delete_icon', :id => "remove_cart_line_link_#{shopping_cart_line.id}"
+  %td.shopping_card_content_price
+    .sum-a#price
+      = shopping_cart_line.price
+    .price грн.
+  %td.shopping_card_content_total
+    .sum-a#line_total
+      = shopping_cart_line.total
+    .price грн.

@@ -1,0 +1,114 @@
+- @user_validation_errors ||= {}
+.tips
+  .tips_text Выбор способа оплаты
+.separator_content
+= form_tag review_path, :id => 'submit_order_form', :method => :post do
+  .shipping_metod_block
+    = hidden_field_tag 'city', params[:city]
+    = hidden_field_tag 'address', params[:address]
+    = hidden_field_tag 'phone_number', params[:phone_number]
+    = hidden_field_tag 'delivery_type', params[:delivery_type]
+    - ['postal_service', 'cash_on_delivery', 'bank_payment'].each_with_index do |payment_type, index|
+      .shipping_metod
+        .radiobutton_style
+          = radio_button_tag 'payment_type', payment_type, index == 0
+          %span
+            = t('payment') + ' ' + t(payment_type)
+        %a.delivery_hint.shipping_metod_help_icon{:href => "#", 'info_type' => payment_type}
+  .shipping_method_hint
+    .delivery_hint_message.postal_service
+      = t('detailed_payment_type_postal_service')
+    .delivery_hint_message.cash_on_delivery
+      = t('detailed_payment_type_cash_on_delivery')
+    .delivery_hint_message.bank_payment
+      = t('detailed_payment_type_bank_payment')
+
+
+
+  .tips
+    .tips_text Данные о получателе
+  .separator_content
+  .shipping_adres
+    - if !current_user
+      .lable_input
+        .lable
+          Фамилия:
+          %span *
+        .input_left_side
+        .input_style
+          = text_field_tag 'user[last_name]', params[:user][:last_name]
+        .input_right_side
+      .lable_input
+        .lable
+          Имя:
+          %span *
+        .input_left_side
+        .input_style
+          = text_field_tag 'user[first_name]', params[:user][:first_name]
+        .input_right_side
+      .lable_input
+        .lable
+          Отчество:
+        .input_left_side
+        .input_style
+          = text_field_tag 'user[middle_name]', params[:user][:middle_name]
+        .input_right_side
+      .lable_input
+      .lable_input
+        .lable
+          Е-mail:
+          %span *
+        .input_left_side
+        .input_style
+          = text_field_tag 'user[email]', params[:user][:email]
+        .input_right_side
+      .lable_input
+        .lable
+          Телефон:
+          %span *
+        .input_left_side
+        .input_style
+          = text_field_tag 'user[phone_number]', params[:user][:phone_number] ||= params[:phone_number]
+        .input_right_side
+  .shipping_adres_description
+    - if !current_user
+      .lable_input
+        .lable
+          .shipping_adres_help_text_style
+            = @user_validation_errors[:last_name].to_a[0]
+      .lable_input
+        .lable
+          .shipping_adres_help_text_style
+            = @user_validation_errors[:first_name].to_a[0]
+      .lable_input
+        .lable
+          .shipping_adres_help_text_style
+            = @user_validation_errors[:middle_name].to_a[0]
+      .lable_input
+      .lable_input
+        .lable
+          .shipping_adres_help_text_style 
+            - if @user_validation_errors[:email]
+              = @user_validation_errors[:email][0]
+            - else
+              На данный e-mail, будет выслана копия Вашего заказа.
+      .lable_input
+        .lable
+          .shipping_adres_help_text_style 
+            - if @user_validation_errors[:phone_number]
+              = @user_validation_errors[:phone_number][0]
+            - else
+              Если у Вас городской номер, то укажите код города.
+  .shipping_adres_help_text
+    .checkbox_style
+      %input{:name => "shipping_adres", :type => "checkbox"}/
+    .shipping_adres_help_text_style
+      Я ознакомлен и согласен с
+      %span
+        %a{:href => "#"} пользовательским соглашением
+      (откроется в новом окне).
+  .shipping_adres_order_button
+    %a.button{:href => "#", :id => 'submit_order'}
+      %span.button_left
+      %span.button_mid Оформить заказ
+      %span.button_right

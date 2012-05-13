@@ -1,0 +1,24 @@
+.selection_wrapper
+  .pop_up_style_choice_category
+    .functional_container_brands
+      .functional_block_brands
+        .functional_block_brands_header
+          .functional_block_brands_header_left_top
+          .functional_block_brands_header_right_top
+        .functional_block_brands_body
+          .brand_watch_block
+            %a.brand_watch{:href => "/#cat/#{params[:brand]}//#{params[:sub_category]}/#{params[:color]}"}
+              %span.brand_name ВСЕ КАТЕГОРИИ
+              %span.brand_quantity
+                = @category_total_counts
+          - @category_counts.each_with_index do |category_count, index|
+            %div{:class => "brand_watch_block#{index % 2 == 0 ? '1' : ''}"}
+              %a.brand_changable.brand_watch{:href => "/#cat/#{params[:brand]}/#{category_count['id']}/#{params[:sub_category]}/#{params[:color]}"}
+                %span.brand_name
+                  = category_count['name'].upcase
+                %span.brand_quantity 
+                  = category_count['item_count']
+        .functional_block_brands_footer
+          .functional_block_brands_footer_left_bottom
+          .functional_block_brands_footer_right_bottom
+    %div{:style => 'clear: both'}

@@ -1,0 +1,19 @@
+.login_block#login_form_detailed
+  = form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :post }) do |f|
+    .login_block_body
+      - if !resource.errors.empty?
+        .lable_input
+          = t('email_not_found') 
+      .lable_input
+        .lable
+          Ваш E-mail:
+          %span *
+        .input_left_side
+        .input_style
+          = f.email_field :email
+        .input_right_side
+      .button_right_functional
+        %a.button{:href => "#", :id => 'login_submit_detailed'}
+          %span.button_left
+          %span.button_mid Готово
+          %span.button_right

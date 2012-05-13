@@ -1,0 +1,44 @@
+Ув.,
+= @user.full_name
+%p
+  Ваш заказ
+  %b
+    = "#" + "%05d" % @order.id
+  был успешно оформлен.
+  %br
+  Детали Вашего заказа указаны ниже:
+%p
+  Тип доставки:
+  %b
+    = t(@order.delivery_type)
+  %br
+  Выбранный тип оплаты:
+  %b
+    = t(@order.payment_type)
+%p
+  Вы заказали следующее:
+  - @order.order_lines.each do |order_line|
+    %p
+      = order_line.product.item_model.brand.name
+      = order_line.product.item_model.model_unique_number
+      Количество:
+      = order_line.quantity
+      Цена:
+      = order_line.price
+      грн.
+      Сумма:
+      = order_line.total
+      грн.
+%p
+  Адрес доставки:
+  = [@order.city, @order.address].join(', ')
+%p
+  Всего к оплате:
+  = @order.total
+  грн.
+%p
+  Вы указали контактный номер телефона:
+  = @order.user.phone_number
+%p
+  %br
+  Администрация MQShop.com.ua

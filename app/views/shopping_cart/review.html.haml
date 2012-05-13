@@ -1,0 +1,98 @@
+#content_wraper
+  .tips
+    %a.shopping_cart_icon{:href => "#"}
+    %p.text1 
+      = "Мой заказ от #{l(@shopping_cart.created_at, :format => :shopping_cart_date)}"
+  .separator_content
+  = form_tag create_order_path, :id => 'submit_order_form', :method => :post do
+    = hidden_field_tag 'city', params[:city]
+    = hidden_field_tag 'address', params[:address]
+    = hidden_field_tag 'delivery_type', params[:delivery_type]
+    = hidden_field_tag 'payment_type', params[:payment_type]
+    = hidden_field_tag 'phone_number', params[:phone_number]
+    - if !current_user
+      = hidden_field_tag 'user[first_name]', params[:user][:first_name]
+      = hidden_field_tag 'user[last_name]', params[:user][:last_name]
+      = hidden_field_tag 'user[middle_name]', params[:user][:middle_name]
+      = hidden_field_tag 'user[email]', params[:user][:email]
+      = hidden_field_tag 'user[phone_number]', params[:user][:phone_number]
+    %table#shopping_card_order_block
+      %tr.table_order_header
+        %td.table_order_header_number №
+        %td.table_order_header_order Заказ
+        %td.table_order_header_quantity Количество
+        %td.table_order_header_price Цена
+      - index = 0
+      - @shopping_cart.shopping_cart_lines.each_with_index do |sc_line, index|
+        %tr.shopping_card_order_content
+          %td.shopping_card_order_content_number
+            = index + 1
+          %td.shopping_card_order_content_title_product
+            %a.shopping_card_content_title_product-a{:href => "/#single/#{sc_line.product.item_model.id}", :target => "_blank"}
+              = "#{sc_line.product.item_model.brand.name}"
+          %td.shopping_card_order_content_quantity
+            = sc_line.quantity
+          %td.shopping_card_order_content_price
+            = sc_line.total
+            %span грн.
+      %tr.shopping_card_order_content
+        %td.shopping_card_order_content_number
+          = index + 2
+        %td.shopping_card_order_content_title_product
+          %span.shopping_card_content_title_product-a{:href => "#"}
+            = "Доставка(#{t(@order.delivery_type)})"
+        %td.shopping_card_order_content_quantity
+        %td.shopping_card_order_content_price
+          0.00
+          %span грн.
+      %tr.table_order_total
+        %td.table_order_total_price
+          Общая стоимость заказа с доставкой:
+          %span
+            = @shopping_cart.total
+          грн.
+    .tips
+      .tips_text Данные о получателе и заказе
+    .separator_content
+    .shipping_adres
+      .lable_input
+        .lable Имя:
+        .order_shipping_adres
+          = @order.user.full_name
+      .lable_input
+        .lable E-mail:
+        .order_shipping_adres
+          = @user.email
+      .lable_input
+        .lable Телефон:
+        .order_shipping_adres 
+          = params[:phone_number]
+      .lable_input
+        .lable Адрес:
+        .order_shipping_adres
+          = @order.city
+      .lable_input
+        .lable
+        .order_shipping_adres
+          = @order.address
+      .lable_input
+        .lable Дата:
+        .order_shipping_adres
+          = l @shopping_cart.created_at, :format => :shopping_cart_date
+      .lable_input
+        .lable Способ оплаты:
+        .order_shipping_adres
+          = t(@order.payment_type)
+      .lable_input
+    .shipping_adres_description
+    .shipping_adres_order_button_block
+      .shipping_adres_order_button2
+        %a.button{:href => "#", :id => 'submit_order'}
+          %span.button_left
+          %span.button_mid Подтвердить
+          %span.button_right
+      .shipping_adres_order_button2
+        %a.button{:href => checkout_path}
+          %span.button_left
+          %span.button_mid Изменить данные
+          %span.button_right

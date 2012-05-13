@@ -1,0 +1,25 @@
+<% rendered_content = escape_javascript render( :partial => 'detailed_product', :locals => { :product => @product } ) %>
+
+$('#ajax_content').html("<%= rendered_content %>");
+
+jQuery('html, body').animate( { scrollTop: 0 }, 'slow' );
+$('#comments_toggle').click(function(){
+  $('#comment_wrapper').toggle();
+  return false;
+});
+
+$('.submit_comment').click(function(){
+  if ( $('#comment_text_area textarea').val() != '' ){
+    $('#comment_loader').show();
+    $('#new_comment_form').submit();
+  }
+  return false;
+});
+
+$('.delete_comment').click(function(){
+  $('#comment_loader').show();
+});
+
+prepare_ajaxified_links();
+activate_lightbox();
+$('#loader').hide();

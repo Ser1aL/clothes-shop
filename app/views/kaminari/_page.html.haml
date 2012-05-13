@@ -1,0 +1,5 @@
+%div{:class => page.current? ? 'pager_style' : 'pager_style_idle'}
+  %div{:class => page.current? ? 'pager_left' : 'pager_idle_left'}
+  %div{:class => page.current? ? 'pager_mid' : 'pager_idle_mid'}
+    = link_to_unless page.current?, page, url, opts = {:remote => remote, :rel => page.next? ? 'next' : page.prev? ? 'prev' : nil}
+  %div{:class => page.current? ? 'pager_right' : 'pager_idle_right'}
