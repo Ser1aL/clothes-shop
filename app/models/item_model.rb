@@ -1,6 +1,5 @@
 class ItemModel < ActiveRecord::Base
   has_one :product
-  has_many :image_attachments, :as => :association
   has_many :comments, :as => :association
 
   belongs_to :brand

@@ -1,9 +1,9 @@
 class CreateProducts < ActiveRecord::Migration
   def self.up
     create_table :products do |t|
-      t.decimal :original_price, :precision => 10, :scale => 2
-      t.decimal :discount_price, :precision => 10, :scale => 2
-      t.integer :quantity
+      t.decimal :avg_original_price, :precision => 10, :scale => 2
+      t.decimal :avg_discount_price, :precision => 10, :scale => 2
+      t.integer :total_quantity
 
       t.integer :item_model_id
 

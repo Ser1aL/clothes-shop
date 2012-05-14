@@ -19,6 +19,7 @@ gem 'rb-inotify'
 gem 'libnotify'
 gem 'nokogiri', '1.5.0', :require => 'nokogiri'
 gem 'zappos', '0.3.4', :git => 'git://github.com/makenai/zappos.git'
+gem 'passenger'
 
 #gem 'rack', :git => "git://github.com/rack/rack.git", :tag => '1.3.2'
 #gem 'sprockets', :git => "git://github.com/sstephenson/sprockets.git"

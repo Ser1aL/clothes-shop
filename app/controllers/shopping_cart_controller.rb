@@ -72,11 +72,8 @@ class ShoppingCartController < ApplicationController
       @shopping_cart.shopping_cart_lines.each do |sc_line|
         @order.order_lines << OrderLine.new(:price => sc_line.price, :product => sc_line.product, :quantity => sc_line.quantity)
       end
-      if !@order.valid?
+      unless @order.valid?
         @order_validation_errors = @order.errors
-        logger.debug ">>>order"
-        logger.debug @order_validation_errors.inspect
-        logger.debug ">>>"
         render :action => 'payment'
       end
     else

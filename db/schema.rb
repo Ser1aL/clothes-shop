@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111222111029) do
+ActiveRecord::Schema.define(:version => 20120514142115) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "user_id"
@@ -63,13 +63,16 @@ ActiveRecord::Schema.define(:version => 20111222111029) do
   end
 
   create_table "item_models", :force => true do |t|
-    t.string   "model_unique_number"
     t.integer  "brand_id"
     t.integer  "category_id"
     t.integer  "sub_category_id"
     t.integer  "color_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "external_product_id"
+    t.string   "product_name"
+    t.string   "gender"
+    t.string   "video_url"
   end
 
   create_table "order_lines", :force => true do |t|
@@ -95,9 +98,9 @@ ActiveRecord::Schema.define(:version => 20111222111029) do
   end
 
   create_table "products", :force => true do |t|
-    t.decimal  "original_price", :precision => 10, :scale => 2
-    t.decimal  "discount_price", :precision => 10, :scale => 2
-    t.integer  "quantity"
+    t.decimal  "avg_original_price", :precision => 10, :scale => 2
+    t.decimal  "avg_discount_price", :precision => 10, :scale => 2
+    t.integer  "total_quantity"
     t.integer  "item_model_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -119,8 +122,29 @@ ActiveRecord::Schema.define(:version => 20111222111029) do
     t.datetime "updated_at"
   end
 
+  create_table "stocks", :force => true do |t|
+    t.string   "size"
+    t.string   "width"
+    t.integer  "quantity"
+    t.string   "external_stock_id"
+    t.integer  "style_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "styles", :force => true do |t|
+    t.string   "color"
+    t.decimal  "discount_price",    :precision => 10, :scale => 2
+    t.decimal  "original_price",    :precision => 10, :scale => 2
+    t.integer  "product_id"
+    t.string   "external_style_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "sub_categories", :force => true do |t|
     t.string   "name"
+    t.integer  "category_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

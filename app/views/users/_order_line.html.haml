@@ -11,7 +11,7 @@
     .shopping_card_content_title_product
       %a.shopping_card_content_title_product-a{:href => "/#/single/#{order_line.product.item_model.id}"}
         = order_line.product.item_model.brand.name
-        = order_line.product.item_model.model_unique_number
+        = order_line.product.item_model.product_name
     .shopping_card_content_product_description 
       = order_line.product.item_model.full_description
   %td.shopping_card_content_price

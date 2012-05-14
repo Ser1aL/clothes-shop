@@ -20,7 +20,7 @@
   - @order.order_lines.each do |order_line|
     %p
       = order_line.product.item_model.brand.name
-      = order_line.product.item_model.model_unique_number
+      = order_line.product.item_model.product_name
       Количество:
       = order_line.quantity
       Цена:
