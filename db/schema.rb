@@ -73,6 +73,7 @@ ActiveRecord::Schema.define(:version => 20120514142115) do
     t.string   "product_name"
     t.string   "gender"
     t.string   "video_url"
+    t.string   "weight"
   end
 
   create_table "order_lines", :force => true do |t|

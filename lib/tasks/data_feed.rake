@@ -1,10 +1,8 @@
-# results = zclient.search :term => "clothes", :limit => 10, :page => "4000"
-
 namespace :data_feed do
 
   client = Zappos::Client.new("9a3e643501faa5feecc03ea9d1ec1fdf9217dcf1", { :base_url => 'api.zappos.com' })
   limit = 100
-  debug_file = File.new('clothes.txt', 'w')
+
   search_opts = {
     :term => "clothes",
     :limit => limit,
@@ -13,7 +11,6 @@ namespace :data_feed do
   }
 
   product_search_opts = {
-    #:includes => %w(gender weight videoUrl",{"styles":["colorId stocks"]},"sortedSizes ),
     :includes => %w(gender weight videoUrl styles sortedSizes styles stocks),
     :excludes => %w(productId brandName productName defaultImageUrl defaultProductUrl )
   }
@@ -27,21 +24,24 @@ namespace :data_feed do
       items = client.search( search_opts.merge!({:page => index + 1}) ).results
 
       items.each do |item|
-        product = client.product( product_search_opts.merge!({:id => item.productId}) ).data
-        styles = product.product.first.styles
+        next if ItemModel.find_by_external_product_id(item.productId)
+
+        product = client.product( product_search_opts.merge!({:id => item.productId}) ).data.product.first
+        styles = product.styles
 
         item_model = ItemModel.create(
           :external_product_id => item.productId,
           :product_name => item.productName,
-          :gender => item.txAttrFacet_Gender,
+          :gender => product.gender,
           :brand => Brand.find_or_create_by_name(item.brandName),
-          :category => Category.find_or_create_by_name("clothes"),
+          :category => Category.find_or_create_by_name("Clothes"),
           :sub_category => SubCategory.find_or_create_by_name(item.categoryFacet),
           :color => Color.find_or_create_by_name("undefined"),
-          :video_url => item.try(:videoUrl)
+          :weight => product.weight,
+          :video_url => product.videoUrl
         )
 
-        product = Product.create(
+        product_model = Product.create(
           :item_model => item_model,
           :avg_original_price => 0.0,
           :avg_discount_price => 0.0,
@@ -53,14 +53,14 @@ namespace :data_feed do
             :color => style_feed.color,
             :original_price => style_feed.originalPrice[1..-1].to_f,
             :discount_price => style_feed.price[1..-1].to_f,
-            :product => product,
+            :product => product_model,
             :external_style_id => style_feed.styleId
           )
           style.image_attachments.create(:image => open(style_feed.imageUrl))
 
           style_feed.stocks.each do |stock|
             Stock.create(
-              :size => stock.size,
+              :size => stock['size'],
               :quantity => stock.onHand,
               :width => stock.width,
               :external_stock_id => stock.stockId,
@@ -73,23 +73,4 @@ namespace :data_feed do
     end
   end
 
-  #image = ImageAttachment.new
-  #image.image_from_url "http://a1.zassets.com/images/z/1/6/6/4/8/6/1664865-p-4x.jpg"
-  #model.image_attachments << image
-  #model.save
 end
-
-#[#<Hashie::Mash
-#   color="Navy Baja"
-#   imageUrl="http://www.zappos.com/images/z/1/8/6/4/3/8/1864386-p-DETAILED.jpg"
-#   originalPrice="$48.00"
-#   percentOff="0%"
-#   price="$48.00"
-#   productUrl="http://www.zappos.com/product/7968262/color/352005"
-#   stocks=[
-#     #<Hashie::Mash onHand="3" size="SM" stockId="26455356" width="10">,
-#     #<Hashie::Mash onHand="1" size="MD" stockId="26455354" width="10">]
-#   styleId="1864386">,
-#
-#
-#   #<Hashie::Mash color="Nickel Baja" imageUrl="http://www.zappos.com/images/z/1/8/6/4/3/8/1864385-p-DETAILED.jpg" originalPrice="$48.00" percentOff="0%" price="$48.00" productUrl="http://www.zappos.com/product/7968262/color/352006" stocks=[#<Hashie::Mash onHand="3" size="SM" stockId="26455355" width="10">, #<Hashie::Mash onHand="1" size="XL" stockId="26455357" width="10">] styleId="1864385">]

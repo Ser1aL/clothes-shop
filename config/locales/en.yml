@@ -30,6 +30,7 @@ en:
   product_description:
     sex: 'Пол:'
     type: 'Тип:'
+    brand: 'Бренд'
     category: 'Категория:'
     sub_category: 'Подкатегория:'
     color: 'Цвет:'

@@ -1,14 +1,18 @@
 .block
   .title_product
     %a.title_product-a{:href => item_model_url(product), :class => 'single_product_ajaxified_link'}
-      = product.brand.name
+      = product.product_name
   .product_image
     %a{:href => item_model_url(product), :class => 'single_product_ajaxified_link'}
-      - if product.image_attachments.empty?
+      - if product.try(:product).try(:styles).try(:first).try(:image_attachments).blank?
         = image_tag ImageAttachment.new.image.url(:thumb), :class => 'missing'
       - else
-        = image_tag product.image_attachments[0].image.url(:thumb), :alt => product.id
+        = image_tag product.product.styles.first.image_attachments[0].image.url(:thumb), :alt => product.product_name
 
+  .product_description
+    = t('product_description.brand')
+  .product_description1
+    = product.brand.name
   .product_description
     = t('product_description.category')
   .product_description1
@@ -30,7 +34,7 @@
         = t('product_description.price')
       %div
         %a.sum-a{:href => "#"}
-          = number_to_currency(product.product.original_price, :unit => '')
+          = number_to_currency(product.product.avg_discount_price, :unit => '')
       .price
         = t('currency')
     - else
