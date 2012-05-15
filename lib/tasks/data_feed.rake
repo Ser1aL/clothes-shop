@@ -1,7 +1,7 @@
 namespace :data_feed do
 
   client = Zappos::Client.new("9a3e643501faa5feecc03ea9d1ec1fdf9217dcf1", { :base_url => 'api.zappos.com' })
-  limit = 100
+  limit = 1
 
   search_opts = {
     :term => "clothes",
@@ -15,10 +15,15 @@ namespace :data_feed do
     :excludes => %w(productId brandName productName defaultImageUrl defaultProductUrl )
   }
 
+  brand_search_opts = {
+    :includes => %w(aboutText),
+    :excludes => %w(name cleanName brandUrl headerImageUrl)
+  }
+
   desc "fetches 'clothes' items from remote api"
   task :clothes => :environment do
     # total_count = client.search(:term => "clothes", :limit => 1).totalResultCount.to_f
-    total_count = 500#limit
+    total_count = limit
 
     (total_count/limit).ceil.times do |index|
       items = client.search( search_opts.merge!({:page => index + 1}) ).results
@@ -27,13 +32,25 @@ namespace :data_feed do
         next if ItemModel.find_by_external_product_id(item.productId)
 
         product = client.product( product_search_opts.merge!({:id => item.productId}) ).data.product.first
+        brand = Brand.find_by_external_brand_id(product.brandId)
+
+        unless brand
+          brand_feed = client.brand(brand_search_opts.merge!({:id => product.brandId})).data.brands.first
+          brand = Brand.create(
+            :name => item.brandName,
+            :description => brand_feed.aboutText,
+            :external_brand_id => product.brandId
+          )
+          brand.image_attachments.create(:image => open(brand_feed.imageUrl))
+        end
+
         styles = product.styles
 
         item_model = ItemModel.create(
           :external_product_id => item.productId,
           :product_name => item.productName,
           :gender => product.gender,
-          :brand => Brand.find_or_create_by_name(item.brandName),
+          :brand => brand,
           :category => Category.find_or_create_by_name("Clothes"),
           :sub_category => SubCategory.find_or_create_by_name(item.categoryFacet),
           :color => Color.find_or_create_by_name("undefined"),
