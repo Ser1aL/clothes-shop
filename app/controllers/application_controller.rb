@@ -26,7 +26,7 @@ class ApplicationController < ActionController::Base
         @cart_line_count = 0
         @shopping_cart = ShoppingCart.new
       else
-        @shopping_cart = ShoppingCart.find(session[:shopping_cart_id])
+        @shopping_cart = ShoppingCart.find_or_create_by_id(session[:shopping_cart_id])
         @cart_line_count = @shopping_cart.shopping_cart_lines.size
       end
     end

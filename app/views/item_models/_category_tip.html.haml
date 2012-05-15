@@ -6,13 +6,13 @@
       = link_to Brand.find(params[:brand]).name, "/#cat/#{params[:brand]}///"
   - if params[:category]
     %span.short_link
-      = link_to Category.find(params[:category]).name, "/#cat/#{params[:brand]}/#{params[:category]}/#{params[:sub_category]}/#{params[:color]}"
+      = link_to Category.find(params[:category]).name, "/#cat/#{params[:brand]}/#{params[:category]}//"
   - if params[:sub_category]
     %span.short_link
-      = link_to SubCategory.find(params[:sub_category]).name, "/#cat/#{params[:brand]}//#{params[:sub_category]}/#{params[:color]}"
+      = link_to SubCategory.find(params[:sub_category]).name, "/#cat/#{params[:brand]}/#{params[:category]}/#{params[:sub_category]}/"
   - if params[:color]
     %span.short_link
-      = link_to Color.find(params[:color]).name, "/#cat/#{params[:brand]}///#{params[:color]}"
+      = link_to Color.find(params[:color]).name, "/#cat/#{params[:brand]}/#{params[:category]}/#{params[:sub_category]}/#{params[:color]}"
 
 /
   .filter_tips

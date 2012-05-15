@@ -529,6 +529,11 @@ a.submit_comment{
 	margin: 76px 0px 0px 0px;	
 }
 
+.block_description .right{
+    height: 195px;
+    width: 520px;
+}
+
 .title_product {
 	color: #444444;
 	font-size: 13px;
@@ -574,7 +579,7 @@ a.submit_comment{
 }
 
 .product_description {
-	width: 90px;
+	width: 110px;
 	color: #818181;
 	font-size: 13px;
 	font-family: Arial;
@@ -584,7 +589,7 @@ a.submit_comment{
 }
 
 .product_description1 {
-	width: 200px;
+	width: 180px;
 	color: #444444;
 	font-size: 13px;
 	font-family: Arial;

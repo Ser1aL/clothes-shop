@@ -4,6 +4,9 @@ class CreateShoppingCartLines < ActiveRecord::Migration
       t.integer :product_id
       t.integer :shopping_cart_id
       t.integer :quantity
+      t.integer :style_id
+      t.integer :stock_id
+
       t.decimal :price, :precision => 10, :scale => 2
       t.timestamps
     end

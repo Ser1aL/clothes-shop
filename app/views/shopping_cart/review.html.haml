@@ -28,7 +28,7 @@
           %td.shopping_card_order_content_number
             = index + 1
           %td.shopping_card_order_content_title_product
-            %a.shopping_card_content_title_product-a{:href => "/#single/#{sc_line.product.item_model.id}", :target => "_blank"}
+            %a.shopping_card_content_title_product-a{:href => "/#single/#{sc_line.product.item_model.id}/#{sc_line.style.id}", :target => "_blank"}
               = "#{sc_line.product.item_model.brand.name}"
           %td.shopping_card_order_content_quantity
             = sc_line.quantity

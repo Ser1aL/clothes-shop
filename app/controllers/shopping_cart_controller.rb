@@ -12,18 +12,33 @@ class ShoppingCartController < ApplicationController
   end
 
   def add_to_cart
-    if @product = Product.find(params[:product_id]) and @product.quantity > 0
+    @product = Product.find(params[:product_id])
+    @style = @product.styles.find(params[:style])
+    @stock = @style.stocks.find(params[:stock_id])
+
+    if @product && @style && @stock
       if session[:shopping_cart_id].nil?
-        @shopping_cart = ShoppingCart.new(:user_id => nil, :status => 'open')
-        @shopping_cart.shopping_cart_lines << ShoppingCartLine.create( :product_id => params[:product_id], :quantity => 1, :price => @product.original_price)
-        @shopping_cart.save
+        @shopping_cart = ShoppingCart.create(:user_id => nil, :status => 'open')
+        @shopping_cart.shopping_cart_lines.create(
+          :product_id => params[:product_id],
+          :quantity => 1,
+          :price => @style.discount_price_extra,
+          :style => @style,
+          :stock => @stock
+        )
         session[:shopping_cart_id] = @shopping_cart.id
       else
         @shopping_cart = ShoppingCart.find(session[:shopping_cart_id])
-        if @shopping_cart_line = @shopping_cart.shopping_cart_lines.find_by_product_id(params[:product_id])
+        if @shopping_cart_line = @shopping_cart.shopping_cart_lines.find_by_product_id_and_style_id_and_stock_id(params[:product_id], params[:style], params[:stock_id])
           @shopping_cart_line.increment!(:quantity)
         else
-          @shopping_cart.shopping_cart_lines << ShoppingCartLine.create( :product_id => params[:product_id], :quantity => 1, :price => @product.original_price)
+          @shopping_cart.shopping_cart_lines.create(
+            :product_id => params[:product_id],
+            :quantity => 1,
+            :price => @style.discount_price_extra,
+            :style => @style,
+            :stock => @stock
+          )
         end
       end
     end
@@ -46,7 +61,7 @@ class ShoppingCartController < ApplicationController
   end
 
   def payment
-    if Order.valid_attribute?(:address, params[:address]) and Order.valid_attribute?(:city, params[:city]) and User.valid_attribute?(:phone_number, params[:phone_number])
+    if Order.valid_attribute?(:address, params[:address]) && Order.valid_attribute?(:city, params[:city]) && User.valid_attribute?(:phone_number, params[:phone_number])
       params[:user] ||= {}
     else
       @address_validation_errors = [I18n.t('invalid_address_information')]
@@ -83,21 +98,28 @@ class ShoppingCartController < ApplicationController
   end
 
   def create_order
-    @order = Order.new
-    @order.user = current_user ? current_user : User.auto_create(params[:user].merge({ :phone_number => params[:phone_number] }))[:user]
-    if @order.user
-      @order.delivery_type = params[:delivery_type]
-      @order.payment_type = params[:payment_type]
-      @order.address = params[:address]
-      @order.city = params[:city]
-      @order.order_time = @shopping_cart.created_at
-      @order.status = :submitted
-      @shopping_cart.shopping_cart_lines.each do |sc_line|
-        @order.order_lines << OrderLine.new(:price => sc_line.price, :product => sc_line.product, :quantity => sc_line.quantity)
-      end
-      if !@order.save
-        @order_validation_errors = @order.errors
+    user = current_user ? current_user : User.auto_create(params[:user].merge({ :phone_number => params[:phone_number] }))[:user]
+    if user
+      @order = Order.create(
+        :delivery_type => params[:delivery_type],
+        :payment_type => params[:payment_type],
+        :address => params[:address],
+        :city => params[:city],
+        :order_time => @shopping_cart.created_at,
+        :status => :submitted,
+        :user => user
+      )
 
+      @shopping_cart.shopping_cart_lines.each do |sc_line|
+        @order.order_lines.create(
+          :price => sc_line.price,
+          :product => sc_line.product,
+          :quantity => sc_line.quantity,
+          :style => sc_line.style
+        )
+      end
+      if @order.new_record?
+        @order_validation_errors = @order.errors
         render :action => 'payment'
       else
         @order.update_total

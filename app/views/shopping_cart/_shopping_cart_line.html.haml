@@ -1,18 +1,19 @@
 %tr.shopping_card_content{:id => 'cart_item_row_' + shopping_cart_line.id.to_s}
   %td.shopping_card_content_image
-    - if shopping_cart_line.product.item_model.image_attachments.empty?
-      %a{:href => "/#/single/#{shopping_cart_line.product.item_model.id}"}
+    - if shopping_cart_line.style.image_attachments.blank?
+      %a{:href => "/#/single/#{shopping_cart_line.product.item_model.id}/#{shopping_cart_line.style.id}"}
         .sc_clock_image{:style => "background: url('#{ImageAttachment.new.image.url(:thumb)}') no-repeat"}
     - else
-      %a{:href => "/#/single/#{shopping_cart_line.product.item_model.id}"}
+      %a{:href => "/#/single/#{shopping_cart_line.product.item_model.id}/#{shopping_cart_line.style.id}"}
         .sc_clock_image
-          .sc_clock_image{:style => "background: url('#{shopping_cart_line.product.item_model.image_attachments[0].image.url(:thumb)}') no-repeat"}
+          .sc_clock_image{:style => "background: url('#{shopping_cart_line.style.image_attachments[0].image.url(:thumb)}') no-repeat"}
   %td.shopping_card_content_description
     .shopping_card_content_title_product
-      %a.shopping_card_content_title_product-a{:href => "/#/single/#{shopping_cart_line.product.item_model.id}"}
+      %a.shopping_card_content_title_product-a{:href => "/#/single/#{shopping_cart_line.product.item_model.id}/#{shopping_cart_line.style.id}"}
         = shopping_cart_line.product.item_model.brand.name
     .shopping_card_content_product_description 
       = shopping_cart_line.product.item_model.full_description
+      = shopping_cart_line.stock.size
   %td.shopping_card_content_quantity
     .quantity_input#quantity
       = form_tag change_quantity_path(shopping_cart_line), {:remote => true} do

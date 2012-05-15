@@ -18,7 +18,7 @@ namespace :data_feed do
   desc "fetches 'clothes' items from remote api"
   task :clothes => :environment do
     # total_count = client.search(:term => "clothes", :limit => 1).totalResultCount.to_f
-    total_count = limit
+    total_count = 500#limit
 
     (total_count/limit).ceil.times do |index|
       items = client.search( search_opts.merge!({:page => index + 1}) ).results
@@ -70,6 +70,7 @@ namespace :data_feed do
         end
 
       end
+      puts "#{items.size} items loaded"
     end
   end
 

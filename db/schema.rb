@@ -80,6 +80,7 @@ ActiveRecord::Schema.define(:version => 20120514142115) do
     t.integer  "order_id"
     t.integer  "product_id"
     t.integer  "quantity"
+    t.integer  "style_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.decimal  "price",      :precision => 10, :scale => 2
@@ -111,6 +112,7 @@ ActiveRecord::Schema.define(:version => 20120514142115) do
     t.integer  "product_id"
     t.integer  "shopping_cart_id"
     t.integer  "quantity"
+    t.integer  "style_id"
     t.decimal  "price",            :precision => 10, :scale => 2
     t.datetime "created_at"
     t.datetime "updated_at"

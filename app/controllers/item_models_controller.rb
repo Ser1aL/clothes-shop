@@ -5,6 +5,7 @@ class ItemModelsController < ApplicationController
 
   def show
     @product = ItemModel.find(params[:id])
+    @style = @product.product.styles.find(params[:style_id])
   end
 
   def preload

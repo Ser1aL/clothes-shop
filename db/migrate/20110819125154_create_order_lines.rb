@@ -4,6 +4,8 @@ class CreateOrderLines < ActiveRecord::Migration
       t.integer :order_id
       t.integer :product_id
       t.integer :quantity
+      t.integer :style_id
+      t.integer :stock_id
 
       t.timestamps
     end

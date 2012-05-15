@@ -7,7 +7,7 @@ function prepare_paginated_links(page_type){
       category = url.param('category') == undefined ? '' : url.param('category');
       sub_category = url.param('sub_category') == undefined ? '' : url.param('sub_category');
       color = url.param('color') == undefined ? '' : url.param('color');
-      page = url.param('page') == undefined ? '' : url.param('page');
+      page = url.param('page') == undefinsingle_product_ajaxified_linked ? '' : url.param('page');
       params = brand + '/' + category + '/' + sub_category + '/' + color + '/' + page;
       $.history.load( page_type + '/' + params );
     }
@@ -28,9 +28,10 @@ function prepare_paginated_links(page_type){
 function prepare_ajaxified_links(){
   $(".product_details_link a, .single_product_ajaxified_link").click(function() {
     $('#loader').show();
-    url = $.url(this.href);
-    clock_model_id = url.segment(2);
-    $.history.load( 'single/' + clock_model_id );
+    var url = $.url(this.href);
+    var style_id = url.param('style');
+    var item_model_id = url.segment(2);
+    $.history.load( 'single/' + item_model_id + '/' + style_id );
     return false;
   });
   $('.ajaxified_disabled_link').click(function(){ return false; })
@@ -141,7 +142,8 @@ $(function(){
     }
     else if(page_type == 'single'){
       script_name = '/item_models/';
-      query = url_parser.fsegment(2);
+      query = url_parser.fsegment(2) + '?style_id=' + url_parser.fsegment(3);
+
     }
     else if(page_type == 'search'){
       script_name = '/search.js';
@@ -233,8 +235,6 @@ $(function(){
     return false;
   });
 
-
-  
   $("#edit_user").click(function(){
     $("form.edit_user").submit();
     return false;
@@ -275,4 +275,14 @@ function activate_navigation_button(button_name){
   $('.navigation_buttons #'+button_name+' .button_left_idle').removeClass("button_left_idle").addClass("button_left");
   $('.navigation_buttons #'+button_name+' .button_mid_idle').removeClass("button_mid_idle").addClass("button_mid");
   $('.navigation_buttons #'+button_name+' .button_right_idle').removeClass("button_right_idle").addClass("button_right");
+}
+
+function activate_sizes_dropdown(){
+    $("#stock_select select").change(function(){
+        var stock_id = $(this).find("option:selected").val();
+        var link_to_cart = $(".add_to_cart_link a").last();
+        var current_url = $.url(link_to_cart.attr("href")); //, link_to_cart.attr("href") + "&stock_id=" + stock_id);
+        var result_url = current_url.attr().path + '?' + 'style=' + current_url.data.param.query.style + '&stock_id=' + stock_id;
+        link_to_cart.attr('href', result_url);
+    });
 }
