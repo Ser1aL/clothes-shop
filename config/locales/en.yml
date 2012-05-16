@@ -48,6 +48,7 @@ en:
     specials: 'Особенности:'
     no_specials: 'Нет'
     size: 'Размер: '
+  browse_brands_by_letter: 'Бренды в алфавитном порядке: '
   product_exists: 'Есть в наличии.'
   product_not_exists: 'Нет в наличии.'
   currency: 'грн.'

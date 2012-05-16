@@ -100,6 +100,14 @@
                 .input_left_bg
                 = text_field_tag 'search_query', '', :class => 'input_style'
                 .input_right_bg
+        %div{:style => 'clear: both;'}
+        #categories
+        %div{:style => 'clear: both;'}
+        #brands
+          = t('browse_brands_by_letter')
+          - ('A'..'Z').to_a.each do |letter|
+            = link_to letter, brands_path(:letter => letter)
+        %div{:style => 'clear: both;'}
       #content_wraper
         #ajax_content
           = yield
