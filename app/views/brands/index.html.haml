@@ -1,2 +1,7 @@
-%div
-  Brands
+= render 'brand_tip'
+%table.brand_table
+  - @brands.each_with_index do |brand, index|
+    - if index % 4 == 0
+      %tr
+    %td
+      = link_to brand.name, brand_path(brand)

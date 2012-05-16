@@ -10,9 +10,8 @@ class Order < ActiveRecord::Base
   belongs_to :user
   has_many :order_lines
 
-  validates_presence_of :order_time, :status, :delivery_type, :address, :city
+  validates_presence_of :order_time, :status, :address, :city
   validates_inclusion_of :status, :in => [:submitted, :paid, :sent]
-  validates_inclusion_of :delivery_type, :in => [:postal_service, :autolux, :intime, :night_express, :pickup, :nova_pochta]
   validates_inclusion_of :payment_type, :in => [:postal_service, :cash_on_delivery, :bank_payment]
   validates_datetime :order_time
 

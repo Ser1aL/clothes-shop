@@ -11,13 +11,19 @@
               %span.brand_name ВСЕ БРЕНДЫ
               %span.brand_quantity
                 = @brand_total_counts
-          - @brand_counts.each_with_index do |brand_count, index|
+          - @brand_counts[0..17].each_with_index do |brand_count, index|
             %div{:class => "brand_watch_block#{index % 2 == 0 ? '1' : ''}"}
               %a.brand_watch{:href => "/#cat/#{brand_count['id']}/#{params[:category]}/#{params[:sub_category]}/#{params[:color]}"}
                 %span.brand_name
                   = brand_count['name'].upcase
                 %span.brand_quantity
                   = brand_count['item_count']
+          %div{:class => "brand_watch_block#{@brand_counts.size % 2 == 0 ? '1' : ''}"}
+            %a.brand_watch{:href => "/brands"}
+              %span.brand_name
+                = t('brand_list')
+              %span.brand_quantity
+                \-
         .functional_block_brands_footer
           .functional_block_brands_footer_left_bottom
           .functional_block_brands_footer_right_bottom

@@ -17,40 +17,7 @@
     %tr.table_end_order
       %td.table_end_order_help_text Оформление Заказа
 - if @shopping_cart.total > 0
-  .tips
-    .tips_text
-      = t('delivery_header')
-  .filter_tips
-    %a.arrow_up{:href => "#"}
-    .filter_tips_text#hide
-      = link_to t('hide')
   = form_tag payment_path, :id => 'prepayment_form' do
-    .separator_content
-    #delivery_options
-      .shipping_metod_block
-        - ['nova_pochta', 'night_express', 'autolux', 'intime', 'postal_service'].each_with_index do |delivery_type, index|
-          .shipping_metod
-            .radiobutton_style
-              = radio_button_tag 'delivery_type', delivery_type, index == 0
-              %span 
-                = t('delivery') + ' ' + t(delivery_type)
-            %a.shipping_metod_help_icon{:href => "#", 'info_type' => delivery_type, :class => 'delivery_hint'}
-      .shipping_method_hint
-        .delivery_hint_message.nova_pochta
-          = t('detailed_night_express')
-        .delivery_hint_message.night_express
-          = t('detailed_nova_pochta')
-        .delivery_hint_message.autolux
-          = t('detailed_autolux')
-        .delivery_hint_message.intime
-          = t('detailed_intime')
-        .delivery_hint_message.postal_service
-          = t('detailed_postal_service')
-      .shipping_method_price
-        - ['nova_pochta', 'night_express', 'autolux', 'intime', 'postal_service'].each_with_index do |delivery_type, index|
-          %p
-            = '0.00'
-            грн
     .delimiter
     .tips
       .tips_text

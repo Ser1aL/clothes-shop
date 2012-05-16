@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(:version => 20120514142115) do
     t.string   "name"
     t.text     "description"
     t.string   "external_brand_id"
+    t.string   "logo_url"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

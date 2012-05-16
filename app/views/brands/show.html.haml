@@ -1,2 +1,23 @@
-%div
-  Brand
+= render 'brand_tip'
+.brand_description_wrapper
+  .brand_description_name
+    = @brand.name
+  .delimiter
+  .brand_text
+    .logo
+      = image_tag @brand.logo_url
+    = @brand.description.html_safe
+  .brand_image
+    = image_tag @brand.image_attachments[0].image.url(:original)
+  .delimiter
+  .jstree
+    %ul
+      - @category_tree[:root].each do |category_name, root_child|
+        %li.jstree-open
+          %a{:href => "/#cat/#{@brand.id}/#{root_child[:id]}//"}
+            = "#{category_name}(#{root_child[:count]})"
+          %ul
+            - root_child[:tree].delete_if{ |child| child[:count].to_i <= 0 }.each do |child|
+              %li
+                %a{:href => "/#cat/#{@brand.id}/#{root_child[:id]}/#{child[:id]}/"}
+                  = "#{child[:name]}(#{child[:count]})"

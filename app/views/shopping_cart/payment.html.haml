@@ -7,7 +7,6 @@
     = hidden_field_tag 'city', params[:city]
     = hidden_field_tag 'address', params[:address]
     = hidden_field_tag 'phone_number', params[:phone_number]
-    = hidden_field_tag 'delivery_type', params[:delivery_type]
     - ['postal_service', 'cash_on_delivery', 'bank_payment'].each_with_index do |payment_type, index|
       .shipping_metod
         .radiobutton_style

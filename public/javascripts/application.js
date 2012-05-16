@@ -1,13 +1,13 @@
 function prepare_paginated_links(page_type){
   $(".pager a").click(function() {
     $('#loader').show();
-    url = $.url(this.href);
+    var url = $.url(this.href);
     if (page_type == 'cat'){
       brand = url.param('brand') == undefined ? '' : url.param('brand');
       category = url.param('category') == undefined ? '' : url.param('category');
       sub_category = url.param('sub_category') == undefined ? '' : url.param('sub_category');
       color = url.param('color') == undefined ? '' : url.param('color');
-      page = url.param('page') == undefinsingle_product_ajaxified_linked ? '' : url.param('page');
+      page = url.param('page') == undefined ? '' : url.param('page');
       params = brand + '/' + category + '/' + sub_category + '/' + color + '/' + page;
       $.history.load( page_type + '/' + params );
     }
@@ -265,6 +265,19 @@ $(function(){
 
   activate_selection_popups();
   if($('#flash_message').length > 0) $('#flash_message').modal();
+  $(".jstree")
+    .bind("loaded.jstree", function () {
+      $(".jstree li a").click(function(){
+          window.location = $(this).attr("href");
+      });
+    })
+    .jstree({
+        "themes" : {
+           "theme" : "default",
+            "icons" : false,
+            "url" : '/stylesheets/themes/default/style.css'
+        }
+    });
 });
 
 function activate_lightbox(){

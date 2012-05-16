@@ -13,6 +13,7 @@ class BrandsController < ApplicationController
 
   def show
     @brand = Brand.find(params[:id])
+    @category_tree = @brand.build_category_tree
   end
 
 end

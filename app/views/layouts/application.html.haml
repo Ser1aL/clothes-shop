@@ -11,7 +11,8 @@
     %title
       = t('meta_title')
     = stylesheet_link_tag :all
-    = javascript_include_tag 'jquery.min', 'jquery.simplemodal', 'jquery.log', 'rails', 'jquery.history', 'url.parser', 'jquery.lightbox-0.5', 'application'
+    = javascript_include_tag 'jquery.min', 'jquery.simplemodal', 'jquery.log', 'rails'
+    = javascript_include_tag 'jquery.history', 'url.parser', 'jquery.lightbox-0.5', 'jquery.jstree', 'application'
     = csrf_meta_tag
     = render :partial => '/layouts/partials/google_analytics'
   %body
@@ -107,6 +108,7 @@
           = t('browse_brands_by_letter')
           - ('A'..'Z').to_a.each do |letter|
             = link_to letter, brands_path(:letter => letter)
+          = link_to t('all_brands'), brands_path
         %div{:style => 'clear: both;'}
       #content_wraper
         #ajax_content

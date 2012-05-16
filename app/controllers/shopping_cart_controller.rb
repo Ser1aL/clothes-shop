@@ -76,7 +76,6 @@ class ShoppingCartController < ApplicationController
         :phone_number => params[:phone_number] }))
     if @user.valid?
       @order = Order.new(
-          :delivery_type => params[:delivery_type],
           :payment_type => params[:payment_type],
           :address => params[:address],
           :city => params[:city],

@@ -1,7 +1,8 @@
 namespace :data_feed do
 
   client = Zappos::Client.new("9a3e643501faa5feecc03ea9d1ec1fdf9217dcf1", { :base_url => 'api.zappos.com' })
-  limit = 1
+  limit = 100
+  exchange_rate = 8
 
   search_opts = {
     :term => "clothes",
@@ -17,7 +18,7 @@ namespace :data_feed do
 
   brand_search_opts = {
     :includes => %w(aboutText),
-    :excludes => %w(name cleanName brandUrl headerImageUrl)
+    :excludes => %w(name cleanName brandUrl)
   }
 
   desc "fetches 'clothes' items from remote api"
@@ -39,7 +40,8 @@ namespace :data_feed do
           brand = Brand.create(
             :name => item.brandName,
             :description => brand_feed.aboutText,
-            :external_brand_id => product.brandId
+            :external_brand_id => product.brandId,
+            :logo_url => brand_feed.headerImageUrl
           )
           brand.image_attachments.create(:image => open(brand_feed.imageUrl))
         end
@@ -68,8 +70,8 @@ namespace :data_feed do
         styles.each do |style_feed|
           style = Style.create(
             :color => style_feed.color,
-            :original_price => style_feed.originalPrice[1..-1].to_f,
-            :discount_price => style_feed.price[1..-1].to_f,
+            :original_price => style_feed.originalPrice[1..-1].to_f * exchange_rate,
+            :discount_price => style_feed.price[1..-1].to_f * exchange_rate,
             :product => product_model,
             :external_style_id => style_feed.styleId
           )

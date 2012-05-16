@@ -29,7 +29,8 @@ class ItemModel < ActiveRecord::Base
     find_by_sql("SELECT #{type.pluralize}.id, #{type.pluralize}.name, COUNT(item_models.id) as item_count
       FROM #{type.pluralize}, item_models
       WHERE #{type.pluralize}.id = item_models.#{type}_id
-      GROUP BY #{type.pluralize}.id").map(&:attributes)
+      GROUP BY #{type.pluralize}.id
+      ORDER BY item_count DESC").map(&:attributes)
   end
 
   def self.detailed_counts_by_type type, brand_id
