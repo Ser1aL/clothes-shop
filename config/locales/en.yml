@@ -30,7 +30,7 @@ en:
   product_description:
     sex: 'Пол:'
     type: 'Тип:'
-    brand: 'Бренд'
+    brand: 'Бренд:'
     category: 'Категория:'
     sub_category: 'Подкатегория:'
     color: 'Цвет:'
@@ -48,6 +48,9 @@ en:
     specials: 'Особенности:'
     no_specials: 'Нет'
     size: 'Размер: '
+    description: 'Описание: '
+    gender: 'Пол:'
+    price_off: 'Скидка: '
   browse_brands_by_letter: 'Бренды в алфавитном порядке: '
   brand_list: 'ПЕРЕЙТИ К СПИСКУ БРЕНДОВ'
   all_brands: 'Все бренды'

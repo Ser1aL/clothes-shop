@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Color do
+describe Gender do
   context "should be valid" do
     subject { Factory.build :color }
     it { should be_valid }

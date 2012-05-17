@@ -1,8 +1,9 @@
+require 'open-uri'
+
 namespace :data_feed do
 
   client = Zappos::Client.new("9a3e643501faa5feecc03ea9d1ec1fdf9217dcf1", { :base_url => 'api.zappos.com' })
-  limit = 100
-  exchange_rate = 8
+  limit = 5
 
   search_opts = {
     :term => "clothes",
@@ -12,7 +13,7 @@ namespace :data_feed do
   }
 
   product_search_opts = {
-    :includes => %w(gender weight videoUrl styles sortedSizes styles stocks),
+    :includes => %w(gender description weight videoUrl styles sortedSizes styles stocks),
     :excludes => %w(productId brandName productName defaultImageUrl defaultProductUrl )
   }
 
@@ -21,75 +22,85 @@ namespace :data_feed do
     :excludes => %w(name cleanName brandUrl)
   }
 
-  desc "fetches 'clothes' items from remote api"
-  task :clothes => :environment do
+  image_search_opts = {
+    :recipe => %w(MULTIVIEW),
+    :excludes => %w(type format productId recipeName imageId styleId)
+  }
+
+  desc "fetches 'item_models' items from remote api"
+  task :item_models => :environment do
+    terms = %w(Clothes Bags Accessories Shoes)
     # total_count = client.search(:term => "clothes", :limit => 1).totalResultCount.to_f
     total_count = limit
+    terms.each do |term|
+      (total_count/limit).ceil.times do |index|
+        items = client.search( search_opts.merge!({:page => index + 1, :term => term.downcase}) ).results
 
-    (total_count/limit).ceil.times do |index|
-      items = client.search( search_opts.merge!({:page => index + 1}) ).results
+        items.each do |item|
+          next if ItemModel.find_by_external_product_id(item.productId)
 
-      items.each do |item|
-        next if ItemModel.find_by_external_product_id(item.productId)
+          product = client.product( product_search_opts.merge!({:id => item.productId}) ).data.product.first
+          brand = Brand.find_by_external_brand_id(product.brandId)
+          image_feed = client.image( image_search_opts.merge!({:productId => item.productId})).data.images
 
-        product = client.product( product_search_opts.merge!({:id => item.productId}) ).data.product.first
-        brand = Brand.find_by_external_brand_id(product.brandId)
-
-        unless brand
-          brand_feed = client.brand(brand_search_opts.merge!({:id => product.brandId})).data.brands.first
-          brand = Brand.create(
-            :name => item.brandName,
-            :description => brand_feed.aboutText,
-            :external_brand_id => product.brandId,
-            :logo_url => brand_feed.headerImageUrl
-          )
-          brand.image_attachments.create(:image => open(brand_feed.imageUrl))
-        end
-
-        styles = product.styles
-
-        item_model = ItemModel.create(
-          :external_product_id => item.productId,
-          :product_name => item.productName,
-          :gender => product.gender,
-          :brand => brand,
-          :category => Category.find_or_create_by_name("Clothes"),
-          :sub_category => SubCategory.find_or_create_by_name(item.categoryFacet),
-          :color => Color.find_or_create_by_name("undefined"),
-          :weight => product.weight,
-          :video_url => product.videoUrl
-        )
-
-        product_model = Product.create(
-          :item_model => item_model,
-          :avg_original_price => 0.0,
-          :avg_discount_price => 0.0,
-          :total_quantity => 0
-        )
-
-        styles.each do |style_feed|
-          style = Style.create(
-            :color => style_feed.color,
-            :original_price => style_feed.originalPrice[1..-1].to_f * exchange_rate,
-            :discount_price => style_feed.price[1..-1].to_f * exchange_rate,
-            :product => product_model,
-            :external_style_id => style_feed.styleId
-          )
-          style.image_attachments.create(:image => open(style_feed.imageUrl))
-
-          style_feed.stocks.each do |stock|
-            Stock.create(
-              :size => stock['size'],
-              :quantity => stock.onHand,
-              :width => stock.width,
-              :external_stock_id => stock.stockId,
-              :style => style
+          unless brand
+            brand_feed = client.brand(brand_search_opts.merge!({:id => product.brandId})).data.brands.first
+            brand = Brand.create(
+              :name => item.brandName,
+              :description => brand_feed.aboutText,
+              :external_brand_id => product.brandId,
+              :logo_url => brand_feed.headerImageUrl
             )
+            brand.image_attachments.create(:image => open(brand_feed.imageUrl))
           end
-        end
 
+          styles = product.styles
+          description = Nokogiri::XML(product.description)
+          description.search("ul li a").each(&:remove)
+          item_model = ItemModel.create(
+            :external_product_id => item.productId,
+            :product_name => item.productName,
+            :brand => brand,
+            :category => Category.find_or_create_by_name(term),
+            :sub_category => SubCategory.find_or_create_by_name(item.categoryFacet),
+            :gender => Gender.find_or_create_by_name(product.gender),
+            :description => description.to_s,
+            :weight => product.weight,
+            :video_url => product.videoUrl
+          )
+
+          product_model = Product.create(
+            :item_model => item_model,
+            :total_quantity => 0
+          )
+
+          styles.each do |style_feed|
+            style = Style.create(
+              :color => style_feed.color,
+              :original_price => (style_feed.originalPrice[1..-1].to_f * ExchangeRate.first.value.to_f).to_i,
+              :discount_price => (style_feed.price[1..-1].to_f * ExchangeRate.first.value.to_f).to_i,
+              :product => product_model,
+              :percent_off => style_feed.percentOff.to_i,
+              :external_style_id => style_feed.styleId
+            )
+            image_feed[style_feed.styleId].each do |image|
+              style.image_attachments.create(:image => ImageAttachment.image_from_url(image.filename))
+            end
+
+            style_feed.stocks.each do |stock|
+              Stock.create(
+                :size => stock['size'],
+                :quantity => stock.onHand,
+                :width => stock.width,
+                :external_stock_id => stock.stockId,
+                :style => style
+              )
+            end
+          end
+
+        end
+        puts "#{items.size} items loaded"
       end
-      puts "#{items.size} items loaded"
     end
   end
 

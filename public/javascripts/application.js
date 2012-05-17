@@ -6,9 +6,9 @@ function prepare_paginated_links(page_type){
       brand = url.param('brand') == undefined ? '' : url.param('brand');
       category = url.param('category') == undefined ? '' : url.param('category');
       sub_category = url.param('sub_category') == undefined ? '' : url.param('sub_category');
-      color = url.param('color') == undefined ? '' : url.param('color');
+      gender = url.param('gender') == undefined ? '' : url.param('gender');
       page = url.param('page') == undefined ? '' : url.param('page');
-      params = brand + '/' + category + '/' + sub_category + '/' + color + '/' + page;
+      params = brand + '/' + category + '/' + sub_category + '/' + gender + '/' + page;
       $.history.load( page_type + '/' + params );
     }
     else if (page_type == 'search'){
@@ -50,16 +50,16 @@ function decrementCommentCount(){
 }
 
 function set_default_navigation(){
-  $.each(['category', 'color', 'sub_category'], function(index, value){
+  $.each(['category', 'gender', 'sub_category'], function(index, value){
     $('.navigation_buttons #'+value+' .button_left').removeClass("button_left").addClass("button_left_idle");
     $('.navigation_buttons #'+value+' .button_mid').removeClass("button_mid").addClass("button_mid_idle");
     $('.navigation_buttons #'+value+' .button_right').removeClass("button_right").addClass("button_right_idle");
   });
 
-  $('.navigation_buttons #brand .button_mid').html('Все бренды');
-  $('.navigation_buttons #category .button_mid_idle').html('Все категории');
-  $('.navigation_buttons #sub_category .button_mid_idle').html('Все подкатегории');
-  $('.navigation_buttons #color .button_mid_idle').html('Все цвета');
+  $('.navigation_buttons #brand .button_mid').html('Бренды');
+  $('.navigation_buttons #category .button_mid_idle').html('Категории');
+  $('.navigation_buttons #sub_category .button_mid_idle').html('Подкатегории');
+  $('.navigation_buttons #gender .button_mid_idle').html('Тип');
 
 }
 
@@ -76,11 +76,10 @@ function reload_selection_links(brand_id, category_id, style_id, mechanism_id){
 }
 
 function activate_selection_popups(){
-  var options = ['brand', 'category', 'sub_category', 'color'];
+  var options = ['brand', 'category', 'sub_category', 'gender'];
   $.each(options, function(index, value){
     $('#navigation .navigation_buttons #'+value).hover(
       function(){
-        console.log('.pop_up_style_choice_'+value);
         $('.pop_up_style_choice_'+value).show();
         $.each(options, function(inner_index, inner_value){
           if(index != inner_index){
@@ -134,7 +133,7 @@ $(function(){
         query += 'sub_category=' + url_parser.fsegment(4) + '&';
       }
       if (url_parser.fsegment(5) != '' && url_parser.fsegment(5) != undefined){
-        query += 'color=' + url_parser.fsegment(5) + '&';
+        query += 'gender=' + url_parser.fsegment(5) + '&';
       }
       if (url_parser.fsegment(6) != '' && url_parser.fsegment(6) != undefined){
         query += 'page=' + url_parser.fsegment(6) + '&';

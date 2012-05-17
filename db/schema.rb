@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120514142115) do
+ActiveRecord::Schema.define(:version => 20120517153944) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "user_id"
@@ -39,17 +39,23 @@ ActiveRecord::Schema.define(:version => 20120514142115) do
     t.datetime "updated_at"
   end
 
-  create_table "colors", :force => true do |t|
-    t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "comments", :force => true do |t|
     t.integer  "user_id"
     t.string   "association_id"
     t.string   "association_type"
     t.text     "body"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "exchange_rates", :force => true do |t|
+    t.decimal  "value",      :precision => 10, :scale => 2
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "genders", :force => true do |t|
+    t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -69,12 +75,12 @@ ActiveRecord::Schema.define(:version => 20120514142115) do
     t.integer  "brand_id"
     t.integer  "category_id"
     t.integer  "sub_category_id"
-    t.integer  "color_id"
+    t.integer  "gender_id"
+    t.text     "description"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "external_product_id"
     t.string   "product_name"
-    t.string   "gender"
     t.string   "video_url"
     t.string   "weight"
   end
@@ -104,8 +110,6 @@ ActiveRecord::Schema.define(:version => 20120514142115) do
   end
 
   create_table "products", :force => true do |t|
-    t.decimal  "avg_original_price", :precision => 10, :scale => 2
-    t.decimal  "avg_discount_price", :precision => 10, :scale => 2
     t.integer  "total_quantity"
     t.integer  "item_model_id"
     t.datetime "created_at"
@@ -145,6 +149,7 @@ ActiveRecord::Schema.define(:version => 20120514142115) do
     t.decimal  "discount_price",    :precision => 10, :scale => 2
     t.decimal  "original_price",    :precision => 10, :scale => 2
     t.integer  "product_id"
+    t.integer  "percent_off"
     t.string   "external_style_id"
     t.datetime "created_at"
     t.datetime "updated_at"

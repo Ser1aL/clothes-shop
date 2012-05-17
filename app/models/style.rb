@@ -6,10 +6,10 @@ class Style < ActiveRecord::Base
   has_many :order_lines
 
   def original_price_extra
-    discount_price + discount_price * 10 / 100
+    (original_price + original_price * 10 / 100).to_i
   end
 
   def discount_price_extra
-    discount_price + discount_price * 10 / 100
+    (discount_price + discount_price * 10 / 100).to_i
   end
 end

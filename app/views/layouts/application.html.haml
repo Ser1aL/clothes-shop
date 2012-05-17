@@ -11,7 +11,7 @@
     %title
       = t('meta_title')
     = stylesheet_link_tag :all
-    = javascript_include_tag 'jquery.min', 'jquery.simplemodal', 'jquery.log', 'rails'
+    = javascript_include_tag 'jquery.min', 'jquery.simplemodal', 'jquery.log', 'rails', 'jwplayer'
     = javascript_include_tag 'jquery.history', 'url.parser', 'jquery.lightbox-0.5', 'jquery.jstree', 'application'
     = csrf_meta_tag
     = render :partial => '/layouts/partials/google_analytics'
@@ -32,7 +32,7 @@
         = render :partial => '/layouts/partials/brands'
         = render :partial => '/layouts/partials/categories'
         = render :partial => '/layouts/partials/sub_categories'
-        = render :partial => '/layouts/partials/colors'
+        = render :partial => '/layouts/partials/genders'
       - if !current_user
         = render :partial => '/layouts/partials/registration_form'
         = render :partial => '/layouts/partials/login_form'
@@ -74,22 +74,22 @@
           .navigation_buttons
             %a#brand.button{:href => "#"}
               .button_left
-              .button_mid Все бренды
+              .button_mid Бренды
               .button_right
           .navigation_buttons
             %a#category.button{:href => "#"}
               .button_left_idle
-              .button_mid_idle Все категории
+              .button_mid_idle Категории
               .button_right_idle
           .navigation_buttons
             %a#sub_category.button{:href => "#"}
               .button_left_idle
-              .button_mid_idle Все подкатегории
+              .button_mid_idle Подкатегории
               .button_right_idle
           .navigation_buttons
-            %a#color.button{:href => "#"}
+            %a#gender.button{:href => "#"}
               .button_left_idle
-              .button_mid_idle Все цвета
+              .button_mid_idle Тип
               .button_right_idle
           #navigation_search
             = form_tag search_path, :method => 'post', :id => 'search_form', :remote => true do
@@ -108,6 +108,7 @@
           = t('browse_brands_by_letter')
           - ('A'..'Z').to_a.each do |letter|
             = link_to letter, brands_path(:letter => letter)
+            \|
           = link_to t('all_brands'), brands_path
         %div{:style => 'clear: both;'}
       #content_wraper
@@ -138,14 +139,12 @@
               .footer_separator
               .footer_label_input
                 .footer_labe2
-                  %p.text1 Телефон:  (096)604-85-25
+                  %p.text1 Телефон:
                 .footer_labe3
                   %p.text1 E-mail:
                   %a{:href => "#"}
-                    %img#email_image{:src => "/images/email.gif"}/
                 .footer_labe4
                   %p.text1 Skype:
-                  %a.text3 MQShop
           .footer_h_sep
           .footer_blok_content
             %p.title_text Обратная связь
@@ -176,6 +175,6 @@
         .footer_separator1
         #footer_end_wraper
           .coperait
-            %p.link_menu © 2011 MQShop.com.ua
+            %p.link_menu © 2011 MyDostavka.com
           %a{:href => "http://designcraft.com.ua"}
             %img#logo_dc{:src => "/images/designcraft_logo.png"}/

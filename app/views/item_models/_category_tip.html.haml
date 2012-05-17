@@ -10,9 +10,9 @@
   - if params[:sub_category]
     %span.short_link
       = link_to SubCategory.find(params[:sub_category]).name, "/#cat/#{params[:brand]}/#{params[:category]}/#{params[:sub_category]}/"
-  - if params[:color]
+  - if params[:gender]
     %span.short_link
-      = link_to Color.find(params[:color]).name, "/#cat/#{params[:brand]}/#{params[:category]}/#{params[:sub_category]}/#{params[:color]}"
+      = link_to Gender.find(params[:gender]).name, "/#cat/#{params[:brand]}/#{params[:category]}/#{params[:sub_category]}/#{params[:gender]}"
 
 /
   .filter_tips

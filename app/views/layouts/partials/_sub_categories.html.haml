@@ -7,13 +7,13 @@
           .functional_block_brands_header_right_top
         .functional_block_brands_body
           .brand_watch_block
-            %a.brand_watch{:href => "/#cat/#{params[:brand]}/#{params[:category]}//#{params[:color]}"}
+            %a.brand_watch{:href => "/#cat/#{params[:brand]}/#{params[:category]}//#{params[:gender]}"}
               %span.brand_name ВСЕ ПОДКАТЕГОРИИ
               %span.brand_quantity
                 = @sub_category_total_counts
           - @sub_category_counts.each_with_index do |sub_category_count, index|
             %div{:class => "brand_watch_block#{index % 2 == 0 ? '1' : ''}"}
-              %a.brand_changable.brand_watch{:href => "/#cat/#{params[:brand]}/#{params[:category]}/#{sub_category_count['id']}/#{params[:color]}"}
+              %a.brand_changable.brand_watch{:href => "/#cat/#{params[:brand]}/#{params[:category]}/#{sub_category_count['id']}/#{params[:gender]}"}
                 %span.brand_name
                   = sub_category_count['name'].upcase
                 %span.brand_quantity 

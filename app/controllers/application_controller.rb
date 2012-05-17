@@ -15,8 +15,8 @@ class ApplicationController < ActionController::Base
       @sub_category_counts = ItemModel.counts_by_type(:sub_category)
       @sub_category_total_counts = @sub_category_counts.map{|hash| hash['item_count']}.sum
 
-      @color_counts = ItemModel.counts_by_type(:color)
-      @color_total_counts = @color_counts.map{|hash| hash['item_count']}.sum
+      @gender_counts = ItemModel.counts_by_type(:gender)
+      @gender_total_counts = @gender_counts.map{|hash| hash['item_count']}.sum
     end
   end
 

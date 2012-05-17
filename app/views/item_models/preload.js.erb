@@ -10,7 +10,7 @@
 $('#ajax_content').html("<%= rendered_content %>");
 prepare_paginated_links('cat');
 
-$.history.load('cat/<%= "#{params[:brand]}/#{params[:category]}/#{params[:sub_category]}/#{params[:color]}" %><%= params[:page] ? "/#{params[:page]}" : '' %>');
+$.history.load('cat/<%= "#{params[:brand]}/#{params[:category]}/#{params[:sub_category]}/#{params[:gender]}" %><%= params[:page] ? "/#{params[:page]}" : '' %>');
 set_default_navigation();
 
 <% if params[:brand] %>
@@ -25,13 +25,13 @@ set_default_navigation();
 <% end %>
 <% if params[:sub_category] %>
   activate_navigation_button('sub_category');
-  <% @style_name = SubCategory.find(params[:sub_category]).name %>
-  $('.navigation_buttons #sub_category .button_mid').html('<%= @style_name %>');
+  <% @sub_category_name = SubCategory.find(params[:sub_category]).name %>
+  $('.navigation_buttons #sub_category .button_mid').html('<%= @sub_category_name %>');
 <% end %>
-<% if params[:color] %>
-    activate_navigation_button('color');
-    <% @mechanism_name = Color.find(params[:color]).name %>
-    $('.navigation_buttons #color .button_mid').html('<%= @mechanism_name %>');
+<% if params[:gender] %>
+    activate_navigation_button('gender');
+    <% @gender_name = Gender.find(params[:gender]).name %>
+    $('.navigation_buttons #gender .button_mid').html('<%= @gender_name %>');
 <% end %>
 jQuery('html, body').animate( { scrollTop: 0 }, 'slow' );
 
@@ -39,7 +39,7 @@ jQuery('html, body').animate( { scrollTop: 0 }, 'slow' );
   classification = render :partial => '/layouts/partials/brands' 
   classification += render :partial => '/layouts/partials/categories'
   classification += render :partial => '/layouts/partials/sub_categories'
-  classification += render :partial => '/layouts/partials/colors'
+  classification += render :partial => '/layouts/partials/genders'
 %>
 
 $('#selection_top_wrapper').html('<%= escape_javascript(classification) %>');
@@ -47,6 +47,6 @@ activate_selection_popups();
 $('.pop_up_style_choice_brand').hide();
 $('.pop_up_style_choice_category').hide();
 $('.pop_up_style_choice_sub_category').hide();
-$('.pop_up_style_choice_color').hide();
+$('.pop_up_style_choice_gender').hide();
 
 $('#loader').hide();

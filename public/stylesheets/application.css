@@ -516,11 +516,14 @@ a.submit_comment{
 	margin: 7px 0px 0px 10px;
 }
 
+.description_wrapper{
+    height: 315px;
+}
+
 .block {
 	width: 440px;
 	float: left;
-  height: 315px;
-	margin: 40px 0px;	
+  	margin: 40px 0px;
 }
 
 .block_description {
@@ -530,8 +533,26 @@ a.submit_comment{
 }
 
 .block_description .right{
-    height: 195px;
+    min-height: 275px;
     width: 520px;
+}
+
+.item_model_description{
+    border: 1px #eee solid;
+    margin-top: 10px;
+}
+
+.item_model_description ul{
+    list-style: none;
+    padding: 0 10px 10px 10px;
+
+}
+
+.item_model_description ul li{
+    margin-top: 10px;
+    color: #444;
+    font-size: 13px;
+    font-family: Arial;
 }
 
 .title_product {
@@ -2103,7 +2124,7 @@ a.submit_comment{
 	text-align: left;
 }
 
-.pop_up_style_choice_brand, .pop_up_style_choice_color, .pop_up_style_choice_sub_category, .pop_up_style_choice_category{
+.pop_up_style_choice_brand, .pop_up_style_choice_gender, .pop_up_style_choice_sub_category, .pop_up_style_choice_category{
   wwwidth: 430px;
   min-height: 148px;
   float: left;
@@ -2116,7 +2137,7 @@ a.submit_comment{
   mmmin-height: 712px;
 }
 
-.pop_up_style_choice_color{
+.pop_up_style_choice_gender{
   left: 326px;
 }
 
@@ -2592,4 +2613,8 @@ a.submit_comment{
 
 #brands{
     margin-top: 20px;
+}
+
+#google_sectional_element{
+    margin: 14px 0 0 0;
 }

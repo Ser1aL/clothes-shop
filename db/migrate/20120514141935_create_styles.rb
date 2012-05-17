@@ -5,6 +5,7 @@ class CreateStyles < ActiveRecord::Migration
       t.decimal :discount_price, :precision => 10, :scale => 2
       t.decimal :original_price, :precision => 10, :scale => 2
       t.integer :product_id
+      t.integer :percent_off
       t.string :external_style_id
 
       t.timestamps

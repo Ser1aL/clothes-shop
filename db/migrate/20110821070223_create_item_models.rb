@@ -4,7 +4,8 @@ class CreateItemModels < ActiveRecord::Migration
       t.integer :brand_id
       t.integer :category_id
       t.integer :sub_category_id
-      t.integer :color_id
+      t.integer :gender_id
+      t.text :description
 
       t.timestamps
     end
