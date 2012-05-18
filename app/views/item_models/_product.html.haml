@@ -8,10 +8,11 @@
         = image_tag ImageAttachment.new.image.url(:thumb), :class => 'missing'
       - else
         = image_tag product.product.styles.first.image_attachments[0].image.url(:thumb), :alt => product.product_name
-
+    %a{:href => item_model_url(product, :style => product.product.styles.first), :class => 'single_product_ajaxified_link more_link'}
+      = "Подробнее"
   .product_description
     = t('product_description.brand')
-  .product_description1
+  .product_description1{:style => 'font-weight: bold;'}
     = product.brand.name
   .product_description
     = t('product_description.category')
@@ -22,7 +23,7 @@
   .product_description1
     = product.sub_category.name
   .product_description
-    = t('product_description.color')
+    = t('product_description.gender')
   .product_description1
     = product.gender.name
   .grey_area

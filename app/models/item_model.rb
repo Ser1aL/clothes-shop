@@ -7,6 +7,9 @@ class ItemModel < ActiveRecord::Base
   belongs_to :sub_category
   belongs_to :gender
 
+  PRICE_UPDATE_INTERVAL = 1.second
+
+
   def self.latest(page)
     page(page).per(6)
   end
@@ -65,6 +68,10 @@ class ItemModel < ActiveRecord::Base
       sub_categories.name LIKE ? OR
       item_models.product_name LIKE ? OR
       item_models.description LIKE ?', query, query, query, query, query, query).page(page).per(6)
+  end
+
+  def self.with_price_not_updated
+    ItemModel.joins( :product => :styles ).where("styles.updated_at < ?", Time.now - PRICE_UPDATE_INTERVAL)
   end
 
 end

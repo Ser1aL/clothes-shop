@@ -213,10 +213,14 @@ $(function(){
     $('#submit_order_form').submit();
     return false;
   });
-  
+
   $('.delete_icon').click(function(){
-    $(this).parent().submit();
-    return false;
+      $(this).parent().submit();
+      return false;
+  });
+
+  $('.refresh_icon').click(function(){
+      return false;
   });
 
   $('.login_button').click(function(){
@@ -296,5 +300,12 @@ function activate_sizes_dropdown(){
         var current_url = $.url(link_to_cart.attr("href")); //, link_to_cart.attr("href") + "&stock_id=" + stock_id);
         var result_url = current_url.attr().path + '?' + 'style=' + current_url.data.param.query.style + '&stock_id=' + stock_id;
         link_to_cart.attr('href', result_url);
+    });
+}
+
+function activate_video_link(){
+    $("#video_link").click(function(){
+        $("#flv_player_wrapper").slideToggle();
+        return false;
     });
 }

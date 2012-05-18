@@ -102,8 +102,6 @@
                 = text_field_tag 'search_query', '', :class => 'input_style'
                 .input_right_bg
         %div{:style => 'clear: both;'}
-        #categories
-        %div{:style => 'clear: both;'}
         #brands
           = t('browse_brands_by_letter')
           - ('A'..'Z').to_a.each do |letter|
@@ -111,10 +109,15 @@
             \|
           = link_to t('all_brands'), brands_path
         %div{:style => 'clear: both;'}
+        #categories
+          = t('category_list')
+          = Category.all.map{|category| link_to category.name, category_path(category)}.join(' | ').html_safe
+        %div{:style => 'clear: both;'}
       #content_wraper
         #ajax_content
           = yield
-    #delimeter
+        .delimiter
+    .delimiter
     / Footer
     #footer
       #footer_top_line

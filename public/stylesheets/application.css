@@ -116,7 +116,6 @@ textarea {
 	width: 1000px;
 	margin: 0 auto;
 	min-height: 800px;
-	overflow: hidden;
 	background-color: #ffffff;
 	border-left: 1px solid #eaeaea;
 	border-right: 1px solid #eaeaea;
@@ -537,6 +536,15 @@ a.submit_comment{
     width: 520px;
 }
 
+.block .left{
+    width: 330px;
+    padding-left: 139px;
+}
+
+.block .left .logo{
+    padding-bottom: 7px;
+}
+
 .item_model_description{
     border: 1px #eee solid;
     margin-top: 10px;
@@ -581,12 +589,12 @@ a.submit_comment{
 }
 
 .product_image {
-	height: 173px;
-	width: 108px;
-	border-top:  1px solid #ececec;
-	border-left:  1px solid #ececec;
-	border-right:  1px solid #ececec;
-	border-bottom: 1px solid #ececec;
+	height: 195px;
+	width: 140px;
+	/*border-top:  1px solid #ececec;*/
+	/*border-left:  1px solid #ececec;*/
+	/*border-right:  1px solid #ececec;*/
+	/*border-bottom: 1px solid #ececec;*/
 	float: left;
 	margin: 0px 0px 20px 0px;
 }
@@ -600,7 +608,7 @@ a.submit_comment{
 }
 
 .product_description {
-	width: 110px;
+    width: 84px;
 	color: #818181;
 	font-size: 13px;
 	font-family: Arial;
@@ -610,7 +618,7 @@ a.submit_comment{
 }
 
 .product_description1 {
-	width: 180px;
+    width: 176px;
 	color: #444444;
 	font-size: 13px;
 	font-family: Arial;
@@ -690,7 +698,7 @@ a.submit_comment{
 }
 .sum-a {
 	color: #f12b50;
-	font-size: 13px;
+	font-size: 15px;
 	font-family: Arial;
 	font-weight: bold;
 	margin: 6px 5px 0px 0px;
@@ -699,7 +707,7 @@ a.submit_comment{
 }
 .sum-a:hover {
 	color: #f12b50;
-	font-size: 13px;
+	font-size: 15px;
 	font-family: Arial;
 	font-weight: bold;
 	margin: 6px 5px 0px 0px;
@@ -1520,6 +1528,24 @@ a.submit_comment{
 	float: right;
 }
 
+#flv_player_wrapper{
+    margin-top: 96px;
+    display: none;
+}
+
+#google_sectional_element{
+    display: none;
+}
+
+.goog-te-sectional-gadget-link{
+    padding-bottom: 11px;
+    padding-left: 11px;
+}
+
+.goog-te-sectional-gadget-link a span{
+    font-size: 17px;
+}
+
 .table_header_mane, .table_header_quantity, .table_header_price, .table_header_total, .table_end_order_help_text{
 	width: 498px;
 	margin-left: 20px;
@@ -1650,7 +1676,6 @@ a.submit_comment{
 	width: 48px;
 	height: 28px;
 	float: left;
-	overflow: hidden;
 	vertical-align: middle;
 	margin-right: 10px;
 }
@@ -1678,10 +1703,26 @@ a.submit_comment{
 }
 
 .delete_icon{
-	width: 14px;
-	height: 28px;
-	float: left;
-	background: url('../images/delete.png') 0 7px no-repeat;
+    width: 14px;
+    height: 28px;
+    float: left;
+    background: url('../images/delete.png') 0 7px no-repeat;
+}
+
+.refresh_icon{
+    width: 14px;
+    height: 28px;
+    float: left;
+    margin-right: 6px;
+    background: url('../images/refresh_icon.png') 0 7px no-repeat;
+}
+
+.more_link{
+    width: 86px;
+    height: 28px;
+    margin-right: 6px;
+    background: url('../images/more.png') 72px 1px no-repeat;
+    float: right;
 }
 
 .shopping_card_content_price, .shopping_card_content_total{
@@ -2611,10 +2652,47 @@ a.submit_comment{
     background-color: #FFF;
 }
 
-#brands{
+#brands, #categories{
     margin-top: 20px;
+    color: #444;
+    font-size: 13px;
+    font-family: Arial;
+}
+
+#categories{
+    margin-top: 5px;
 }
 
 #google_sectional_element{
     margin: 14px 0 0 0;
+}
+
+#other_images{
+    padding-left: 5px;
+}
+
+a.previews img{
+    width: 23px;
+}
+
+.categories_panel{
+    width: 300px;
+    float: left;
+}
+.categories_panel ul{
+    list-style: none;
+    padding-left: 10px;
+}
+
+.categories_panel ul li{
+    color: #444;
+    font-size: 13px;
+    font-family: Arial;
+    text-align: left;
+    margin-top: 6px;
+}
+
+.categories_panel ul li.root_li{
+    font-size: 14px;
+    font-weight: bold;
 }

@@ -3,7 +3,7 @@ require 'open-uri'
 namespace :data_feed do
 
   client = Zappos::Client.new("9a3e643501faa5feecc03ea9d1ec1fdf9217dcf1", { :base_url => 'api.zappos.com' })
-  limit = 5
+  limit = 100
 
   search_opts = {
     :term => "clothes",
@@ -27,13 +27,20 @@ namespace :data_feed do
     :excludes => %w(type format productId recipeName imageId styleId)
   }
 
-  desc "fetches 'item_models' items from remote api"
+  price_search_opts = {
+    :includes => %w(styles stocks),
+    :excludes => %w(imageUrl color productUrl brandId brandName productName defaultProductUrl defaultImageUrl productId)
+  }
+
+  desc "fetches 'item_models' from remote api"
   task :item_models => :environment do
-    terms = %w(Clothes Bags Accessories Shoes)
-    # total_count = client.search(:term => "clothes", :limit => 1).totalResultCount.to_f
-    total_count = limit
+    # terms = %w(Clothes Bags Accessories Shoes)
+    terms = %w(Shoes)
     terms.each do |term|
-      (total_count/limit).ceil.times do |index|
+      # total_count = client.search(:term => term, :limit => 1).totalResultCount.to_f
+      total_count = 140#limit
+
+      (total_count.to_f/limit.to_f).ceil.times do |index|
         items = client.search( search_opts.merge!({:page => index + 1, :term => term.downcase}) ).results
 
         items.each do |item|
@@ -104,4 +111,36 @@ namespace :data_feed do
     end
   end
 
+  desc "updates item model prices"
+  task :update_prices => :environment do
+    ItemModel.with_price_not_updated.each do |item_model|
+      price_feed = client.product( price_search_opts.merge!({:id => item_model.external_product_id}) ).data.product.first
+      item_model.product.styles.each do |style|
+
+        # secondary check for multi run
+        next if style.updated_at > Time.now - ItemModel::PRICE_UPDATE_INTERVAL
+
+        price_feed.styles.each do |style_feed|
+          if style_feed.styleId == style.external_style_id
+            style.update_attributes(
+              :original_price => (style_feed.originalPrice[1..-1].to_f * ExchangeRate.first.value.to_f).to_i,
+              :discount_price => (style_feed.price[1..-1].to_f * ExchangeRate.first.value.to_f).to_i,
+              :percent_off => style_feed.percentOff.to_i,
+              :updated_at => Time.now
+            )
+            style.stocks.destroy_all
+            style_feed.stocks.each do |stock|
+              Stock.create(
+                :size => stock['size'],
+                :quantity => stock.onHand,
+                :width => stock.width,
+                :external_stock_id => stock.stockId,
+                :style => style
+              )
+            end
+          end
+        end
+      end
+    end
+  end
 end

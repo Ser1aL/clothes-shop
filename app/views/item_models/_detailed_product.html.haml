@@ -17,45 +17,65 @@
 .brand_description_wrapper
   .block
     .title_product
-      %a.title_product-a.ajaxified_disabled_link{:href => item_model_path(product)}
-        = product.product_name
+      %a.title_product-a.ajaxified_disabled_link
+        = product.brand.name
     .product_image#clock_images
       - if @style.try(:image_attachments).blank?
         = image_tag ImageAttachment.new.image.url(:thumb), :class => 'missing'
       - else
         %a{:href => @style.image_attachments[0].image.url(:original)}
           = image_tag @style.image_attachments[0].image.url(:thumb), :alt => product.product_name
-        - @style.image_attachments.each_with_index do |image_attachment, index|
-          - next if index == 0
-          %a{:href => image_attachment.image.url(:original)}
-    .product_description
-      = t('product_description.brand')
-    .product_description1
-      = product.brand.name
-    .product_description
-      = t('product_description.category')
-    .product_description1
-      = product.category.name
-    .product_description
-      = t('product_description.sub_category')
-    .product_description1
-      = product.sub_category.name
-    .product_description
-      = t('product_description.color')
-    .product_description1
-      = @style.color
-    .product_description
-      = t('product_description.gender')
-    .product_description1
-      = product.gender.name
-    - if product.product.styles.size > 1
+        #other_images
+          - @style.image_attachments.each_with_index do |image_attachment, index|
+            - next if index == 0
+            %a.previews{:href => image_attachment.image.url(:original)}
+              - if index < 6
+                = image_tag image_attachment.image.url(:thumb), :alt => product.product_name
+    .left
+      .logo
+        = image_tag product.brand.logo_url
       .product_description
-        = t('product_description.other_colors')
+        = t('product_description.name')
       .product_description1
-        - product.product.styles.each do |style|
-          - next if style == @style
-          %a{:href => "/#single/#{style.product.id}/#{style.id}"}
-            = image_tag style.image_attachments.try(:[], 0).try(:image).try(:url, :thumb), :alt => product.product_name, :style => 'width: 30px;'
+        = product.product_name.truncate(25)
+      .product_description
+        = t('product_description.category')
+      .product_description1
+        = product.category.name
+      .product_description
+        = t('product_description.sub_category')
+      .product_description1
+        = product.sub_category.name
+      .product_description
+        = t('product_description.color')
+      .product_description1
+        = @style.color
+      .product_description
+        = t('product_description.gender')
+      .product_description1
+        = product.gender.name
+      - if @style.is_shoes?
+        .product_description
+          = t('product_description.width')
+        .product_description1
+          = @style.stocks[0].width
+      .product_description
+        SKU #:
+      .product_description1
+        = product.external_product_id
+      - if @product.video_url
+        .product_description
+          = t('product_description.video')
+        .product_description1
+          = link_to t('product_description.show_video'), '#', :id => 'video_link'
+      - if product.product.styles.size > 1
+        .product_description
+          = t('product_description.other_colors')
+        .product_description1
+          - product.product.styles.each do |style|
+            - next if style == @style
+            %a{:href => "/#single/#{style.product.id}/#{style.id}"}
+              = image_tag style.image_attachments.try(:[], 0).try(:image).try(:url, :thumb), :alt => product.product_name, :style => 'width: 30px;'
     .delimiter
     #flv_player
   .block_description
@@ -64,6 +84,25 @@
         = t('product_description.size')
       .product_description1#stock_select
         = select_tag :stock_id, options_for_select(@style.stocks.map{|s| [s.size, s.id]})
+      - if product.product
+        %a.button
+          .button_left{:style => 'margin-left: 60px;'}
+          .button_mid.add_to_cart_link
+            = link_to t('add_to_cart'), add_path(product.product, :style => @style, :stock_id => @style.stocks.first)
+          .button_right
+      - else
+        .navigation_buttons
+          .button_idle
+            .button_left_idle
+            .button_mid_idle
+              = t('add_to_cart')
+            .button_right_idle
+        %a.button{:href => "#"}
+          .button_left
+          .button_mid
+            = t('email_when_available')
+          .button_right
+
       .delimiter
       .item_model_description.goog-trans-section
         = @product.description.html_safe
@@ -78,7 +117,7 @@
       .price
         = t('product_description.original_price')
       %div
-        %a.sum-a
+        %a.sum-a{:style => 'font-size: 13px;'}
           = number_to_currency(@style.original_price_extra, :unit => '')
       .price
         = t('currency')
@@ -107,24 +146,7 @@
     .presence_color_no
     .presence_note_no
       = t('product_not_exists')
-- if product.product
-  %a.button{:href => "#"}
-    .button_left
-    .button_mid.add_to_cart_link
-      = link_to t('add_to_cart'), add_path(product.product, :style => @style, :stock_id => @style.stocks.first)
-    .button_right
-- else
-  .navigation_buttons
-    .button_idle
-      .button_left_idle
-      .button_mid_idle
-        = t('add_to_cart')
-      .button_right_idle
-  %a.button{:href => "#"}
-    .button_left
-    .button_mid
-      = t('email_when_available')
-    .button_right
+
 #comments
   .tips
     .tips_text

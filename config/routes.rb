@@ -3,6 +3,7 @@ Watches::Application.routes.draw do
   get "users/update"
 
   resources :brands, :only => %w(index show)
+  resources :categories, :only => %w(show)
 
   get "administrator/orders"
   get "administrator", :to => 'administrator#orders'

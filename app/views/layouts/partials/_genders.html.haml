@@ -8,7 +8,7 @@
         .functional_block_brands_body
           .brand_watch_block
             %a.brand_watch{:href => "/#cat/#{params[:brand]}/#{params[:category]}/#{params[:sub_category]}/"}
-              %span.brand_name ВСЕ ЦВЕТА
+              %span.brand_name ВСЕ ТИПЫ
               %span.brand_quantity
                 = @gender_total_counts
           - @gender_counts.each_with_index do |gender, index|

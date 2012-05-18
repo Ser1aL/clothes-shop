@@ -2,7 +2,7 @@ require "open-uri"
 
 class ImageAttachment < ActiveRecord::Base
   belongs_to :association, :polymorphic => true
-  has_attached_file :image, :styles => { :thumb => "106x173#", :original => "488x782>" }
+  has_attached_file :image, :styles => { :thumb => "140x195>", :original => "488x782>" }
 
   def self.image_from_url(url)
     extname = File.extname(url)

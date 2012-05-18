@@ -1,0 +1,11 @@
+= render 'category_tip'
+.categories_wrapper
+  .categories_panel
+    %ul
+      %li.root_li
+        = link_to "#{@category.name}(#{@category.item_models.count})", "/#cat//#{@category.id}//"
+      %li
+        %ul
+          - @category.sub_categories.each do |sub_category|
+            %li
+              = link_to "#{sub_category.name}(#{sub_category.item_models.count})", "/#cat//#{@category.id}/#{sub_category.id}/"

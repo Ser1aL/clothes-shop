@@ -11,7 +11,7 @@
     .shopping_card_content_title_product
       %a.shopping_card_content_title_product-a{:href => "/#/single/#{shopping_cart_line.product.item_model.id}/#{shopping_cart_line.style.id}"}
         = shopping_cart_line.product.item_model.brand.name
-    .shopping_card_content_product_description 
+    .shopping_card_content_product_description
       = shopping_cart_line.product.item_model.full_description
       = shopping_cart_line.stock.size
   %td.shopping_card_content_quantity
@@ -22,6 +22,7 @@
           = text_field_tag 'quantity', shopping_cart_line.quantity, :class => 'cart_quantity'
         .quantity_input_right_side
     = form_tag remove_cart_line_path(shopping_cart_line.id), :id => "remove_cart_line_form_#{shopping_cart_line.id}", :remote => true, :method => 'post' do
+      = link_to '', '', :class => 'refresh_icon'
       = link_to '', '', :class => 'delete_icon', :id => "remove_cart_line_link_#{shopping_cart_line.id}"
   %td.shopping_card_content_price
     .sum-a#price
