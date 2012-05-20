@@ -1,15 +1,15 @@
 %tr.shopping_card_content
   %td.shopping_card_content_image
-    - if order_line.product.item_model.image_attachments.empty?
+    - if order_line.style.image_attachments.empty?
       %a{:href => "/#/single/#{order_line.product.item_model.id}"}
         .sc_clock_image{:style => "background: url('#{ImageAttachment.new.image.url(:thumb)}') no-repeat"}
     - else
-      %a{:href => "/#/single/#{order_line.product.item_model.id}"}
+      %a{:href => "/#/single/#{order_line.product.item_model.id}/#{order_line.style.id}"}
         .sc_clock_image
-          .sc_clock_image{:style => "background: url('#{order_line.product.item_model.image_attachments[0].image.url(:thumb)}') no-repeat"}
+          .sc_clock_image{:style => "background: url('#{order_line.style.image_attachments[0].image.url(:thumb)}') no-repeat"}
   %td.shopping_card_content_description
     .shopping_card_content_title_product
-      %a.shopping_card_content_title_product-a{:href => "/#/single/#{order_line.product.item_model.id}"}
+      %a.shopping_card_content_title_product-a{:href => "/#/single/#{order_line.product.item_model.id}/#{order_line.style.id}"}
         = order_line.product.item_model.brand.name
         = order_line.product.item_model.product_name
     .shopping_card_content_product_description 
@@ -20,8 +20,10 @@
   %td.shopping_card_content_price
     .sum-a
       = order_line.price
-    .price грн.
+    .price
+      = order_line.currency
   %td.shopping_card_content_total
     .sum-a
       = order_line.total
-    .price грн.
+    .price
+      = order_line.currency

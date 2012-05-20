@@ -8,6 +8,7 @@ class CreateShoppingCartLines < ActiveRecord::Migration
       t.integer :stock_id
 
       t.decimal :price, :precision => 10, :scale => 2
+      t.string :currency
       t.timestamps
     end
   end

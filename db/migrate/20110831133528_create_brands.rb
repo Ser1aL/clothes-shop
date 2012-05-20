@@ -5,6 +5,7 @@ class CreateBrands < ActiveRecord::Migration
       t.text :description
       t.string :external_brand_id
       t.string :logo_url
+      t.string :display_name
 
       t.timestamps
     end

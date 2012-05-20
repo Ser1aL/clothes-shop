@@ -1,6 +1,7 @@
 class ItemModelsController < ApplicationController
   def index
-    @products = ItemModel.latest(params[:page])
+    @categories = Category.all
+    @banners = Banner.where("banners.category_id IS NULL")
   end
 
   def show

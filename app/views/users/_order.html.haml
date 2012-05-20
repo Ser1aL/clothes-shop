@@ -20,15 +20,8 @@
     = render :partial => 'order_line', :collection => order.order_lines
     %tr.table_total.user_order_total
       %td.table_total_price
-        .price грн.
-        .sum-a#cart_total
-          %span
-            0.00
-        .price 
-          = "Доставка(#{t(order.delivery_type)}):"
-    %tr.table_total.user_order_total
-      %td.table_total_price
-        .price грн.
+        .price
+          = order.order_lines.first.currency
         .sum-a#cart_total
           %span
             = order.total

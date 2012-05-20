@@ -172,13 +172,6 @@ $(function(){
     return false;
   });
 
-  $('.delivery_hint').click(function(){
-    var delivery_type = $(this).attr('info_type');
-    $('.delivery_hint_message').hide();
-    $('.delivery_hint_message.' + delivery_type).show();
-    return false;
-  });
-
   $('.submit_search').click(function(){
     if ($('#search_query').val() == '') return false;
     $('#search_form').submit();
@@ -281,6 +274,7 @@ $(function(){
             "url" : '/stylesheets/themes/default/style.css'
         }
     });
+    init_slider();
 });
 
 function activate_lightbox(){
@@ -307,5 +301,12 @@ function activate_video_link(){
     $("#video_link").click(function(){
         $("#flv_player_wrapper").slideToggle();
         return false;
+    });
+}
+
+function init_slider(){
+    $('#slides').slides({
+        play: 4000,
+        pause: 2500
     });
 }

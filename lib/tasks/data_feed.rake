@@ -3,7 +3,7 @@ require 'open-uri'
 namespace :data_feed do
 
   client = Zappos::Client.new("9a3e643501faa5feecc03ea9d1ec1fdf9217dcf1", { :base_url => 'api.zappos.com' })
-  limit = 100
+  limit = 1
 
   search_opts = {
     :term => "clothes",
@@ -34,11 +34,11 @@ namespace :data_feed do
 
   desc "fetches 'item_models' from remote api"
   task :item_models => :environment do
-    # terms = %w(Clothes Bags Accessories Shoes)
-    terms = %w(Shoes)
+    terms = %w(Clothes Bags Accessories Shoes Sunglasses)
+    # terms = %w(Shoes)
     terms.each do |term|
       # total_count = client.search(:term => term, :limit => 1).totalResultCount.to_f
-      total_count = 140#limit
+      total_count = limit
 
       (total_count.to_f/limit.to_f).ceil.times do |index|
         items = client.search( search_opts.merge!({:page => index + 1, :term => term.downcase}) ).results
@@ -84,8 +84,8 @@ namespace :data_feed do
           styles.each do |style_feed|
             style = Style.create(
               :color => style_feed.color,
-              :original_price => (style_feed.originalPrice[1..-1].to_f * ExchangeRate.first.value.to_f).to_i,
-              :discount_price => (style_feed.price[1..-1].to_f * ExchangeRate.first.value.to_f).to_i,
+              :original_price => style_feed.originalPrice[1..-1].to_f,
+              :discount_price => style_feed.price[1..-1].to_f,
               :product => product_model,
               :percent_off => style_feed.percentOff.to_i,
               :external_style_id => style_feed.styleId
@@ -142,5 +142,36 @@ namespace :data_feed do
         end
       end
     end
+  end
+
+  desc "load banners"
+  task :load_banners => :environment do
+    root_page = "http://6pm.com"
+    # database name => 6pm page
+    category_mapping = {
+        :clothes => 'clothing',
+        :bags => 'bags',
+        :accessories => 'accessories',
+        :shoes => 'shoes',
+        :sunglasses => 'sunglasses',
+        :index => ''
+    }
+    category_mapping.each do |category_name, page_name|
+      if category = Category.find_by_name(category_name) || category_name == :index
+        if category_name != :index
+          category.banners.destroy_all
+        else
+          Banner.where("banners.category_id IS NULL").destroy_all
+        end
+
+        nokogiri_page = Nokogiri::HTML(open("#{root_page}/#{page_name}"))
+        nokogiri_page.css(".baffinGallery a img").map{|element| element.attributes["src"].to_s}.each do |image_link|
+
+          banner = category_name == :index ? Banner.create : category.banners.create
+          banner.image_attachments.create(:image => ImageAttachment.image_from_url("#{root_page}#{image_link}"))
+        end
+      end
+    end
+
   end
 end

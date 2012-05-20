@@ -1,0 +1,11 @@
+.login_form
+  %p.notice
+    = flash[:notice]
+  %p
+    = form_tag administrator_do_login_path do
+      %p
+        = text_field_tag :login, '', :placeholder => 'Логин'
+      %p
+        = password_field_tag :password
+      %p
+        = submit_tag t('submit')

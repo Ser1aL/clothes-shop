@@ -1,25 +1,31 @@
-%h1
-  Администраторская панель
-%h2
-  Следующие заказы были оформлены:
-%table
-  %tr
-    %td
-      = 'Номер заказа'
-    %td
-      = 'Адрес доставки'
-    %td
-      = 'E-mail заказчика'
-    %td
-      = 'Номер телефона'
-    %td
-      = 'Дата создания заказа'
-    %td
-      = 'Способ оплаты'
-    %td
-      = 'Способ доставки'
-    %td
-      = 'Сумма по заказу'
-    %td
-      = 'Статус'
-  = render :partial => 'order', :collection => @orders
+- if @order
+  = render :partial => 'detailed_order', :locals => { :order => @order }
+- else
+  %h2
+    Следующие заказы были оформлены:
+  %div
+    \|
+    = link_to "Просмотренные", administrator_orders_path(:show_reviewed => 1)
+    \|
+    = link_to "Непросмотренные", administrator_orders_path(:show_unreviewed => 1)
+    \|
+    = link_to "Все", administrator_orders_path
+    \|
+  = form_tag administrator_orders_path(:mark_reviewed => 1), :method => :get do
+    %table.orders
+      %tr
+        %td
+          = 'Номер заказа'
+        %td
+          = 'Адрес доставки'
+        %td
+          = 'E-mail заказчика'
+        %td
+          = 'Номер телефона'
+        %td
+          = 'Дата создания заказа'
+        %td
+          = 'Сумма по заказу'
+        %td
+      = render :partial => 'order', :collection => @orders
+    = submit_tag 'Отметить выбранные заказы просмотренными'

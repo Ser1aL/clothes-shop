@@ -5,12 +5,12 @@ class Style < ActiveRecord::Base
   has_many :shopping_cart_lines
   has_many :order_lines
 
-  def original_price_extra
-    (original_price + original_price * 10 / 100).to_i
+  def original_price_extra(exchange_rate, markup)
+    ((original_price + original_price * markup / 100) * exchange_rate).to_i
   end
 
-  def discount_price_extra
-    (discount_price + discount_price * 10 / 100).to_i
+  def discount_price_extra(exchange_rate, markup)
+    ((discount_price + discount_price * markup / 100) * exchange_rate).to_i
   end
 
   def is_shoes?

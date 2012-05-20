@@ -4,7 +4,7 @@ class CreateOrders < ActiveRecord::Migration
       t.integer :user_id
       t.timestamp :order_time
       t.column :status, :enum, :limit => [:submitted, :paid, :sent]
-      t.column :delivery_type, :enum, :limit => [:postal_service, :autolux, :intime, :night_express, :pickup, :nova_postal_service]
+      t.boolean :reviewed, :default => false
 
       t.timestamps
     end

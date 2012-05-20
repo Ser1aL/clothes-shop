@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120517153944) do
+ActiveRecord::Schema.define(:version => 20120520114236) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "user_id"
@@ -24,17 +24,26 @@ ActiveRecord::Schema.define(:version => 20120517153944) do
     t.datetime "updated_at"
   end
 
+  create_table "banners", :force => true do |t|
+    t.integer  "category_id"
+    t.string   "url"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "brands", :force => true do |t|
     t.string   "name"
     t.text     "description"
     t.string   "external_brand_id"
     t.string   "logo_url"
+    t.string   "display_name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "categories", :force => true do |t|
     t.string   "name"
+    t.string   "display_name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -50,12 +59,16 @@ ActiveRecord::Schema.define(:version => 20120517153944) do
 
   create_table "exchange_rates", :force => true do |t|
     t.decimal  "value",      :precision => 10, :scale => 2
+    t.decimal  "markup",     :precision => 10, :scale => 2
+    t.string   "currency"
+    t.string   "domain"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "genders", :force => true do |t|
     t.string   "name"
+    t.string   "display_name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -94,19 +107,20 @@ ActiveRecord::Schema.define(:version => 20120517153944) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.decimal  "price",      :precision => 10, :scale => 2
+    t.string   "currency"
   end
 
   create_table "orders", :force => true do |t|
     t.integer  "user_id"
     t.datetime "order_time"
-    t.enum     "status",        :limit => [:submitted, :paid, :sent]
-    t.enum     "delivery_type", :limit => [:postal_service, :autolux, :intime, :night_express, :pickup, :nova_pochta]
+    t.enum     "status",     :limit => [:submitted, :paid, :sent]
+    t.boolean  "reviewed",                                                                        :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.enum     "payment_type",  :limit => [:bank_payment, :cash_on_delivery, :postal_service]
-    t.decimal  "total",                                                                                                :precision => 10, :scale => 2
+    t.decimal  "total",                                            :precision => 10, :scale => 2
     t.string   "city"
     t.string   "address"
+    t.string   "country"
   end
 
   create_table "products", :force => true do |t|
@@ -123,6 +137,7 @@ ActiveRecord::Schema.define(:version => 20120517153944) do
     t.integer  "style_id"
     t.integer  "stock_id"
     t.decimal  "price",            :precision => 10, :scale => 2
+    t.string   "currency"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -130,6 +145,14 @@ ActiveRecord::Schema.define(:version => 20120517153944) do
   create_table "shopping_carts", :force => true do |t|
     t.integer  "user_id"
     t.enum     "status",     :limit => [:open, :close], :default => :open
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "static_pages", :force => true do |t|
+    t.string   "name"
+    t.string   "human_name"
+    t.text     "text"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -158,6 +181,7 @@ ActiveRecord::Schema.define(:version => 20120517153944) do
   create_table "sub_categories", :force => true do |t|
     t.string   "name"
     t.integer  "category_id"
+    t.string   "display_name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -184,6 +208,7 @@ ActiveRecord::Schema.define(:version => 20120517153944) do
     t.string   "phone_number"
     t.string   "address"
     t.string   "city"
+    t.string   "country"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

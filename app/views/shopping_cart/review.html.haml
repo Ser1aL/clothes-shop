@@ -7,8 +7,7 @@
   = form_tag create_order_path, :id => 'submit_order_form', :method => :post do
     = hidden_field_tag 'city', params[:city]
     = hidden_field_tag 'address', params[:address]
-    = hidden_field_tag 'delivery_type', params[:delivery_type]
-    = hidden_field_tag 'payment_type', params[:payment_type]
+    = hidden_field_tag 'country', params[:country]
     = hidden_field_tag 'phone_number', params[:phone_number]
     - if !current_user
       = hidden_field_tag 'user[first_name]', params[:user][:first_name]
@@ -34,23 +33,14 @@
             = sc_line.quantity
           %td.shopping_card_order_content_price
             = sc_line.total
-            %span грн.
-      %tr.shopping_card_order_content
-        %td.shopping_card_order_content_number
-          = index + 2
-        %td.shopping_card_order_content_title_product
-          %span.shopping_card_content_title_product-a{:href => "#"}
-            = "Доставка(#{t(@order.delivery_type)})"
-        %td.shopping_card_order_content_quantity
-        %td.shopping_card_order_content_price
-          0.00
-          %span грн.
+            %span
+              = @currency
       %tr.table_order_total
         %td.table_order_total_price
-          Общая стоимость заказа с доставкой:
+          Общая стоимость заказа:
           %span
             = @shopping_cart.total
-          грн.
+          = @currency
     .tips
       .tips_text Данные о получателе и заказе
     .separator_content
@@ -79,10 +69,6 @@
         .lable Дата:
         .order_shipping_adres
           = l @shopping_cart.created_at, :format => :shopping_cart_date
-      .lable_input
-        .lable Способ оплаты:
-        .order_shipping_adres
-          = t(@order.payment_type)
       .lable_input
     .shipping_adres_description
     .shipping_adres_order_button_block

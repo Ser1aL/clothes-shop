@@ -1,29 +1,10 @@
 - @user_validation_errors ||= {}
-.tips
-  .tips_text Выбор способа оплаты
-.separator_content
 = form_tag review_path, :id => 'submit_order_form', :method => :post do
-  .shipping_metod_block
+  %div
     = hidden_field_tag 'city', params[:city]
     = hidden_field_tag 'address', params[:address]
     = hidden_field_tag 'phone_number', params[:phone_number]
-    - ['postal_service', 'cash_on_delivery', 'bank_payment'].each_with_index do |payment_type, index|
-      .shipping_metod
-        .radiobutton_style
-          = radio_button_tag 'payment_type', payment_type, index == 0
-          %span
-            = t('payment') + ' ' + t(payment_type)
-        %a.delivery_hint.shipping_metod_help_icon{:href => "#", 'info_type' => payment_type}
-  .shipping_method_hint
-    .delivery_hint_message.postal_service
-      = t('detailed_payment_type_postal_service')
-    .delivery_hint_message.cash_on_delivery
-      = t('detailed_payment_type_cash_on_delivery')
-    .delivery_hint_message.bank_payment
-      = t('detailed_payment_type_bank_payment')
-
-
-
+    = hidden_field_tag 'country', params[:country]
   .tips
     .tips_text Данные о получателе
   .separator_content
@@ -104,7 +85,7 @@
     .shipping_adres_help_text_style
       Я ознакомлен и согласен с
       %span
-        %a{:href => "#"} пользовательским соглашением
+        %a{:href => root_path, :target => '_blank'} пользовательским соглашением
       (откроется в новом окне).
   .shipping_adres_order_button
     %a.button{:href => "#", :id => 'submit_order'}

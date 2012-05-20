@@ -35,9 +35,9 @@
         = t('product_description.price')
       %div
         %a.sum-a{:href => "#"}
-          = number_to_currency(product.product.styles.first.discount_price_extra, :unit => '')
+          = number_to_currency(product.product.styles.first.discount_price_extra(@exchange_rate, @markup), :unit => '')
       .price
-        = t('currency')
+        = @currency
     - else
       .presence_color_no
       .presence_note_no

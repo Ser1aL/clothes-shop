@@ -11,7 +11,7 @@
     %title
       = t('meta_title')
     = stylesheet_link_tag :all
-    = javascript_include_tag 'jquery.min', 'jquery.simplemodal', 'jquery.log', 'rails', 'jwplayer'
+    = javascript_include_tag 'jquery.min', 'jquery.simplemodal', 'jquery.log', 'rails', 'jwplayer', 'slides.min.jquery'
     = javascript_include_tag 'jquery.history', 'url.parser', 'jquery.lightbox-0.5', 'jquery.jstree', 'application'
     = csrf_meta_tag
     = render :partial => '/layouts/partials/google_analytics'
@@ -68,7 +68,8 @@
                 = link_to @cart_line_count, checkout_path, :class => 'text1_price_quantity'
                 %p.text1,   на сумму
                 = link_to @shopping_cart.total, checkout_path, :class => 'text1_price_quantity'
-                %p.text1 грн.
+                %p.text1
+                  = @currency
           .separator_header
         #navigation
           .navigation_buttons

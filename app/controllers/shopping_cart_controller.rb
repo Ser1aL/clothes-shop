@@ -22,9 +22,10 @@ class ShoppingCartController < ApplicationController
         @shopping_cart.shopping_cart_lines.create(
           :product_id => params[:product_id],
           :quantity => 1,
-          :price => @style.discount_price_extra,
+          :price => @style.discount_price_extra(@exchange_rate, @markup),
           :style => @style,
-          :stock => @stock
+          :stock => @stock,
+          :currency => @currency
         )
         session[:shopping_cart_id] = @shopping_cart.id
       else
@@ -35,9 +36,10 @@ class ShoppingCartController < ApplicationController
           @shopping_cart.shopping_cart_lines.create(
             :product_id => params[:product_id],
             :quantity => 1,
-            :price => @style.discount_price_extra,
+            :price => @style.discount_price_extra(@exchange_rate, @markup),
             :style => @style,
-            :stock => @stock
+            :stock => @stock,
+            :currency => @currency
           )
         end
       end
@@ -61,7 +63,10 @@ class ShoppingCartController < ApplicationController
   end
 
   def payment
-    if Order.valid_attribute?(:address, params[:address]) && Order.valid_attribute?(:city, params[:city]) && User.valid_attribute?(:phone_number, params[:phone_number])
+    if Order.valid_attribute?(:address, params[:address]) &&
+        Order.valid_attribute?(:city, params[:city]) &&
+        Order.valid_attribute?(:country, params[:country]) &&
+        User.valid_attribute?(:phone_number, params[:phone_number])
       params[:user] ||= {}
     else
       @address_validation_errors = [I18n.t('invalid_address_information')]
@@ -76,15 +81,15 @@ class ShoppingCartController < ApplicationController
         :phone_number => params[:phone_number] }))
     if @user.valid?
       @order = Order.new(
-          :payment_type => params[:payment_type],
           :address => params[:address],
           :city => params[:city],
+          :country => params[:country],
           :order_time => @shopping_cart.created_at,
           :status => :submitted,
           :user => @user
         )
       @shopping_cart.shopping_cart_lines.each do |sc_line|
-        @order.order_lines << OrderLine.new(:price => sc_line.price, :product => sc_line.product, :quantity => sc_line.quantity)
+        @order.order_lines << OrderLine.new(:price => sc_line.price, :product => sc_line.product, :quantity => sc_line.quantity, :currency => @currency)
       end
       unless @order.valid?
         @order_validation_errors = @order.errors
@@ -100,10 +105,9 @@ class ShoppingCartController < ApplicationController
     user = current_user ? current_user : User.auto_create(params[:user].merge({ :phone_number => params[:phone_number] }))[:user]
     if user
       @order = Order.create(
-        :delivery_type => params[:delivery_type],
-        :payment_type => params[:payment_type],
         :address => params[:address],
         :city => params[:city],
+        :country => params[:country],
         :order_time => @shopping_cart.created_at,
         :status => :submitted,
         :user => user
@@ -114,7 +118,8 @@ class ShoppingCartController < ApplicationController
           :price => sc_line.price,
           :product => sc_line.product,
           :quantity => sc_line.quantity,
-          :style => sc_line.style
+          :style => sc_line.style,
+          :currency => @currency
         )
       end
       if @order.new_record?
@@ -125,8 +130,10 @@ class ShoppingCartController < ApplicationController
         @shopping_cart.close
         @order.user.update_attribute(:address, params[:address]) if !@order.user.address
         @order.user.update_attribute(:city, params[:city]) if !@order.user.city
+        @order.user.update_attribute(:country, params[:country]) if !@order.user.country
         @order.user.update_attribute(:phone_number, params[:phone_number])
         Usermail.order_details(@order).deliver
+        Usermail.staff_notification(@order).deliver
         session[:shopping_cart_id] = nil
         flash[:message_type] = 'order_submitted_successfully'
         flash[:order_id] = @order.id

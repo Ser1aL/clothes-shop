@@ -118,7 +118,7 @@
         = t('product_description.original_price')
       %div
         %a.sum-a{:style => 'font-size: 13px;'}
-          = number_to_currency(@style.original_price_extra, :unit => '')
+          = number_to_currency(@style.original_price_extra(@exchange_rate, @markup), :unit => '')
       .price
         = t('currency')
       .price
@@ -131,7 +131,7 @@
         = t('product_description.discount_price')
       %div
         %a.sum-a
-          = number_to_currency(@style.discount_price_extra, :unit => '')
+          = number_to_currency(@style.discount_price_extra(@exchange_rate, @markup), :unit => '')
       .price
         = t('currency')
     - else
@@ -139,9 +139,9 @@
         = t('product_description.original_price')
       %div
         %a.sum-a
-          = number_to_currency(@style.discount_price_extra, :unit => '')
+          = number_to_currency(@style.discount_price_extra(@exchange_rate, @markup), :unit => '')
       .price
-        = t('currency')
+        = @currency
   - else
     .presence_color_no
     .presence_note_no

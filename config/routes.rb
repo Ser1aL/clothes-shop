@@ -6,7 +6,13 @@ Watches::Application.routes.draw do
   resources :categories, :only => %w(show)
 
   get "administrator/orders"
+  get "administrator/static_pages"
   get "administrator", :to => 'administrator#orders'
+  get "administrator/login", :to => 'administrator#login', :as => :administrator_login
+  post "administrator/do_login", :to => 'administrator#do_login', :as => :administrator_do_login
+  post "administrator/change_static_page"
+  get "administrator/exchange_rates"
+  post "administrator/change_exchange_rate"
 
   resources :item_models
   

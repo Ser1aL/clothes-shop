@@ -1,0 +1,62 @@
+#detailed_order
+  %div
+    Номер заказа:
+    %span
+      = "#" + "%05d" % order.id
+  %div
+    Адрес:
+    %span
+      = [order.country, order.city, order.address].join ', '
+  %div
+    Email:
+    %span
+      = order.user.email
+  %div
+    Конактный номер телефона:
+    %span
+      = order.user.phone_number
+  %div
+    Общая сумма заказа:
+    %span
+      = order.total
+      = order.currency
+  %div
+    Дата:
+    %span
+      = order.created_at.to_formatted_s(:long)
+  %div
+    Заказано:
+    %table
+      %tr
+        %td
+          Бренд
+        %td
+          Модель
+        %td
+          Картинка
+        %td
+          Количество
+        %td
+          Цена
+        %td
+          Сумма
+        %td
+          Ссылка в магазине
+      - order.order_lines.each do |order_line|
+        %tr
+          %td
+            = order_line.product.item_model.brand.name
+          %td
+            = order_line.product.item_model.product_name
+          %td
+            = image_tag order_line.style.image_attachments[0].image.url(:thumb)
+          %td
+            = order_line.quantity
+          %td
+            = order_line.price
+            = order_line.currency
+          %td
+            = order_line.total
+            = order_line.currency
+          %td
+            = link_to "Details", "/#single/#{order_line.product.item_model.id}/#{order_line.style.id}"

@@ -8,7 +8,8 @@
   = render :partial => 'shopping_cart_line', :collection => @shopping_cart.shopping_cart_lines
   %tr.table_total
     %td.table_total_price
-      .price грн.
+      .price
+        = @currency
       .sum-a#cart_total
         %span
           = @shopping_cart.total
@@ -16,6 +17,9 @@
   - if @shopping_cart.total > 0
     %tr.table_end_order
       %td.table_end_order_help_text Оформление Заказа
+.delimiter
+#custom_block
+  = StaticPage.find_by_name("delivery_block").try(:text).try(:html_safe)
 - if @shopping_cart.total > 0
   = form_tag payment_path, :id => 'prepayment_form' do
     .delimiter
@@ -51,6 +55,14 @@
           .input_left_side
           .input_style
             = text_field_tag 'address', current_user ? current_user.address : ''
+          .input_right_side
+        .lable_input
+          .lable
+            Страна:
+            %span *
+          .input_left_side
+          .input_style
+            = text_field_tag 'country', current_user ? current_user.country : ''
           .input_right_side
     .delimiter
     .shipping_adres_order_button

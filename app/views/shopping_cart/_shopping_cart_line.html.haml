@@ -27,8 +27,10 @@
   %td.shopping_card_content_price
     .sum-a#price
       = shopping_cart_line.price
-    .price грн.
+    .price
+      = @currency
   %td.shopping_card_content_total
     .sum-a#line_total
       = shopping_cart_line.total
-    .price грн.
+    .price
+      = @currency

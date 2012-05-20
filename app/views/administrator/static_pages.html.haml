@@ -1,0 +1,11 @@
+#static_pages_list
+  \|
+  - @static_pages.each do |static_page|
+    = link_to static_page.human_name, administrator_static_pages_path(:page_id => static_page), :class => static_page == @current_page ? 'bold' : ''
+    \|
+
+- if @current_page
+  = form_tag administrator_change_static_page_path do
+    = hidden_field_tag :page_id, @current_page.id
+    = text_area_tag :text, @current_page.text, :class => 'tiny_mce'
+    = submit_tag t('save')

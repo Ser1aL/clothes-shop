@@ -2660,7 +2660,7 @@ a.submit_comment{
 }
 
 #categories{
-    margin-top: 5px;
+    margin-top: 13px;
 }
 
 #google_sectional_element{
@@ -2695,4 +2695,124 @@ a.previews img{
 .categories_panel ul li.root_li{
     font-size: 14px;
     font-weight: bold;
+}
+
+.admin .content_wrapper{
+    background-color: #FFF;
+    width: 800px;
+    margin: 0 auto;
+}
+
+.admin table.orders td, .admin #detailed_order table td{
+    font-size: 13px;
+    color: #444;
+    font-family: Arial;
+    border: 1px #eee solid;
+    text-align: center;
+}
+
+.admin #detailed_order div{
+    font-size: 13px;
+    color: #444;
+    font-family: Arial;
+}
+
+.admin #detailed_order div span{
+    font-weight: bold;
+}
+
+.admin #detailed_order table{
+    width: 800px;
+}
+
+.admin .tiny_mce{
+    height: 500px;
+    margin-top: 10px;
+}
+
+.admin #static_pages_list{
+    margin: 10px 0 19px 0;
+}
+
+.admin #static_pages_list .bold{
+    font-weight: bold;
+}
+
+.admin .orders a{
+    text-decoration: underline;
+}
+
+#custom_block{
+    padding: 0 0 20px 0;
+}
+
+.login_form{
+    width: 400px;
+    margin: 0 auto;
+    padding: 100px 0;
+}
+
+.login_form p{
+    margin: 10px 0;
+}
+
+.login_form p input[type="text"], .login_form p input[type="password"]{
+    width: 245px;
+    height: 23px;
+    font-size: 19px;
+    font-family: Arial;
+
+}
+
+.content_wrapper h1{
+    width: 500px;
+    margin: 30px auto;
+}
+
+.slides_container {
+    width:570px;
+    height:270px;
+    padding-top: 17px;
+}
+.slides_container div {
+    width:570px;
+    height:270px;
+    display:block;
+}
+
+
+#slides .pagination {
+    margin: 10px 0 0 469px;
+    width:100px;
+}
+
+#slides .pagination li {
+    float:left;
+    margin:0 1px;
+    list-style:none;
+}
+
+#slides .pagination li a {
+    display:block;
+    width:12px;
+    height:0;
+    padding-top:12px;
+    background-image:url(../images/pagination.png);
+    background-position:0 0;
+    float:left;
+    overflow:hidden;
+}
+
+#slides .pagination li.current a {
+    background-position:0 -12px;
+}
+
+.exchange_rates input{
+    width: 150px;
+}
+
+.admin .hint{
+    font-size: 13px;
+    color: #444;
+    font-family: Arial;
 }

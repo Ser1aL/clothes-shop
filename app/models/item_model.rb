@@ -60,7 +60,7 @@ class ItemModel < ActiveRecord::Base
 
   # change to sphinx when 2.0+ is well tested
   def self.search query, page
-    query = "%#{query.strip}%"
+    query = "%#{query.to_s.strip}%"
     joins(:gender, :category, :brand, :sub_category).where('
       brands.name like ? OR
       categories.name LIKE ? OR

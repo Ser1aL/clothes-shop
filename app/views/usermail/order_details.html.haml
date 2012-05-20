@@ -8,14 +8,6 @@
   %br
   Детали Вашего заказа указаны ниже:
 %p
-  Тип доставки:
-  %b
-    = t(@order.delivery_type)
-  %br
-  Выбранный тип оплаты:
-  %b
-    = t(@order.payment_type)
-%p
   Вы заказали следующее:
   - @order.order_lines.each do |order_line|
     %p
@@ -25,20 +17,20 @@
       = order_line.quantity
       Цена:
       = order_line.price
-      грн.
+      = order_line.currency
       Сумма:
       = order_line.total
-      грн.
+      = order_line.currency
 %p
   Адрес доставки:
   = [@order.city, @order.address].join(', ')
 %p
   Всего к оплате:
   = @order.total
-  грн.
+  = @order.order_lines.first.currency
 %p
   Вы указали контактный номер телефона:
   = @order.user.phone_number
 %p
   %br
-  Администрация MQShop.com.ua
+  Администрация otpravka.com.ua

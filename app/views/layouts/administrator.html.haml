@@ -4,7 +4,20 @@
     %meta{:content => "text/html; charset=utf-8", "http-equiv" => "Content-Type"}/
     %title Часовой.com.ua
     = stylesheet_link_tag :all
-    = javascript_include_tag 'jquery.min', 'jquery.simplemodal', 'jquery.log', 'rails', 'jquery.history', 'url.parser', 'jquery.lightbox-0.5', 'application'
+    = javascript_include_tag 'jquery.min', 'jquery.simplemodal', 'jquery.log', 'rails'
+    = javascript_include_tag 'jquery.jstree', 'jquery.history', 'url.parser', 'jquery.lightbox-0.5', 'tiny_mce', 'admin.application', 'application'
     = csrf_meta_tag
-  %body
-    = yield
+  %body.admin
+    .content_wrapper
+      - if session[:admin_loginned]
+        .admin_navigation_buttons
+          \|
+          = link_to "Заказы", administrator_orders_path
+          \|
+          = link_to "Описание страниц", administrator_static_pages_path
+          \|
+          = link_to "Домены, курсы валют и наценки", administrator_exchange_rates_path
+          \|
+      %h1
+        Администраторская панель
+      = yield

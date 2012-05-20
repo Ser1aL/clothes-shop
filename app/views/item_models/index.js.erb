@@ -1,10 +1,11 @@
 <%
   rendered_content = escape_javascript(render :partial => 'tips')
-  rendered_content += escape_javascript(render :partial => 'product', :collection => @products)
+  rendered_content += escape_javascript(render 'index', :banners => @banners, :categories => @categories)
 %>
 
 $('#ajax_content').html("<%= rendered_content %>");
 
 prepare_paginated_links('top');
+init_slider();
 
 $('#loader').hide();
