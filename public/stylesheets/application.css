@@ -2140,6 +2140,7 @@ a.submit_comment{
   position: absolute;
   left: 19px;
   top: 35px;
+  z-index: 99999;
 }
 
 .functional_container_brands_header{
@@ -2784,6 +2785,7 @@ a.previews img{
 #slides .pagination {
     margin: 10px 0 0 469px;
     width:100px;
+    clear: none;
 }
 
 #slides .pagination li {

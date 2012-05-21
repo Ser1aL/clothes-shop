@@ -3,7 +3,7 @@ require 'open-uri'
 namespace :data_feed do
 
   client = Zappos::Client.new("9a3e643501faa5feecc03ea9d1ec1fdf9217dcf1", { :base_url => 'api.zappos.com' })
-  limit = 1
+  limit = 100
 
   search_opts = {
     :term => "clothes",
@@ -37,10 +37,11 @@ namespace :data_feed do
     terms = %w(Clothes Bags Accessories Shoes Sunglasses)
     # terms = %w(Shoes)
     terms.each do |term|
-      # total_count = client.search(:term => term, :limit => 1).totalResultCount.to_f
-      total_count = limit
+      begin
+        # total_count = client.search(:term => term, :limit => 1).totalResultCount.to_f
+        total_count = 1000#limit
 
-      (total_count.to_f/limit.to_f).ceil.times do |index|
+        (total_count.to_f/limit.to_f).ceil.times do |index|
         items = client.search( search_opts.merge!({:page => index + 1, :term => term.downcase}) ).results
 
         items.each do |item|
@@ -104,9 +105,14 @@ namespace :data_feed do
               )
             end
           end
-
+          puts "#{item_model.product_name} loaded. Id ##{item_model.id}"
         end
-        puts "#{items.size} items loaded"
+        end
+      rescue => error
+        p error
+        puts "Sleeping..."
+        sleep 300
+        retry
       end
     end
   end
