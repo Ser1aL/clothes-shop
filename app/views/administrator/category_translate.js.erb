@@ -1,0 +1,7 @@
+var display_name = "<%= params[:display_name] %>";
+var form = $("#<%= params[:type] %>_form_<%= params["#{params[:type]}_id".to_sym] %>");
+if(display_name != ""){
+    form.find("input:text").first().val("<%= params[:display_name] %>");
+    form.find("input:text").last().val("");
+}
+form.find("input:submit").val("Сохранить");

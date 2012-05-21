@@ -2817,4 +2817,6 @@ a.previews img{
     font-size: 13px;
     color: #444;
     font-family: Arial;
+    padding-top: 30px;
+    padding-bottom: 10px;
 }

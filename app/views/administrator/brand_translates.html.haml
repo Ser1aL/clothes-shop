@@ -1,0 +1,10 @@
+- if @brand
+  = form_tag administrator_brand_translate_path do
+    = hidden_field_tag :brand_id, @brand.id
+    = text_area_tag :description, @brand.description, :class => 'tiny_mce'
+    = submit_tag t("save")
+- else
+  - @brands.each do |brand|
+    %div
+      = link_to brand.name, administrator_brand_translates_path(:brand_id => brand)
+

@@ -275,6 +275,10 @@ $(function(){
         }
     });
     init_slider();
+
+  $(".ajaxified_translation").click(function(){
+    $(this).val("Сохраняем");
+  });
 });
 
 function activate_lightbox(){

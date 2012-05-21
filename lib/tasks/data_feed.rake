@@ -3,7 +3,7 @@ require 'open-uri'
 namespace :data_feed do
 
   client = Zappos::Client.new("9a3e643501faa5feecc03ea9d1ec1fdf9217dcf1", { :base_url => 'api.zappos.com' })
-  limit = 100
+  limit = 2
 
   search_opts = {
     :term => "clothes",
@@ -13,7 +13,7 @@ namespace :data_feed do
   }
 
   product_search_opts = {
-    :includes => %w(gender description weight videoUrl styles sortedSizes styles stocks),
+    :includes => %w(gender description weight videoUrl styles sortedSizes styles stocks onSale),
     :excludes => %w(productId brandName productName defaultImageUrl defaultProductUrl )
   }
 
@@ -28,7 +28,7 @@ namespace :data_feed do
   }
 
   price_search_opts = {
-    :includes => %w(styles stocks),
+    :includes => %w(styles stocks onSale),
     :excludes => %w(imageUrl color productUrl brandId brandName productName defaultProductUrl defaultImageUrl productId)
   }
 
@@ -39,7 +39,7 @@ namespace :data_feed do
     terms.each do |term|
       begin
         # total_count = client.search(:term => term, :limit => 1).totalResultCount.to_f
-        total_count = 1000#limit
+        total_count = limit
 
         (total_count.to_f/limit.to_f).ceil.times do |index|
         items = client.search( search_opts.merge!({:page => index + 1, :term => term.downcase}) ).results
@@ -89,7 +89,8 @@ namespace :data_feed do
               :discount_price => style_feed.price[1..-1].to_f,
               :product => product_model,
               :percent_off => style_feed.percentOff.to_i,
-              :external_style_id => style_feed.styleId
+              :external_style_id => style_feed.styleId,
+              :on_sale => style_feed.onSale == "true"
             )
             image_feed[style_feed.styleId].each do |image|
               style.image_attachments.create(:image => ImageAttachment.image_from_url(image.filename))
@@ -132,7 +133,8 @@ namespace :data_feed do
               :original_price => (style_feed.originalPrice[1..-1].to_f * ExchangeRate.first.value.to_f).to_i,
               :discount_price => (style_feed.price[1..-1].to_f * ExchangeRate.first.value.to_f).to_i,
               :percent_off => style_feed.percentOff.to_i,
-              :updated_at => Time.now
+              :updated_at => Time.now,
+              :on_sale => style_feed.onSale == "true"
             )
             style.stocks.destroy_all
             style_feed.stocks.each do |stock|

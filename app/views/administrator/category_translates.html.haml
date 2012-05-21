@@ -1,0 +1,30 @@
+.hint
+  Категории
+- @categories.each do |category|
+  = form_tag administrator_category_translate_path, :remote => true, :id => "category_form_#{category.id}" do
+    = hidden_field_tag :type, "category"
+    = hidden_field_tag :category_id, category.id
+    = text_field_tag :name, category.name, :disabled => true
+    = text_field_tag :display_name
+    = submit_tag t("save"), :class => 'ajaxified_translation'
+
+
+.hint
+  Подкатегории
+- @sub_categories.each do |sub_category|
+  = form_tag administrator_category_translate_path, :remote => true, :id => "sub_category_form_#{sub_category.id}" do
+    = hidden_field_tag :type, "sub_category"
+    = hidden_field_tag :sub_category_id, sub_category.id
+    = text_field_tag :name, sub_category.name, :disabled => true
+    = text_field_tag :display_name
+    = submit_tag t("save"), :class => 'ajaxified_translation'
+
+.hint
+  Типы
+- @genders.each do |gender|
+  = form_tag administrator_category_translate_path, :remote => true, :id => "gender_form_#{gender.id}" do
+    = hidden_field_tag :type, "gender"
+    = hidden_field_tag :gender_id, gender.id
+    = text_field_tag :name, gender.name, :disabled => true
+    = text_field_tag :display_name
+    = submit_tag t("save"), :class => 'ajaxified_translation'

@@ -13,6 +13,10 @@ Watches::Application.routes.draw do
   post "administrator/change_static_page"
   get "administrator/exchange_rates"
   post "administrator/change_exchange_rate"
+  get "administrator/category_translates"
+  post "administrator/category_translate"
+  get "administrator/brand_translates"
+  post "administrator/brand_translate"
 
   resources :item_models
   

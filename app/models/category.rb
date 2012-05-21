@@ -6,4 +6,9 @@ class Category < ActiveRecord::Base
   def sub_categories
     item_models.map(&:sub_category).uniq
   end
+
+  def name
+    display_name.blank? ? super : display_name
+  end
+
 end

@@ -29,23 +29,15 @@ class ItemModel < ActiveRecord::Base
   def self.counts_by_type type
     return [] if !['brand', 'category', 'gender', 'sub_category'].include? type.to_s
     type = type.to_s
-    find_by_sql("SELECT #{type.pluralize}.id, #{type.pluralize}.name, COUNT(item_models.id) as item_count
+    find_by_sql("SELECT #{type.pluralize}.id,
+      IF(#{type.pluralize}.display_name IS NOT NULL,
+          UPPER(#{type.pluralize}.display_name),
+          #{type.pluralize}.name) as name,
+        COUNT(item_models.id) as item_count
       FROM #{type.pluralize}, item_models
       WHERE #{type.pluralize}.id = item_models.#{type}_id
       GROUP BY #{type.pluralize}.id
-      ORDER BY item_count DESC").map(&:attributes)
-  end
-
-  def self.detailed_counts_by_type type, brand_id
-    sql_condition = ''
-    sql_condition = " AND brands.id = '#{brand_id}'" if !brand_id.blank?
-    type = "#{type.to_s}"
-    find_by_sql("SELECT #{type.pluralize}.id, #{type.pluralize}.name, COUNT(item_models.id) as item_count
-      FROM #{type.pluralize}, item_models, brands
-      WHERE brands.id = item_models.brand_id
-        AND #{type.pluralize}.id = item_models.#{type}_id
-        #{sql_condition}
-      GROUP BY #{type.pluralize}.id").map(&:attributes)
+      ORDER BY item_count DESC, name ASC").map(&:attributes)
   end
 
   def self.get_items(*args)

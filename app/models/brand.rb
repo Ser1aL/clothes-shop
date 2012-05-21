@@ -7,6 +7,10 @@ class Brand < ActiveRecord::Base
     Brand.where("brands.name LIKE '#{letter.capitalize}%'")
   end
 
+  def name
+    display_name.blank? ? super : display_name
+  end
+
   def build_category_tree
     tree = { :root => {} }
     Category.all.each do |category|

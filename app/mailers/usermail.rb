@@ -16,7 +16,7 @@ class Usermail < ActionMailer::Base
   def staff_notification order
     @order = order
     @user = order.user
-    mail :to => "Grisha <max.reznichenko@gmail.com>", :subject => t('new_order')
+    mail :to => "Grisha <gri74@bk.ru>", :subject => t('new_order')
   end
 
 end

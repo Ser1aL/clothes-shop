@@ -36,6 +36,30 @@ class AdministratorController < ApplicationController
     @exchange_rates = ExchangeRate.all
   end
 
+  def category_translates
+    @categories = Category.order(:name)
+    @sub_categories = SubCategory.order(:name)
+    @genders = Gender.order(:name)
+  end
+
+  def category_translate
+    params[:type].camelize.constantize.find(params["#{params[:type]}_id".to_sym]).update_attributes(
+      :display_name => params[:display_name]
+    ) unless params[:display_name].blank?
+  end
+
+  def brand_translates
+    if params[:brand_id]
+      @brand = Brand.find(params[:brand_id])
+    else
+      @brands = Brand.order("name")
+    end
+  end
+
+  def brand_translate
+    Brand.find(params[:brand_id]).update_attribute(:description, params[:description]) and redirect_to :back
+  end
+
   def change_exchange_rate
     ExchangeRate.find(params[:id]).update_attributes(
       :value => params[:value],
@@ -56,7 +80,6 @@ class AdministratorController < ApplicationController
 private
 
   def check_admin
-    # session[:admin_loginned] = false
     render 'login' if request[:action] != 'do_login' && session[:admin_loginned].blank?
   end
 end
