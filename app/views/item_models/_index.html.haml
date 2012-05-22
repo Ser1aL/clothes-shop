@@ -1,15 +1,5 @@
 .delimiter
 .categories_wrapper
-  .categories_panel
-    - categories.each do |category|
-      %ul
-        %li.root_li
-          = link_to "#{category.name}", "/#cat//#{category.id}//"
-        %li
-          %ul
-            - category.sub_categories.each do |sub_category|
-              %li
-                = link_to "#{sub_category.name}", "/#cat//#{category.id}/#{sub_category.id}/"
   .banners
     #slides.index_page
       .slides_container
@@ -17,3 +7,14 @@
           %div
             %a{:href => banner.url}
               = image_tag banner.image_attachments[0].image.url(:original)
+  .categories_panel
+    - categories.each_with_index do |category, index|
+      - if index % 3 == 0
+        .delimiter
+      .category_block
+        .category_header
+          = link_to "#{category.name}", "/#cat//#{category.id}//"
+        .category_content
+          - category.sub_categories.each do |sub_category|
+            %div
+              = link_to "#{sub_category.name}", "/#cat//#{category.id}/#{sub_category.id}/"

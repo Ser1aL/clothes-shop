@@ -602,6 +602,7 @@ a.submit_comment{
 }
 
 .detailed_product_image{
+
     margin: 0 23px 20px 0;
 }
 .detailed_product_image img{
@@ -2684,33 +2685,33 @@ a.submit_comment{
     border-top: 1px #ECECEC solid;
     padding-top: 9px;
     width: 184px;
+    background: url('/images/more.png') 170px 82px no-repeat;
 }
 
 a.previews img{
     width: 58px;
 }
 
-.categories_panel{
-    width: 300px;
-    float: left;
-}
-.categories_panel ul{
-    list-style: none;
-    padding-left: 10px;
-}
+/*.categories_panel{*/
+    /*width: 300px;*/
+/*}*/
+/*.categories_panel ul{*/
+    /*list-style: none;*/
+    /*padding-left: 10px;*/
+/*}*/
 
-.categories_panel ul li{
-    color: #444;
-    font-size: 13px;
-    font-family: Arial;
-    text-align: left;
-    margin-top: 6px;
-}
+/*.categories_panel ul li{*/
+    /*color: #444;*/
+    /*font-size: 13px;*/
+    /*font-family: Arial;*/
+    /*text-align: left;*/
+    /*margin-top: 6px;*/
+/*}*/
 
-.categories_panel ul li.root_li{
-    font-size: 14px;
-    font-weight: bold;
-}
+/*.categories_panel ul li.root_li{*/
+    /*font-size: 14px;*/
+    /*font-weight: bold;*/
+/*}*/
 
 .admin .content_wrapper{
     background-color: #FFF;
@@ -2785,19 +2786,24 @@ a.previews img{
 }
 
 .slides_container {
-    width:570px;
-    height:270px;
+    width:800px;
+    height: 304px;
     padding-top: 17px;
+    padding-left: 190px;
 }
 .slides_container div {
-    width:570px;
-    height:270px;
+    width:800px;
+    height:450px;
     display:block;
+}
+
+.slides_container img{
+    width:600px;
 }
 
 
 #slides .pagination {
-    margin: 10px 0 0 469px;
+    margin: 10px 0 0 412px;
     width:100px;
     clear: none;
 }
@@ -2849,6 +2855,21 @@ a.previews img{
     padding-left: 6px;
 }
 
-.brand_block_content{
+.brand_block_content, .category_content{
     padding: 7px 4px 0 6px;
+}
+
+.category_block{
+    float: left;
+    width: 200px;
+    min-height: 90px;
+    margin: 22px 40px;
+}
+
+.category_header{
+    background-color: #f6e6e9;
+    color: #000;
+    height: 20px;
+    padding-left: 6px;
+    font-weight: bold;
 }
