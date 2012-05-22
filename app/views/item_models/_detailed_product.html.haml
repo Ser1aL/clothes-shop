@@ -19,7 +19,7 @@
     .title_product
       %a.title_product-a.ajaxified_disabled_link
         = product.brand.name
-    .product_image#clock_images
+    .product_image.detailed_product_image#clock_images
       - if @style.try(:image_attachments).blank?
         = image_tag ImageAttachment.new.image.url(:thumb), :class => 'missing'
       - else
