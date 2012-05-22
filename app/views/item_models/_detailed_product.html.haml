@@ -24,7 +24,7 @@
         = image_tag ImageAttachment.new.image.url(:thumb), :class => 'missing'
       - else
         %a{:href => @style.image_attachments[0].image.url(:original)}
-          = image_tag @style.image_attachments[0].image.url(:thumb), :alt => product.product_name
+          = image_tag @style.image_attachments[0].image.url(:original), :alt => product.product_name
         #other_images
           - @style.image_attachments.each_with_index do |image_attachment, index|
             - next if index == 0

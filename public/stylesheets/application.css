@@ -538,7 +538,7 @@ a.submit_comment{
 
 .block .left{
     width: 330px;
-    padding-left: 172px;
+    padding-left: 194px;
 }
 
 .block .left .logo{
@@ -604,6 +604,11 @@ a.submit_comment{
 .detailed_product_image{
     margin: 0 23px 20px 0;
 }
+.detailed_product_image img{
+    width: 191px;
+}
+
+
 
 .product_image a img{}
 
@@ -2678,10 +2683,11 @@ a.submit_comment{
     padding-left: 5px;
     border-top: 1px #ECECEC solid;
     padding-top: 9px;
+    width: 184px;
 }
 
 a.previews img{
-    width: 42px;
+    width: 58px;
 }
 
 .categories_panel{
