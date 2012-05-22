@@ -4,7 +4,7 @@ class Category < ActiveRecord::Base
   validates_presence_of :name
 
   def sub_categories
-    item_models.map(&:sub_category).uniq
+    item_models.map(&:sub_category).uniq.sort_by(&:name)
   end
 
   def name

@@ -2856,14 +2856,14 @@ a.previews img{
 }
 
 .brand_block_content, .category_content{
-    padding: 7px 4px 0 6px;
+    padding: 7px 0px 0 6px;
 }
 
 .category_block{
     float: left;
     width: 200px;
     min-height: 90px;
-    margin: 22px 40px;
+    margin: 22px 60px;
 }
 
 .category_header{
@@ -2872,4 +2872,15 @@ a.previews img{
     height: 20px;
     padding-left: 6px;
     font-weight: bold;
+}
+
+.category_name, .sub_category_name{
+    float: left;
+}
+
+.category_count, .sub_category_count{
+    float: right;
+    color: #444;
+    font-size: 13px;
+    font-family: Arial;
 }
