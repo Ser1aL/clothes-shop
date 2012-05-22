@@ -11,7 +11,7 @@
           %div
             = link_to brand.name, brand_path(brand)
 - else
-  - @brands.in_groups(6).each_with_index do |group, index|
+  - @brands.in_groups(3).each_with_index do |group, index|
     - if index % 3 == 0
       .delimiter
     .brand_block
