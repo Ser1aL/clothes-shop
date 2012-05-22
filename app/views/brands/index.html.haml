@@ -11,9 +11,13 @@
           %div
             = link_to brand.name, brand_path(brand)
 - else
-  %table.brand_table
-    - @brands.each_with_index do |brand, index|
-      - if index % 4 == 0
-        %tr
-      %td
-        = link_to brand.name, brand_path(brand)
+  - @brands.in_groups(6).each_with_index do |group, index|
+    - if index % 3 == 0
+      .delimiter
+    .brand_block
+      .brand_block_header
+      .brand_block_content
+        - group.each do |brand|
+          %div
+            - if brand
+              = link_to brand.name, brand_path(brand)
