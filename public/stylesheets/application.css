@@ -2820,3 +2820,21 @@ a.previews img{
     padding-top: 30px;
     padding-bottom: 10px;
 }
+
+.brand_block{
+    float: left;
+    width: 300px;
+    min-height: 90px;
+    margin: 18px 9px;
+}
+
+.brand_block_header{
+    background: url('/images/brand_corner.png') 290px 0 no-repeat #f6e6e9;
+    color: #000;
+    height: 20px;
+    padding-left: 6px;
+}
+
+.brand_block_content{
+    padding: 7px 4px 0 6px;
+}

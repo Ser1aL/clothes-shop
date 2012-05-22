@@ -1,7 +1,19 @@
 = render 'brand_tip'
-%table.brand_table
-  - @brands.each_with_index do |brand, index|
-    - if index % 4 == 0
-      %tr
-    %td
-      = link_to brand.name, brand_path(brand)
+- if params[:category_id].blank? && params[:letter].blank?
+  - @brands.each_with_index do |(letter, group), index|
+    - if index % 3 == 0
+      .delimiter
+    .brand_block
+      .brand_block_header
+        = "#{letter.upcase}-#{letter.downcase}"
+      .brand_block_content
+        - group.each do |brand|
+          %div
+            = link_to brand.name, brand_path(brand)
+- else
+  %table.brand_table
+    - @brands.each_with_index do |brand, index|
+      - if index % 4 == 0
+        %tr
+      %td
+        = link_to brand.name, brand_path(brand)

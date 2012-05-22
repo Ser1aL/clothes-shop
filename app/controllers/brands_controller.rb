@@ -6,7 +6,7 @@ class BrandsController < ApplicationController
       elsif params[:category_id]
         Brand.find_by_category_id(params[:category_id])
       else
-        Brand.all
+        Brand.order(:name).all.group_by{ |brand| brand.name.first }
       end
     end
   end
