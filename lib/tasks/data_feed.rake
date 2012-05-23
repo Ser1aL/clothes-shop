@@ -2,7 +2,24 @@ require 'open-uri'
 
 namespace :data_feed do
 
-  client = Zappos::Client.new("9a3e643501faa5feecc03ea9d1ec1fdf9217dcf1", { :base_url => 'api.zappos.com' })
+  key_list = %w(
+    9a3e643501faa5feecc03ea9d1ec1fdf9217dcf1
+    2d2df9b711b7950424b08be13736befc36071c1
+    103a337b8da9bf07a2fbeaf1174863355578db20
+    bd681f5813fecc01125f4b170139e7dbb5f57650
+    806db79102d01b43100880d34187d5ebd79dda6c
+    5f60e9616ce4dc1def1be1a9d4e5edb052bc5e2d
+    611c3a7ab7dd6cc24c8eecf3d914a21511e549e3
+    4fd6ec8ee757905d08c6b0e063ee53a3277d9903
+    b9b79a15b2c0efeaa17e18d5d9ff1c0ba7f0fceb
+    682e77c7447636780d5679a9bf6aa95c512e906c
+    73d48a44f5aa34630603867d6f713214757581f
+    36145a18b8611ac955474b3cace251fc724d779b
+    9fb8ecbdd912c0207da2bac17de16eb631db70ae
+    8bffaa3d5e1ccb6857544756293cf624f7d371d7
+    3ae517aa832c98fc1d47c6d9d4669f05a5bda4cb
+    1c256e0d9206018da4c6b574f4a7727369a821e6
+  )
   limit = 100
 
   search_opts = {
@@ -35,9 +52,12 @@ namespace :data_feed do
   desc "fetches 'item_models' from remote api"
   task :item_models => :environment do
     terms = %w(Clothes Bags Accessories Shoes Sunglasses)
+    key_index = 0
     terms.each do |term|
       begin
         response = client.search(:term => term, :limit => 1)
+        puts "using key=#{key_list[key_index]}"
+        client = Zappos::Client.new(key_list[key_index], { :base_url => 'api.zappos.com' })
 
         # debugging response
         p response
@@ -122,8 +142,8 @@ namespace :data_feed do
           end
         end
       rescue => error
-        puts "Error in overall"
-        p error
+        puts "Error in overall. Key rejected. Changing"
+        key_index += 1
         sleep 300
         retry
       end
