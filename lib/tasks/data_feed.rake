@@ -40,7 +40,7 @@ namespace :data_feed do
         response = client.search(:term => term, :limit => 1)
 
         # debugging response
-        logger.debug response
+        p response
 
         total_count = response.totalResultCount.to_f
 
