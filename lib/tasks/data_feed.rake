@@ -46,7 +46,11 @@ namespace :data_feed do
 
         (total_count.to_f/limit.to_f).ceil.times do |index|
           begin
-            items = client.search( search_opts.merge!({:page => index + 1, :term => term.downcase}) ).results
+            response = client.search( search_opts.merge!({:page => index + 1, :term => term.downcase}) )
+
+            p response
+
+            items = response.results
 
             items.each do |item|
               next if ItemModel.find_by_external_product_id(item.productId)
