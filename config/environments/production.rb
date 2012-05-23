@@ -36,7 +36,7 @@ Watches::Application.configure do
 
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false
-  config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+  config.action_mailer.default_url_options = { :host => 'shop-mydostavka.com' }
   # Enable threaded mode
   # config.threadsafe!
 
@@ -46,4 +46,8 @@ Watches::Application.configure do
 
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
+
+  Paperclip::Attachment.default_options[:url] = "/system/:class/:attachment/:id_partition/:style/:basename.:extension"
+  Paperclip::Attachment.default_options[:path] = ":rails_root/public/system/:class/:attachment/:id_partition/:style/:basenam e.:extension"
+
 end
