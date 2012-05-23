@@ -2892,3 +2892,7 @@ a.previews img{
 .size_grid{
     margin-lefT: 10px;
 }
+
+#stock_select{
+    width: 201px;
+}
