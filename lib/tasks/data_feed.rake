@@ -56,11 +56,13 @@ namespace :data_feed do
     terms.each do |term|
       begin
         puts "using key=#{key_list[key_index]}"
+        key_index = 0 if key_list[key_index].blank?
+
         client = Zappos::Client.new(key_list[key_index], { :base_url => 'api.zappos.com' })
         response = client.search(:term => term, :limit => 1)
 
         # debugging response
-        p response
+        # p response
 
         total_count = response.totalResultCount.to_f
 
@@ -68,7 +70,7 @@ namespace :data_feed do
           begin
             response = client.search( search_opts.merge!({:page => index + 1, :term => term.downcase}) )
 
-            p response
+            # p response
 
             items = response.results
 
