@@ -2896,3 +2896,7 @@ a.previews img{
 #stock_select{
     width: 201px;
 }
+
+#stock_select select{
+    width: 80px;
+}
