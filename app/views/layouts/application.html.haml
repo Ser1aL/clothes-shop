@@ -138,14 +138,21 @@
               = link_to 'Гарантия', guarantee_path, :class => 'link_menu'
               = link_to 'О нас', about_us_path, :class => 'link_menu'
             .footer_blok_content
-              %p.title_text Горячая линия
-              %p.footer_help_text По этим контактам Вы можете связатся с нами
               .footer_separator
-              .footer_label_input
-                .footer_labe2
-                  %p.text1 Телефон: +38(098)023-93-07
+              .footer_label_input{:style => "padding-top: 0; height: 79px;"}
+                .footer_labe2{:style=>"margin-top: 0;"}
+                  %p.text1
+                    Украина +38(098)023-93-07, Молдова: +37 360-690-698
+                    %br
+                    Казахстан: +7172 777-17-07
+                    %br
+                    Россия: +7 929 777-17-07
+                    %br
+                    США: +1 55 122-699-21
+
+              .footer_separator
                 .footer_labe3
-                  %p.text1 E-mail: gri74@bk.ru
+                  %p.text1 E-mail: shop.mydostavka@gmail.com
                   %a{:href => "#"}
                 .footer_labe4
                   %p.text1 Skype: udg2010
