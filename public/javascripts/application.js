@@ -314,3 +314,12 @@ function init_slider(){
         pause: 2500
     });
 }
+
+function activate_size_grid(){
+    $(".size_grid").popupWindow({
+        height:730,
+        width:1200,
+        top:50,
+        left:50
+    });
+}

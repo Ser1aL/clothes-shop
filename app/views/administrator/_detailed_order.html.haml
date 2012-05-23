@@ -19,7 +19,7 @@
     Общая сумма заказа:
     %span
       = order.total
-      = order.currency
+      = order.order_lines[0].currency
   %div
     Дата:
     %span
@@ -37,6 +37,8 @@
         %td
           Количество
         %td
+          SKU#
+        %td
           Цена
         %td
           Сумма
@@ -52,6 +54,8 @@
             = image_tag order_line.style.image_attachments[0].image.url(:thumb)
           %td
             = order_line.quantity
+          %td
+            = order_line.product.item_model.external_product_id
           %td
             = order_line.price
             = order_line.currency

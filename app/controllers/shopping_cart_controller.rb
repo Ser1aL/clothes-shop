@@ -75,10 +75,18 @@ class ShoppingCartController < ApplicationController
   end
 
   def review
-    @user = current_user ? current_user : User.new(params[:user].merge(
-      { :password => 'fake_password', 
-        :password_confirmation => 'fake_password',
-        :phone_number => params[:phone_number] }))
+    @user = begin
+      if current_user
+        current_user
+      elsif finding = User.find_by_email(params[:user][:email])
+        finding
+      else
+        User.new(params[:user].merge({
+          :password => 'fake_password',
+         :password_confirmation => 'fake_password',
+         :phone_number => params[:phone_number] }))
+      end
+    end
     if @user.valid?
       @order = Order.new(
           :address => params[:address],
@@ -102,7 +110,15 @@ class ShoppingCartController < ApplicationController
   end
 
   def create_order
-    user = current_user ? current_user : User.auto_create(params[:user].merge({ :phone_number => params[:phone_number] }))[:user]
+    user = begin
+      if current_user
+        current_user
+      elsif finding = User.find_by_email(params[:user][:email])
+        finding
+      else
+        User.auto_create(params[:user].merge({ :phone_number => params[:phone_number] }))[:user]
+      end
+    end
     if user
       @order = Order.create(
         :address => params[:address],

@@ -58,6 +58,7 @@ en:
     width: 'Полнота:'
   browse_brands_by_letter: 'Бренды в алфавитном порядке: '
   category_list: 'Разделы:'
+  size_grid: 'Размерная сетка'
   brand_list: 'ПЕРЕЙТИ К СПИСКУ БРЕНДОВ'
   all_brands: 'Все бренды'
   product_exists: 'Есть в наличии.'

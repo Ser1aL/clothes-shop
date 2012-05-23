@@ -84,6 +84,7 @@
         = t('product_description.size')
       .product_description1#stock_select
         = select_tag :stock_id, options_for_select(@style.stocks.map{|s| [s.size, s.id]})
+        = link_to t("size_grid"), '/images/size_grid.png', :class => 'size_grid'
       - if product.product
         %a.button
           .button_left{:style => 'margin-left: 60px;'}
