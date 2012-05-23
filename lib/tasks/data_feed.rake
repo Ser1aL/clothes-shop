@@ -144,7 +144,6 @@ namespace :data_feed do
       rescue => error
         puts "Error in overall. Key rejected. Changing"
         key_index += 1
-        sleep 300
         retry
       end
     end
