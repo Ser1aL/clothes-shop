@@ -55,9 +55,9 @@ namespace :data_feed do
     key_index = 0
     terms.each do |term|
       begin
-        response = client.search(:term => term, :limit => 1)
         puts "using key=#{key_list[key_index]}"
         client = Zappos::Client.new(key_list[key_index], { :base_url => 'api.zappos.com' })
+        response = client.search(:term => term, :limit => 1)
 
         # debugging response
         p response
