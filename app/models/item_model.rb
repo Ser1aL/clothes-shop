@@ -59,6 +59,7 @@ class ItemModel < ActiveRecord::Base
       genders.name LIKE ? OR
       sub_categories.name LIKE ? OR
       item_models.product_name LIKE ? OR
+      item_models.external_product_id LIKE ? OR
       item_models.description LIKE ?', query, query, query, query, query, query).page(page).per(6)
   end
 
