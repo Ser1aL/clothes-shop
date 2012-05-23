@@ -114,7 +114,7 @@ namespace :data_feed do
             end
           rescue => error
             puts "Error in loop"
-            logger.debug error.inspect
+            p error.inspect
           end
         end
       rescue => error
