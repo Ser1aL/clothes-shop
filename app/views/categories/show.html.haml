@@ -1,14 +1,15 @@
 = render 'category_tip'
 .delimiter
 .categories_wrapper
-  .banners
-    #slides
-      .slides_container
-        - @category.banners.each do |banner|
-          %div
-            %a{:href => banner.url}
-              = image_tag banner.image_attachments[0].image.url(:original)
   - cache do
+    .banners
+      #slides
+        .slides_container
+          - @category.banners.each do |banner|
+            %div
+              %a{:href => banner.url}
+                = image_tag banner.image_attachments[0].image.url(:original)
+
     .categories_panel
       - [@category].each_with_index do |category, index|
         - if index % 3 == 0
