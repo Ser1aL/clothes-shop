@@ -1287,6 +1287,7 @@ a.submit_comment{
   top: 13px;
   left: 19px;
   width: 445px;
+  z-index: 99999;
 }
 
 .functional_block .functional_block_header {
@@ -1541,7 +1542,7 @@ a.submit_comment{
 }
 
 #flv_player_wrapper{
-    margin-top: 96px;
+    margin-top: 146px;
     display: none;
 }
 

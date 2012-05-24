@@ -4,9 +4,9 @@ class BrandsController < ApplicationController
       if params[:letter]
         Brand.find_by_letter(params[:letter]).order(:name)
       elsif params[:category_id]
-        Brand.find_by_category_id(params[:category_id]).order(:name)
+        Brand.find_by_category_id(params[:category_id]).group(:name).order(:name)
       else
-        Brand.order(:name).all.group_by{ |brand| brand.name.downcase.first }
+        Brand.group(:name).order(:name).group_by{ |brand| brand.name.downcase.first }
       end
     end
   end

@@ -71,7 +71,7 @@
       - if product.product.styles.size > 1
         .product_description
           = t('product_description.other_colors')
-        .product_description1
+        .product_description1{:style => "width: 140xp;"}
           - product.product.styles.each do |style|
             - next if style == @style
             %a{:href => "/#single/#{style.product.id}/#{style.id}"}
