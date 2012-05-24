@@ -7,21 +7,22 @@
           %div
             %a{:href => banner.url}
               = image_tag banner.image_attachments[0].image.url(:original)
-  .categories_panel
-    - categories.each_with_index do |category, index|
-      - if index % 3 == 0
-        .delimiter
-      .category_block
-        .category_header
-          .category_name
-            = link_to "#{category.name}", "/#cat//#{category.id}//"
-          .category_count
-            = "(#{category.item_models.count})"
-        .category_content
-          - category.sub_categories.each do |sub_category|
-            %div
-              .sub_category_name
-                = link_to "#{sub_category.name}", "/#cat//#{category.id}/#{sub_category.id}/"
-              .sub_category_count
-                = "(#{sub_category.item_models.count})"
-            .delimiter
+  - cache do
+    .categories_panel
+      - categories.each_with_index do |category, index|
+        - if index % 3 == 0
+          .delimiter
+        .category_block
+          .category_header
+            .category_name
+              = link_to "#{category.name}", "/#cat//#{category.id}//"
+            .category_count
+              = "(#{category.item_models.count})"
+          .category_content
+            - category.sub_categories.each do |sub_category|
+              %div
+                .sub_category_name
+                  = link_to "#{sub_category.name}", "/#cat//#{category.id}/#{sub_category.id}/"
+                .sub_category_count
+                  = "(#{sub_category.item_models.count})"
+              .delimiter
