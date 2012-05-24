@@ -1,13 +1,13 @@
 .delimiter
 .categories_wrapper
-  .banners
-    #slides.index_page
-      .slides_container
-        - banners.each do |banner|
-          %div
-            %a{:href => banner.url}
-              = image_tag banner.image_attachments[0].image.url(:original)
   - cache do
+    .banners
+      #slides.index_page
+        .slides_container
+          - banners.each do |banner|
+            %div
+              %a{:href => banner.url}
+                = image_tag banner.image_attachments[0].image.url(:original)
     .categories_panel
       - categories.each_with_index do |category, index|
         - if index % 3 == 0
