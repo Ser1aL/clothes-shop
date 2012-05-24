@@ -45,6 +45,7 @@ textarea {
   left: 47%;
   top: 50%;
   display: none;
+  z-index: 99999;
 }
 
 #comment_loader{
