@@ -54,8 +54,9 @@ namespace :data_feed do
   desc "fetches 'item_models' from remote api"
   task :item_models => :environment do
     #terms = %w(Clothes Bags Accessories Shoes Sunglasses)
-    terms = [ARGV[4]]
-    start_from_page = ARGV[3]
+    terms = [ARGV[3]]
+    start_from_page = ARGV[2]
+
     key_index = 0
     terms.each do |term|
       puts "Running for #{term} from page #{start_from_page}"
