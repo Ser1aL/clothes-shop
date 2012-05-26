@@ -9,7 +9,7 @@ class ImageAttachment < ActiveRecord::Base
     basename = File.basename(url, extname)
     image_file = Tempfile.new([basename, extname])
     image_file.binmode
-    image_file.write open(url).read
+    image_file.write open(URI::escape(url)).read
     image_file.rewind
     image_file
   end

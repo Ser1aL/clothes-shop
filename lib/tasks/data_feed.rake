@@ -120,7 +120,7 @@ namespace :data_feed do
                     :on_sale => style_feed.onSale == "true"
                   )
                   image_feed[style_feed.styleId].each do |image|
-                    style.image_attachments.create(:image => ImageAttachment.image_from_url(CGI::escape(image.filename)))
+                    style.image_attachments.create(:image => ImageAttachment.image_from_url(image.filename))
                   end
 
                   style_feed.stocks.each do |stock|
