@@ -57,29 +57,40 @@ namespace :data_feed do
     key_index = 0
     terms.each do |term|
       begin
-        puts "using key=#{key_list[key_index]}"
         key_index = 0 if key_list[key_index].blank?
+        puts "using key=#{key_list[key_index]}"
 
-        client = Zappos::Client.new(key_list[key_index], { :base_url => 'api.zappos.com' })
-        response = client.search(:term => term, :limit => 1)
+        # client = Zappos::Client.new(key_list[key_index], { :base_url => 'api.zappos.com' })
+        # response = client.search(:term => term, :limit => 1)
 
-        total_count = response.totalResultCount.to_f
+        total_count = 60000#response.totalResultCount.to_f
 
         (total_count.to_f/limit.to_f).ceil.times do |index|
           begin
             client = Zappos::Client.new(key_list[key_index], { :base_url => 'api.zappos.com' })
             response = client.search( search_opts.merge!({:page => index + 1, :term => term.downcase}) )
+
             items = response.results
+            puts "found #{items.size}. Running loop. page=#{index+1}"
 
             items.each do |item|
-              next if ItemModel.find_by_external_product_id(item.productId)
+              puts "started item #{item.productId}"
+              if ItemModel.find_by_external_product_id(item.productId)
+                puts "item ##{item.productId} exists in db. Skipping"
+                next
+              end
 
               ActiveRecord::Base.transaction do
+                puts "started transaction"
                 product = client.product( product_search_opts.merge!({:id => item.productId}) ).data.product.first
+                puts "fetched product"
                 brand = Brand.find_by_external_brand_id(product.brandId)
+                puts "fetched brand"
                 image_feed = client.image( image_search_opts.merge!({:productId => item.productId})).data.images
+                puts "fetched image"
 
                 unless brand
+                  puts "creating brand: #{item.brandName}"
                   brand_feed = client.brand(brand_search_opts.merge!({:id => product.brandId})).data.brands.first
                   brand = Brand.create(
                     :name => item.brandName,
@@ -104,6 +115,7 @@ namespace :data_feed do
                   :weight => product.weight,
                   :video_url => product.videoUrl
                 )
+                puts "item model created in db"
 
                 product_model = Product.create(
                   :item_model => item_model,
@@ -133,8 +145,9 @@ namespace :data_feed do
                       :style => style
                     )
                   end
+                  puts "created #{style_feed.stocks.size} stocks"
                 end
-
+                puts "created #{styles.size} styles"
                 puts "#{item_model.product_name} loaded. Id ##{item_model.id}"
               end
 
@@ -143,7 +156,6 @@ namespace :data_feed do
             puts "Error in loop"
             p error.inspect
             key_index += 1
-            next
           end
         end
       rescue => error
