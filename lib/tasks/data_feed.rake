@@ -53,25 +53,29 @@ namespace :data_feed do
 
   desc "fetches 'item_models' from remote api"
   task :item_models => :environment do
-    terms = %w(Clothes Bags Accessories Shoes Sunglasses)
+    #terms = %w(Clothes Bags Accessories Shoes Sunglasses)
+    terms = [ARGV[4]]
+    start_from_page = ARGV[3]
     key_index = 0
     terms.each do |term|
+      puts "Running for #{term} from page #{start_from_page}"
       begin
         key_index = 0 if key_list[key_index].blank?
         puts "using key=#{key_list[key_index]}"
 
-        # client = Zappos::Client.new(key_list[key_index], { :base_url => 'api.zappos.com' })
-        # response = client.search(:term => term, :limit => 1)
+        client = Zappos::Client.new(key_list[key_index], { :base_url => 'api.zappos.com' })
+        response = client.search(:term => term, :limit => 1)
 
-        total_count = 60000#response.totalResultCount.to_f
+        total_count = response.totalResultCount.to_f
+        puts "found total #{total_count}"
 
         (total_count.to_f/limit.to_f).ceil.times do |index|
           begin
             client = Zappos::Client.new(key_list[key_index], { :base_url => 'api.zappos.com' })
-            response = client.search( search_opts.merge!({:page => index + 1, :term => term.downcase}) )
+            response = client.search( search_opts.merge!({:page => index + start_from_page, :term => term.downcase}) )
 
             items = response.results
-            puts "found #{items.size}. Running loop. page=#{index+1}"
+            puts "found #{items.size}. Running loop. page=#{index+start_from_page}"
 
             items.each do |item|
               puts "started item #{item.productId}"
