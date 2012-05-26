@@ -143,7 +143,7 @@ namespace :data_feed do
             puts "Error in loop"
             p error.inspect
             key_index += 1
-            retry
+            next
           end
         end
       rescue => error
