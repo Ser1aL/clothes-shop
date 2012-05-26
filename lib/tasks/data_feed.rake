@@ -72,10 +72,10 @@ namespace :data_feed do
         (total_count.to_f/limit.to_f).ceil.times do |index|
           begin
             client = Zappos::Client.new(key_list[key_index], { :base_url => 'api.zappos.com' })
-            response = client.search( search_opts.merge!({:page => index + start_from_page, :term => term.downcase}) )
+            response = client.search( search_opts.merge!({:page => index + start_from_page.to_i, :term => term.downcase}) )
 
             items = response.results
-            puts "found #{items.size}. Running loop. page=#{index+start_from_page}"
+            puts "found #{items.size}. Running loop. page=#{index+start_from_page.to_i}"
 
             items.each do |item|
               puts "started item #{item.productId}"
