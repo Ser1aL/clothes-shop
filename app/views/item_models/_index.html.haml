@@ -15,7 +15,7 @@
         .category_block
           .category_header
             .category_name
-              = link_to "#{countings[0].category_name}", "/#cat//#{category_id}//"
+              = link_to "#{countings[0].category_name}", category_path(category_id)
             .category_count
               = "(#{countings.map(&:value).sum})"
           .category_content

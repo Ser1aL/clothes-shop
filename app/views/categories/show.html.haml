@@ -11,10 +11,11 @@
                 = image_tag banner.image_attachments[0].image.url(:original)
 
     .categories_panel
+      .delimiter
       .category_block
         .category_header
           .category_name
-            = link_to "#{@countings.first.category_name}", "/#cat//#{@countings.first.category_id}//"
+            = link_to "#{@countings.first.category_name}", category_path(@countings.first.category_id)
           .category_count
             = "(#{@countings.map(&:value).sum})"
         .category_content
