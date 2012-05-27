@@ -173,34 +173,42 @@ namespace :data_feed do
 
   desc "updates item model prices"
   task :update_prices => :environment do
+    key_index = 0
     ItemModel.with_price_not_updated.each do |item_model|
-      price_feed = client.product( price_search_opts.merge!({:id => item_model.external_product_id}) ).data.product.first
-      item_model.product.styles.each do |style|
+      begin
+        client = Zappos::Client.new(key_list[key_index], { :base_url => 'api.zappos.com' })
+        price_feed = client.product( price_search_opts.merge!({:id => item_model.external_product_id}) ).data.product.first
+        item_model.product.styles.each do |style|
+          ActiveRecord::Base.transaction do
+            # secondary check for multi run
+            next if style.updated_at > Time.now - ItemModel::PRICE_UPDATE_INTERVAL
 
-        # secondary check for multi run
-        next if style.updated_at > Time.now - ItemModel::PRICE_UPDATE_INTERVAL
-
-        price_feed.styles.each do |style_feed|
-          if style_feed.styleId == style.external_style_id
-            style.update_attributes(
-              :original_price => (style_feed.originalPrice[1..-1].to_f * ExchangeRate.first.value.to_f).to_i,
-              :discount_price => (style_feed.price[1..-1].to_f * ExchangeRate.first.value.to_f).to_i,
-              :percent_off => style_feed.percentOff.to_i,
-              :updated_at => Time.now,
-              :on_sale => style_feed.onSale == "true"
-            )
-            style.stocks.destroy_all
-            style_feed.stocks.each do |stock|
-              Stock.create(
-                :size => stock['size'],
-                :quantity => stock.onHand,
-                :width => stock.width,
-                :external_stock_id => stock.stockId,
-                :style => style
-              )
+            price_feed.styles.each do |style_feed|
+              if style_feed.styleId == style.external_style_id
+                style.update_attributes(
+                  :original_price => (style_feed.originalPrice[1..-1].to_f * ExchangeRate.first.value.to_f).to_i,
+                  :discount_price => (style_feed.price[1..-1].to_f * ExchangeRate.first.value.to_f).to_i,
+                  :percent_off => style_feed.percentOff.to_i,
+                  :updated_at => Time.now,
+                  :on_sale => style_feed.onSale == "true"
+                )
+                style.stocks.destroy_all
+                style_feed.stocks.each do |stock|
+                  Stock.create(
+                    :size => stock['size'],
+                    :quantity => stock.onHand,
+                    :width => stock.width,
+                    :external_stock_id => stock.stockId,
+                    :style => style
+                  )
+                end
+              end
             end
           end
         end
+      rescue
+        key_index += 1
+        retry
       end
     end
   end

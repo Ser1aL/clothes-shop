@@ -37,7 +37,8 @@ class ItemModel < ActiveRecord::Base
       FROM #{type.pluralize}, item_models
       WHERE #{type.pluralize}.id = item_models.#{type}_id
       GROUP BY #{type.pluralize}.id
-      ORDER BY item_count DESC, name ASC").map(&:attributes)
+      ORDER BY item_count DESC, name ASC
+      LIMIT 10").map(&:attributes)
   end
 
   def self.get_items(*args)

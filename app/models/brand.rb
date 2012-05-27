@@ -11,6 +11,16 @@ class Brand < ActiveRecord::Base
     display_name.blank? ? super : display_name
   end
 
+  def self.favorite_with_counts
+    find_by_sql("SELECT brands.id, UPPER(brands.name) as name, COUNT(item_models.id) as item_count
+      FROM brands, item_models
+      WHERE brands.id = item_models.brand_id
+        AND brands.favorite = 1
+      GROUP BY brands.id
+      ORDER BY name
+    ").map(&:attributes)
+  end
+
   def build_category_tree
     tree = { :root => {} }
     Category.all.each do |category|

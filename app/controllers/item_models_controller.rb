@@ -10,7 +10,7 @@ class ItemModelsController < ApplicationController
   end
 
   def preload
-    @brand_counts = ItemModel.counts_by_type(:brand)
+    @brand_counts = Brand.favorite_with_counts
     @brand_total_counts = @brand_counts.map{|hash| hash['item_count']}.sum
 
     @category_counts = ItemModel.counts_by_type(:category)

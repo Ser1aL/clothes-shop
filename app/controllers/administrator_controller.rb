@@ -36,6 +36,17 @@ class AdministratorController < ApplicationController
     @exchange_rates = ExchangeRate.all
   end
 
+  def brand_favorites
+    @brand = Brand.order(:name).all
+    @brand_favorites = Brand.find_all_by_favorite(true)
+  end
+
+  def set_brand_favorite
+    Brand.all.each{|brand| brand.update_attribute(:favorite, false)}
+    Brand.find(params[:favorites]).each{|brand| brand.update_attribute(:favorite, true)} unless params[:favorites].blank?
+    redirect_to :back
+  end
+
   def category_translates
     @categories = Category.order(:name)
     @sub_categories = SubCategory.order(:name)

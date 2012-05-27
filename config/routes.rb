@@ -17,10 +17,12 @@ Watches::Application.routes.draw do
   post "administrator/category_translate"
   get "administrator/brand_translates"
   post "administrator/brand_translate"
+  get "administrator/brand_favorites"
+  post "administrator/set_brand_favorite"
 
   resources :item_models
   
-  match 'guarantee', :to => 'static#guarantee', :as => 'guarantee'
+  match 'reviews', :to => 'static#reviews', :as => 'reviews'
   match 'payments', :to => 'static#payments', :as => 'payments'
   match 'deliveries', :to => 'static#deliveries', :as => 'deliveries'
   match 'contacts', :to => 'static#contacts', :as => 'contacts'

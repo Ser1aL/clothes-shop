@@ -379,6 +379,10 @@ a.submit_comment{
 	overflow: hidden
 }
 
+.gray_area_content_header span{
+    margin-right: 10px;
+}
+
 .link {
 	color: #444444;
 	font-size: 13px;

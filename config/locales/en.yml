@@ -60,6 +60,7 @@ en:
   category_list: 'Разделы:'
   size_grid: 'Размерная сетка'
   brand_list: 'ПЕРЕЙТИ К СПИСКУ БРЕНДОВ'
+  sub_category_list: 'ПЕРЕЙТИ К СПИСКУ ПОДКАТЕГОРИЙ'
   all_brands: 'Все бренды'
   product_exists: 'Есть в наличии.'
   product_not_exists: 'Нет в наличии.'

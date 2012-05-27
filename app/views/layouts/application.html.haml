@@ -41,9 +41,10 @@
           %a#logo{:href => "/"}
           #menu
             = link_to 'О нас', about_us_path, :class => 'link_menu'
-            = link_to 'Гарантия', guarantee_path, :class => 'link_menu'
+            = link_to 'Отзывы', reviews_path, :class => 'link_menu'
             = link_to 'Оплата', payments_path, :class => 'link_menu'
             = link_to 'Доставка', deliveries_path, :class => 'link_menu'
+            = link_to 'Сервис покупок в зарубежных интернет магазинах', "http://otpravka.com.ua", :class => 'link_menu', :target => "_blank"
             = link_to 'Контакты', contacts_path, :class => 'link_menu'
             - if !current_user
               %a.login_button.button{:href => "#"}
@@ -58,6 +59,8 @@
           .separator_header
           .gray_area_conteiner_header
             .gray_area_content_header
+              %span
+                = link_to "Главная", root_path
               - if current_user
                 = link_to current_user.full_name, user_path(current_user)
               - else
@@ -134,29 +137,44 @@
             .sitemap_link
               = link_to 'Оплата', payments_path, :class => 'link_menu'
               = link_to 'Доставка', deliveries_path, :class => 'link_menu'
-            .sitemap_link
-              = link_to 'Гарантия', guarantee_path, :class => 'link_menu'
+            .sitemap_link{:style => "width: 100px;"}
+              = link_to 'Отзывы', reviews_path, :class => 'link_menu'
               = link_to 'О нас', about_us_path, :class => 'link_menu'
             .footer_blok_content
               .footer_separator
               .footer_label_input{:style => "padding-top: 0; height: 84px;"}
                 .footer_labe2{:style=>"margin-top: 0;"}
+                  %p.text1{:style=>"text-align: right; padding-right: 7px;"}
+                    Украина:
+                    %br
+                    Молдова:
+                    %br
+                    Казахстан:
+                    %br
+                    Россия:
+                    %br
+                    США:
                   %p.text1
-                    Украина +38(098)023-93-07
+                    +38(098)023-93-07
                     %br
-                    Молдова: +37 360-690-698
+                    +37 360-690-698
                     %br
-                    Казахстан: +7172 777-17-07
+                    +7172 777-17-07
                     %br
-                    Россия: +7 929 777-17-07
+                    +7 929 777-17-07
                     %br
-                    США: +1 55 122-699-21
+                    +1 55 122-699-21
               .footer_separator
                 .footer_labe3
                   %p.text1 E-mail: shop.mydostavka@gmail.com
                   %a{:href => "#"}
                 .footer_labe4
-                  %p.text1 Skype: udg2010
+                  %p.text1
+                    %a{:href =>"skype:udg2010?call"}
+                      = image_tag "/images/skype.png"
+                      %span
+                        12:00-24:00
+                      udg2010
           .footer_h_sep
           .footer_blok_content
             %p.title_text Обратная связь
