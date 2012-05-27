@@ -1,7 +1,9 @@
 class ItemModelsController < ApplicationController
   def index
-    @categories = Category.all
-    @banners = Banner.where("banners.category_id IS NULL")
+    if request.xhr?
+      @countings = Counting.where(:brand_id => nil).group_by(&:category_id)
+      @banners = Banner.where("banners.category_id IS NULL")
+    end
   end
 
   def show

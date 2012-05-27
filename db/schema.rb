@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120527103609) do
+ActiveRecord::Schema.define(:version => 20120527134452) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "user_id"
@@ -54,6 +54,18 @@ ActiveRecord::Schema.define(:version => 20120527103609) do
     t.string   "association_id"
     t.string   "association_type"
     t.text     "body"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "countings", :force => true do |t|
+    t.integer  "category_id"
+    t.integer  "sub_category_id"
+    t.integer  "brand_id"
+    t.integer  "gender_id"
+    t.integer  "value"
+    t.string   "category_name"
+    t.string   "sub_category_name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
