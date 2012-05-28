@@ -35,14 +35,6 @@ set_default_navigation();
 <% end %>
 jQuery('html, body').animate( { scrollTop: 0 }, 'slow' );
 
-<% 
-  classification = render :partial => '/layouts/partials/brands' 
-  classification += render :partial => '/layouts/partials/categories'
-  classification += render :partial => '/layouts/partials/sub_categories'
-  classification += render :partial => '/layouts/partials/genders'
-%>
-
-$('#selection_top_wrapper').html('<%= escape_javascript(classification) %>');
 activate_selection_popups();
 $('.pop_up_style_choice_brand').hide();
 $('.pop_up_style_choice_category').hide();
