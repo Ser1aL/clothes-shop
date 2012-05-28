@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120528161855) do
+ActiveRecord::Schema.define(:version => 20120528162815) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "user_id"
@@ -87,7 +87,7 @@ ActiveRecord::Schema.define(:version => 20120528161855) do
   end
 
   create_table "image_attachments", :force => true do |t|
-    t.string   "association_id"
+    t.integer  "association_id"
     t.string   "association_type"
     t.string   "image_file_name"
     t.string   "image_content_type"
