@@ -1,7 +1,7 @@
 class ItemModelsController < ApplicationController
   def index
     if request.xhr?
-      @countings = Counting.where(:brand_id => nil).group_by(&:category_id)
+      @countings = Counting.where(:brand_id => nil).order(:sub_category_name).group_by(&:category_id)
       @banners = Banner.where("banners.category_id IS NULL")
     end
   end
