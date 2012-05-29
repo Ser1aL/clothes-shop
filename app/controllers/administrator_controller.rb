@@ -48,9 +48,9 @@ class AdministratorController < ApplicationController
   end
 
   def category_translates
-    @categories = Category.order(:name)
-    @sub_categories = SubCategory.order(:name)
-    @genders = Gender.order(:name)
+    @categories = Category.order(:display_name)
+    @sub_categories = SubCategory.order(:display_name)
+    @genders = Gender.order(:display_name)
   end
 
   def category_translate
