@@ -1,27 +1,28 @@
-.delimiter
-.categories_wrapper
-  .banners
-    #slides.index_page
-      .slides_container
-        - banners.each do |banner|
-          %div
-            %a{:href => banner.url}
-              = image_tag banner.image_attachments[0].image.url(:original)
-  .categories_panel
-    - countings.each_with_index do |(category_id, countings), index|
-      - if index % 3 == 0
-        .delimiter
-      .category_block
-        .category_header
-          .category_name
-            = link_to "#{countings[0].category_name}", category_path(category_id)
-          .category_count
-            = "(#{countings.map(&:value).sum})"
-        .category_content
-          - countings.each do |counting|
+- cache do
+  .delimiter
+  .categories_wrapper
+    .banners
+      #slides.index_page
+        .slides_container
+          - banners.each do |banner|
             %div
-              .sub_category_name
-                = link_to "#{counting.sub_category_name}", "/#cat//#{category_id}/#{counting.sub_category_id}/"
-              .sub_category_count
-                = "(#{counting.value})"
-            .delimiter
+              %a{:href => banner.url}
+                = image_tag banner.image_attachments[0].image.url(:original)
+    .categories_panel
+      - countings.each_with_index do |(category_id, countings), index|
+        - if index % 3 == 0
+          .delimiter
+        .category_block
+          .category_header
+            .category_name
+              = link_to "#{countings[0].category_name}", category_path(category_id)
+            .category_count
+              = "(#{countings.map(&:value).sum})"
+          .category_content
+            - countings.each do |counting|
+              %div
+                .sub_category_name
+                  = link_to "#{counting.sub_category_name}", "/#cat//#{category_id}/#{counting.sub_category_id}/"
+                .sub_category_count
+                  = "(#{counting.value})"
+              .delimiter
