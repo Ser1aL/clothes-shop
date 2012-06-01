@@ -79,83 +79,90 @@ namespace :data_feed do
             puts "found #{items.size}. Running loop. page=#{index+start_from_page.to_i}"
 
             items.each do |item|
-              puts "started item #{item.productId}"
-              if ItemModel.find_by_external_product_id(item.productId)
-                puts "item ##{item.productId} exists in db. Skipping"
-                next
-              end
 
-              ActiveRecord::Base.transaction do
-                puts "started transaction"
-                product = client.product( product_search_opts.merge!({:id => item.productId}) ).data.product.first
-                puts "fetched product"
-                brand = Brand.find_by_external_brand_id(product.brandId)
-                puts "fetched brand"
-                image_feed = client.image( image_search_opts.merge!({:productId => item.productId})).data.images
-                puts "fetched image"
+              begin
 
-                unless brand
-                  puts "creating brand: #{item.brandName}"
-                  brand_feed = client.brand(brand_search_opts.merge!({:id => product.brandId})).data.brands.first
-                  brand = Brand.create(
-                    :name => item.brandName,
-                    :description => brand_feed.aboutText,
-                    :external_brand_id => product.brandId,
-                    :logo_url => brand_feed.headerImageUrl
-                  )
-                  brand.image_attachments.create(:image => open(brand_feed.imageUrl))
+                puts "started item #{item.productId}"
+                if ItemModel.find_by_external_product_id(item.productId)
+                  puts "item ##{item.productId} exists in db. Skipping"
+                  next
                 end
 
-                styles = product.styles
-                description = Nokogiri::XML(product.description)
-                description.search("ul li a").each(&:remove)
-                item_model = ItemModel.create(
-                  :external_product_id => item.productId,
-                  :product_name => item.productName,
-                  :brand => brand,
-                  :category => Category.find_or_create_by_name(ENV['category']),
-                  :sub_category => SubCategory.find_or_create_by_name(item.categoryFacet),
-                  :gender => Gender.find_or_create_by_name(product.gender),
-                  :description => description.to_s,
-                  :weight => product.weight,
-                  :video_url => product.videoUrl
-                )
-                puts "item model created in db"
+                ActiveRecord::Base.transaction do
+                  puts "started transaction"
+                  product = client.product( product_search_opts.merge!({:id => item.productId}) ).data.product.first
+                  puts "fetched product"
+                  brand = Brand.find_by_external_brand_id(product.brandId)
+                  puts "fetched brand"
+                  image_feed = client.image( image_search_opts.merge!({:productId => item.productId})).data.images
+                  puts "fetched image"
 
-                product_model = Product.create(
-                  :item_model => item_model,
-                  :total_quantity => 0
-                )
-
-                styles.each do |style_feed|
-                  style = Style.create(
-                    :color => style_feed.color,
-                    :original_price => style_feed.originalPrice[1..-1].to_f,
-                    :discount_price => style_feed.price[1..-1].to_f,
-                    :product => product_model,
-                    :percent_off => style_feed.percentOff.to_i,
-                    :external_style_id => style_feed.styleId,
-                    :on_sale => style_feed.onSale == "true"
-                  )
-                  image_feed[style_feed.styleId].each do |image|
-                    style.image_attachments.create(:image => ImageAttachment.image_from_url(image.filename))
-                  end
-
-                  style_feed.stocks.each do |stock|
-                    Stock.create(
-                      :size => stock['size'],
-                      :quantity => stock.onHand,
-                      :width => stock.width,
-                      :external_stock_id => stock.stockId,
-                      :style => style
+                  unless brand
+                    puts "creating brand: #{item.brandName}"
+                    brand_feed = client.brand(brand_search_opts.merge!({:id => product.brandId})).data.brands.first
+                    brand = Brand.create(
+                      :name => item.brandName,
+                      :description => brand_feed.aboutText,
+                      :external_brand_id => product.brandId,
+                      :logo_url => brand_feed.headerImageUrl
                     )
+                    brand.image_attachments.create(:image => open(brand_feed.imageUrl))
                   end
-                  puts "created #{style_feed.stocks.size} stocks"
-                end
-                puts "created #{styles.size} styles"
-                puts "#{item_model.product_name} loaded. Id ##{item_model.id}"
-              end
 
+                  styles = product.styles
+                  description = Nokogiri::XML(product.description)
+                  description.search("ul li a").each(&:remove)
+                  item_model = ItemModel.create(
+                    :external_product_id => item.productId,
+                    :product_name => item.productName,
+                    :brand => brand,
+                    :category => Category.find_or_create_by_name(ENV['category']),
+                    :sub_category => SubCategory.find_or_create_by_name(item.categoryFacet),
+                    :gender => Gender.find_or_create_by_name(product.gender),
+                    :description => description.to_s,
+                    :weight => product.weight,
+                    :video_url => product.videoUrl
+                  )
+                  puts "item model created in db"
+
+                  product_model = Product.create(
+                    :item_model => item_model,
+                    :total_quantity => 0
+                  )
+
+                  styles.each do |style_feed|
+                    style = Style.create(
+                      :color => style_feed.color,
+                      :original_price => style_feed.originalPrice[1..-1].to_f,
+                      :discount_price => style_feed.price[1..-1].to_f,
+                      :product => product_model,
+                      :percent_off => style_feed.percentOff.to_i,
+                      :external_style_id => style_feed.styleId,
+                      :on_sale => style_feed.onSale == "true"
+                    )
+                    image_feed[style_feed.styleId].each do |image|
+                      style.image_attachments.create(:image => ImageAttachment.image_from_url(image.filename))
+                    end
+
+                    style_feed.stocks.each do |stock|
+                      Stock.create(
+                        :size => stock['size'],
+                        :quantity => stock.onHand,
+                        :width => stock.width,
+                        :external_stock_id => stock.stockId,
+                        :style => style
+                      )
+                    end
+                    puts "created #{style_feed.stocks.size} stocks"
+                  end
+                  puts "created #{styles.size} styles"
+                  puts "#{item_model.product_name} loaded. Id ##{item_model.id}"
+                end
+              rescue
+                puts "Error in inner loop"
+                p error.inspect
+                key_index += 1
+              end
             end
           rescue => error
             puts "Error in loop"
