@@ -53,13 +53,12 @@ namespace :data_feed do
 
   desc "fetches 'item_models' from remote api"
   task :item_models => :environment do
-    #terms = %w(Clothes Bags Accessories Shoes Sunglasses)
-    terms = [ARGV[3]]
-    start_from_page = ARGV[2]
-
+    exit if ENV['term'].blank? || ENV['start_from_page'].blank? || ENV['category'].blank?
+    terms = [ENV['term']]
+    start_from_page = ENV['start_from_page']
     key_index = 0
     terms.each do |term|
-      puts "Running for #{term} from page #{start_from_page}"
+      puts "Running for #{term}, saving to category #{ENV['category']} from page #{start_from_page}"
       begin
         key_index = 0 if key_list[key_index].blank?
         puts "using key=#{key_list[key_index]}"
@@ -113,7 +112,7 @@ namespace :data_feed do
                   :external_product_id => item.productId,
                   :product_name => item.productName,
                   :brand => brand,
-                  :category => Category.find_or_create_by_name(term),
+                  :category => Category.find_or_create_by_name(ENV['category']),
                   :sub_category => SubCategory.find_or_create_by_name(item.categoryFacet),
                   :gender => Gender.find_or_create_by_name(product.gender),
                   :description => description.to_s,
