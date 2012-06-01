@@ -158,7 +158,7 @@ namespace :data_feed do
                   puts "created #{styles.size} styles"
                   puts "#{item_model.product_name} loaded. Id ##{item_model.id}"
                 end
-              rescue
+              rescue => error
                 puts "Error in inner loop"
                 p error.inspect
                 key_index += 1
