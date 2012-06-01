@@ -71,6 +71,7 @@ namespace :data_feed do
 
         (total_count.to_f/limit.to_f).ceil.times do |index|
           begin
+            key_index = 0 if key_list[key_index].blank?
             client = Zappos::Client.new(key_list[key_index], { :base_url => 'api.zappos.com' })
             response = client.search( search_opts.merge!({:page => index + start_from_page.to_i, :term => term.downcase}) )
 
