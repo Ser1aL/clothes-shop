@@ -82,9 +82,9 @@ namespace :data_feed do
 
               begin
 
-                puts "started item #{item.productId}"
+                # puts "started item #{item.productId}"
                 if ItemModel.find_by_external_product_id(item.productId)
-                  puts "item ##{item.productId} exists in db. Skipping"
+                  # puts "item ##{item.productId} exists in db. Skipping"
                   next
                 end
 
