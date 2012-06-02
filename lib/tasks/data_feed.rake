@@ -89,13 +89,13 @@ namespace :data_feed do
                 end
 
                 ActiveRecord::Base.transaction do
-                  puts "started transaction"
+                  # puts "started transaction"
                   product = client.product( product_search_opts.merge!({:id => item.productId}) ).data.product.first
-                  puts "fetched product"
+                  # puts "fetched product"
                   brand = Brand.find_by_external_brand_id(product.brandId)
-                  puts "fetched brand"
+                  # puts "fetched brand"
                   image_feed = client.image( image_search_opts.merge!({:productId => item.productId})).data.images
-                  puts "fetched image"
+                  # puts "fetched image"
 
                   unless brand
                     puts "creating brand: #{item.brandName}"
@@ -106,7 +106,7 @@ namespace :data_feed do
                       :external_brand_id => product.brandId,
                       :logo_url => brand_feed.headerImageUrl
                     )
-                    brand.image_attachments.create(:image => open(brand_feed.imageUrl))
+                    brand.image_attachments.create(:image => ImageAttachment.image_from_url(brand_feed.imageUrl))
                   end
 
                   styles = product.styles
@@ -123,7 +123,7 @@ namespace :data_feed do
                     :weight => product.weight,
                     :video_url => product.videoUrl
                   )
-                  puts "item model created in db"
+                  # puts "item model created in db"
 
                   product_model = Product.create(
                     :item_model => item_model,
