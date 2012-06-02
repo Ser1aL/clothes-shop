@@ -53,7 +53,8 @@ namespace :data_feed do
 
   desc "fetches 'item_models' from remote api"
   task :item_models => :environment do
-    exit if ENV['term'].blank? || ENV['start_from_page'].blank? || ENV['category'].blank?
+    exit if ENV['start_from_page'].blank? || ENV['category'].blank?
+
     terms = [ENV['term']]
     start_from_page = ENV['start_from_page']
     key_index = 0
