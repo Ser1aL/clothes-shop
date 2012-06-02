@@ -98,15 +98,20 @@ namespace :data_feed do
                   # puts "fetched image"
 
                   unless brand
-                    puts "creating brand: #{item.brandName}"
-                    brand_feed = client.brand(brand_search_opts.merge!({:id => product.brandId})).data.brands.first
+                    puts "creating brand: #{item.brandName} with id #{product.brandId}"
+                    brand_feed = client.brand(brand_search_opts.merge!({:id => product.brandId})).try(:data).try(:brands).try(:first)
                     brand = Brand.create(
-                      :name => item.brandName,
-                      :description => brand_feed.aboutText,
-                      :external_brand_id => product.brandId,
-                      :logo_url => brand_feed.headerImageUrl
+                        :name => item.brandName,
+                        :description => brand_feed.try(:aboutText),
+                        :external_brand_id => product.brandId,
+                        :logo_url => brand_feed.try(:headerImageUrl)
                     )
-                    brand.image_attachments.create(:image => ImageAttachment.image_from_url(brand_feed.imageUrl))
+                    begin
+                      brand.image_attachments.create(:image => ImageAttachment.image_from_url(brand_feed.imageUrl))
+                    rescue => image_error
+                      brand.image_attachments.create
+                      puts "error in creating image for brand. #{image_error.inspect}"
+                    end
                   end
 
                   styles = product.styles
