@@ -51,6 +51,11 @@ namespace :data_feed do
     :excludes => %w(imageUrl color productUrl brandId brandName productName defaultProductUrl defaultImageUrl productId)
   }
 
+  facet_search_opts = {
+    :includes => %w(attributeFacetFields),
+    :excludes => %w(defaultProductUrl productName defaultImageUrl productId brandName brandId)
+  }
+
   desc "fetches 'item_models' from remote api"
   task :item_models => :environment do
     exit if ENV['start_from_page'].blank? || ENV['category'].blank?
@@ -72,8 +77,6 @@ namespace :data_feed do
 
         (total_count.to_f/limit.to_f).ceil.times do |index|
           begin
-
-            exit if ItemModel.count.to_i > 92000
 
             key_index = 0 if key_list[key_index].blank?
             client = Zappos::Client.new(key_list[key_index], { :base_url => 'api.zappos.com' })
@@ -258,5 +261,30 @@ namespace :data_feed do
       end
     end
 
+  end
+
+  desc "loads facets"
+  task :load_facets => :environment do
+    key_index = 0
+    ItemModel.where(:facet_loaded => false).order(:external_product_id).each do |item_model|
+      begin
+        key_index = 0 if key_list[key_index].blank?
+        client = Zappos::Client.new(key_list[key_index], { :base_url => 'api.zappos.com' })
+        facets = client.product( facet_search_opts.merge!({:id => item_model.external_product_id}) ).data.product.first.attributeFacetFields
+        ActiveRecord::Base.transaction do
+          facets.each do |facet_key, facet_value|
+            begin
+              item_model.update_attribute(facet_key, facet_value)
+            rescue => error
+              File.open('missing_facets.txt', 'a+'){|f| f.puts error}
+            end
+          end
+          item_model.update_attribute(:facet_loaded, true)
+        end
+        puts "Item Model id:#{item_model.external_product_id} updated"
+      rescue
+        key_index += 1
+      end
+    end
   end
 end

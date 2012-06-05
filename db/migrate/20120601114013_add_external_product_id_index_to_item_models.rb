@@ -4,6 +4,6 @@ class AddExternalProductIdIndexToItemModels < ActiveRecord::Migration
   end
 
   def self.down
-    add_index :item_models, :external_product_id
+    remove_index :item_models, :external_product_id
   end
 end
