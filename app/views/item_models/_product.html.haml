@@ -1,7 +1,7 @@
 .block
   .title_product
     %a.title_product-a{:href => item_model_url(product, :style => product.product.styles.first), :class => 'single_product_ajaxified_link'}
-      = product.product_name
+      = product.product_name.html_safe
   .product_image
     %a{:href => item_model_url(product, :style => product.product.styles.first), :class => 'single_product_ajaxified_link'}
       - if product.try(:product).try(:styles).try(:first).try(:image_attachments).blank?
@@ -13,7 +13,7 @@
   .product_description
     = t('product_description.brand')
   .product_description1{:style => 'font-weight: bold; overflow: hidden;'}
-    = product.brand.name
+    = product.brand.name.html_safe
   .product_description
     = t('product_description.category')
   .product_description1

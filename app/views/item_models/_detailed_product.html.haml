@@ -12,7 +12,7 @@
   %span.short_link
     = link_to product.gender.name, "/#cat/#{product.brand.id}/#{product.category.id}/#{product.sub_category.id}/#{product.gender.id}"
   %span.short_link.no_arrows
-    = product.product_name
+    = product.product_name.html_safe
 .separator_content
 .brand_description_wrapper
   .block
@@ -37,7 +37,7 @@
       .product_description
         = t('product_description.name')
       .product_description1
-        = product.product_name.truncate(25)
+        = product.product_name.truncate(25).html_safe
       .product_description
         = t('product_description.category')
       .product_description1
