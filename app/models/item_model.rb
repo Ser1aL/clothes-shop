@@ -7,6 +7,8 @@ class ItemModel < ActiveRecord::Base
   belongs_to :sub_category
   belongs_to :gender
 
+  default_scope :order => 'updated_at DESC'
+
   PRICE_UPDATE_INTERVAL = 1.second
 
 
@@ -41,14 +43,13 @@ class ItemModel < ActiveRecord::Base
       LIMIT 10").map(&:attributes)
   end
 
-  def self.get_items(*args)
-    brand, gender, sub_category, category, page = args[0][:brand], args[0][:gender], args[0][:sub_category], args[0][:category], args[0][:page]
+  def self.get_items(params = {})
     conditions = []
-    conditions << "brand_id = '#{brand}'" if brand
-    conditions << "gender_id = '#{gender}'" if gender
-    conditions << "sub_category_id = '#{sub_category}'" if sub_category
-    conditions << "category_id = '#{category}'" if category
-    where(conditions.join(' AND ')).page(page).per(6)
+    conditions << "brand_id = '#{params[:brand]}'" if params[:brand]
+    conditions << "gender_id = '#{params[:gender]}'" if params[:gender]
+    conditions << "sub_category_id = '#{params[:sub_category]}'" if params[:sub_category]
+    conditions << "category_id = '#{params[:category]}'" if params[:category]
+    where(conditions.join(' AND ')).page(params[:page]).per(6)
   end
 
   # change to sphinx when 2.0+ is well tested

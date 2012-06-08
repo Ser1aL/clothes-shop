@@ -1,0 +1,15 @@
+= render 'search_tip'
+.search_wrapper.advanced_search_wrapper
+  .navigation_panel
+    .categories.navigation_block
+      - @category_countings.each do |category_id, count_group|
+        .category_link
+          = link_to "#{count_group.first[:category_name]}(#{count_group.sum(&:value)})", "#cat=#{category_id}"
+    .genders.navigation_block
+    .sub_categories.navigation_block
+    .brands.navigation_block
+    .colors.navigation_block
+    .sizes.navigation_block
+    .facet_list.navigation_block
+  .item_models
+    = render @item_models

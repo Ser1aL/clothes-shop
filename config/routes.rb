@@ -1,25 +1,28 @@
 Watches::Application.routes.draw do  
+  get "search/index"
+
   get "users/show"
   get "users/update"
 
   resources :brands, :only => %w(index show)
   resources :categories, :only => %w(show)
 
-  get "administrator/orders"
-  get "administrator/static_pages"
   get "administrator", :to => 'administrator#orders'
-  get "administrator/login", :to => 'administrator#login', :as => :administrator_login
-  post "administrator/do_login", :to => 'administrator#do_login', :as => :administrator_do_login
-  post "administrator/change_static_page"
-  get "administrator/exchange_rates"
-  post "administrator/change_exchange_rate"
-  get "administrator/category_translates"
-  post "administrator/category_translate"
-  get "administrator/brand_translates"
-  post "administrator/brand_translate"
-  get "administrator/brand_favorites"
-  post "administrator/set_brand_favorite"
-
+  namespace :administrator do
+    get "orders"
+    get "login"
+    post "do_login"
+    get "static_pages"
+    post "change_static_page"
+    get "exchange_rates"
+    post "change_exchange_rate"
+    get "category_translates"
+    post "category_translate"
+    get "brand_translates"
+    post "brand_translate"
+    get "brand_favorites"
+    post "set_brand_favorite"
+  end
   resources :item_models
   
   match 'reviews', :to => 'static#reviews', :as => 'reviews'
@@ -33,6 +36,8 @@ Watches::Application.routes.draw do
 
   post "comments/create", :as => 'new_comment'
   match "comments/destroy/:comment_id", :to => 'comments#destroy', :as => 'destroy_comment'
+
+  get 'advanced_search', :to => 'search#index'
   devise_for :users, :path_names => { 
     :sign_up => 'register', 
     :sign_in => 'login' 
