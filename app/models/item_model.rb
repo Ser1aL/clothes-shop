@@ -52,6 +52,23 @@ class ItemModel < ActiveRecord::Base
     where(conditions.join(' AND ')).page(params[:page]).per(6)
   end
 
+  def self.get_items_extended(params = {})
+
+    conditions = []
+    conditions << "item_models.brand_id = '#{params[:brand_id]}'" if params[:brand_id]
+    conditions << "item_models.gender_id = '#{params[:gender_id]}'" if params[:gender_id]
+    conditions << "item_models.sub_category_id = '#{params[:sub_category_id]}'" if params[:sub_category_id]
+    conditions << "item_models.category_id = '#{params[:category_id]}'" if params[:category_id]
+    conditions << "styles.color = '#{params[:color]}'" if params[:color]
+    if params[:color]
+      joins(:product => [:styles]).includes(:brand, :sub_category, :product).includes(:product => [:styles]).where(conditions.join(' AND '))
+    else
+      includes(:brand, :sub_category, :product).includes(:product => [:styles]).where(conditions.join(' AND '))
+    end
+
+
+  end
+
   # change to sphinx when 2.0+ is well tested
   def self.search query, page
     query = "%#{query.to_s.strip}%"

@@ -1,0 +1,2 @@
+class BrandCounting < Counting
+end

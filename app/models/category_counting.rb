@@ -1,0 +1,2 @@
+class CategoryCounting < Counting
+end

@@ -83,6 +83,14 @@ en:
   author_unkown: 'no name'
   submit_order: 'Оформить заказ'
   chosen_brand: 'Вы выбрали'
+
+  categories: 'Категории'
+  genders: 'Пол'
+  sub_categories: 'Подкатегории'
+  brands: 'Бренды'
+  colors: 'Цвета'
+  sizes: 'Размеры'
+
   views:
     pagination:
       first: 'Первая'

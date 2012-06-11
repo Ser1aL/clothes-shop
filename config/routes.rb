@@ -1,5 +1,4 @@
 Watches::Application.routes.draw do  
-  get "search/index"
 
   get "users/show"
   get "users/update"
@@ -23,6 +22,19 @@ Watches::Application.routes.draw do
     get "brand_favorites"
     post "set_brand_favorite"
   end
+
+  namespace :search do
+    get "index"
+    get "load_items"
+    get "preload_categories"
+    get "preload_sub_categories"
+    get "preload_brands"
+    get "preload_genders"
+    get "preload_sizes"
+    get "preload_colors"
+    get "preload_facet_list"
+  end
+
   resources :item_models
   
   match 'reviews', :to => 'static#reviews', :as => 'reviews'

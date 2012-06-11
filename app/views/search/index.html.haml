@@ -2,14 +2,37 @@
 .search_wrapper.advanced_search_wrapper
   .navigation_panel
     .categories.navigation_block
-      - @category_countings.each do |category_id, count_group|
-        .category_link
-          = link_to "#{count_group.first[:category_name]}(#{count_group.sum(&:value)})", "#cat=#{category_id}"
+      .header
+        = t("categories")
+      .content
+        - @category_countings.each do |category_id, count_group|
+          .link
+            = link_to "#{count_group.first[:category_name]}(#{count_group.sum(&:value)})", "#cat=#{category_id}"
     .genders.navigation_block
+      .header
+        = t("genders")
+      .content
+        - @gender_countings.each do |counting|
+          .link
+            = link_to "#{counting.gender_name}(#{counting.value})", "#g=#{counting.gender_id}"
     .sub_categories.navigation_block
+      .header
+        = t("sub_categories")
+      .content
     .brands.navigation_block
+      .header
+        = t("brands")
+      .content
     .colors.navigation_block
+      .header
+        = t("colors")
+      .content
     .sizes.navigation_block
+      .header
+        = t("sizes")
+      .content
     .facet_list.navigation_block
+      .header
+      .content
   .item_models
     = render @item_models

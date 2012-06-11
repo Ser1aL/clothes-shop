@@ -16,9 +16,16 @@ function prepare_paginated_links(page_type){
       var search_query = url.param('search_query') == undefined ? '' : url.param('search_query');
       $.history.load( page_type + '/' + search_query + '/' + page );
     }
+    // else it is an advanced search
     else{
-      page = url.param('page') == undefined ? '' : url.param('page');
-      $.history.load( page_type + '/' + page );
+      var page = url.param().page;
+      var current_hash = location.hash;
+      if(current_hash.match(/\&p=(\d+)/)){
+          $.history.load( unescape(current_hash + "&p="+page) );
+      }
+      else{
+          $.history.load( current_hash.replace(/\&p=(\d+)/, "&p"+page) );
+      }
     }
     return false;
   });
@@ -160,11 +167,66 @@ function load_categorized_or_single_page(url_parser){
     $.getScript(script_name + query);
 }
 
-function load_search_page(url_parser){
-//    $.ajax({
-//        url : '/.js'
-//    });
+function parse_search_parameters(url_parser){
+    var fragment = url_parser.data.param.fragment;
+    return {
+        category_id : fragment.cat,
+        sub_category_id : fragment.sub,
+        gender_id : fragment.g,
+        brand_id : fragment.b,
+        page : fragment.p,
+        color : fragment.c
+    };
+}
 
+function load_search_page(params){
+    // Run Ajax Calls to update navigation menu and main part only if params are set
+
+    if(location.hash != ''){
+        var result_element = undefined;
+        var result_container = undefined;
+
+        $(".item_models").html("<div class='loader'></div>");
+        $.ajax({
+            url : "/search/load_items",
+            data : params
+        }).success(function(resp){
+                $(".item_models").html(resp);
+                prepare_paginated_links();
+                jQuery('html, body').animate( { scrollTop: 0 }, 'slow' );
+        });
+//        $.each(["categories", "genders", "sub_categories", "brands", "colors", "sizes", "facet_list"], function(k, v){
+
+        $.each(["categories", "genders", "sub_categories", "brands", "colors"], function(k, v){
+            $("."+v+" .content").html("<div class='loader'></div>");
+            $.ajax({
+                url : "/search/preload_" + v,
+                data : params
+            }).success(function(resp){
+                    result_container = $("."+v);
+                    result_element = $("."+v+" .content");
+                    if(resp == null || resp == ''){
+                        result_container.slideUp();
+                    }
+                    else{
+                        result_element.html("");
+                        $.each(resp, function(k, v){
+                            var parameters = [];
+                            if( typeof(v.category_id) != "undefined" && v.category_id != '') parameters.push("cat=" + v.category_id);
+                            if( typeof(v.gender_id) != "undefined" && v.gender_id != '') parameters.push("g=" + v.gender_id);
+                            if( typeof(v.sub_category_id) != "undefined" && v.sub_category_id != '') parameters.push("sub=" + v.sub_category_id);
+                            if( typeof(v.brand_id) != "undefined" && v.brand_id != '') parameters.push("b=" + v.brand_id);
+                            if( typeof(v.color) != "undefined" && v.color != '') parameters.push("c=" + v.color);
+                            result_element.append(
+                                "<div class='link'>" +
+                                    "<a href='#"+ parameters.join("&") +"'>"+ v.type_name +"("+ v.count +")</a>" +
+                                "</div>");
+                        });
+                        result_container.slideDown();
+                    }
+            });
+        });
+    }
 }
 
 $(function(){
@@ -181,7 +243,7 @@ $(function(){
         load_categorized_or_single_page(url_parser);
     }
     else{
-        load_search_page(url_parser);
+        load_search_page(parse_search_parameters(url_parser));
     }
 
   },

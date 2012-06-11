@@ -1,0 +1,2 @@
+class GenderCounting < Counting
+end

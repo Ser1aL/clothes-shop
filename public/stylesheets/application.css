@@ -2882,11 +2882,24 @@ a.previews img{
     margin: 18px 9px;
 }
 
-.brand_block_header{
+.brand_block_header, .navigation_block .header{
     background: url('/images/brand_corner.png') 290px 0 no-repeat #f6e6e9;
     color: #000;
     height: 20px;
     padding-left: 6px;
+}
+
+.navigation_block .header{
+    background: url('/images/brand_corner.png') 197px 0 no-repeat #F6E6E9
+}
+
+.navigation_block .content{
+    overflow-x: hidden;
+    overflow-y: auto;
+    max-height: 163px;
+    width: 180px;
+    margin: 7px 0px 11px 6px;
+    padding-right: 12px;
 }
 
 .brand_block_content, .category_content{
@@ -2937,18 +2950,31 @@ a.previews img{
 }
 
 .navigation_panel .navigation_block{
-    border-top: 4px #eee solid;
     min-height: 70px;
     display: none;
 }
 
-.navigation_panel .categories{
+.navigation_block .loader{
+    background: url('../images/loader.gif') no-repeat;
+    width: 26px;
+    height: 25px;
+    margin: 21px 0 0 89px;
+}
+
+.navigation_panel .categories, .navigation_panel .genders{
     display: block;
 }
 
 .item_models{
     float: right;
     width: 727px;
+}
+
+.item_models .loader{
+    background: url('../images/loader.gif') no-repeat;
+    width: 26px;
+    height: 25px;
+    margin: 130px 0 0 311px;
 }
 
 .search_wrapper{
