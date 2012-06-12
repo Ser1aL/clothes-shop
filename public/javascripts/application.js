@@ -175,7 +175,8 @@ function parse_search_parameters(url_parser){
         gender_id : fragment.g,
         brand_id : fragment.b,
         page : fragment.p,
-        color : fragment.c
+        color : fragment.c,
+        size : fragment.s
     };
 }
 
@@ -196,8 +197,7 @@ function load_search_page(params){
                 jQuery('html, body').animate( { scrollTop: 0 }, 'slow' );
         });
 //        $.each(["categories", "genders", "sub_categories", "brands", "colors", "sizes", "facet_list"], function(k, v){
-
-        $.each(["categories", "genders", "sub_categories", "brands", "colors"], function(k, v){
+        $.each(["categories", "genders", "sub_categories", "brands", "colors", "sizes"], function(k, v){
             $("."+v+" .content").html("<div class='loader'></div>");
             $.ajax({
                 url : "/search/preload_" + v,
@@ -210,17 +210,22 @@ function load_search_page(params){
                     }
                     else{
                         result_element.html("");
-                        $.each(resp, function(k, v){
+                        $.each(resp, function(k, respv){
                             var parameters = [];
-                            if( typeof(v.category_id) != "undefined" && v.category_id != '') parameters.push("cat=" + v.category_id);
-                            if( typeof(v.gender_id) != "undefined" && v.gender_id != '') parameters.push("g=" + v.gender_id);
-                            if( typeof(v.sub_category_id) != "undefined" && v.sub_category_id != '') parameters.push("sub=" + v.sub_category_id);
-                            if( typeof(v.brand_id) != "undefined" && v.brand_id != '') parameters.push("b=" + v.brand_id);
-                            if( typeof(v.color) != "undefined" && v.color != '') parameters.push("c=" + v.color);
-                            result_element.append(
-                                "<div class='link'>" +
-                                    "<a href='#"+ parameters.join("&") +"'>"+ v.type_name +"("+ v.count +")</a>" +
-                                "</div>");
+                            if( typeof(respv.category_id) != "undefined" && respv.category_id != '') parameters.push("cat=" + respv.category_id);
+                            if( typeof(respv.gender_id) != "undefined" && respv.gender_id != '') parameters.push("g=" + respv.gender_id);
+                            if( typeof(respv.sub_category_id) != "undefined" && respv.sub_category_id != '') parameters.push("sub=" + respv.sub_category_id);
+                            if( typeof(respv.brand_id) != "undefined" && respv.brand_id != '') parameters.push("b=" + respv.brand_id);
+                            if( typeof(respv.color) != "undefined" && respv.color != '') parameters.push("c=" + respv.color);
+                            if( typeof(respv.size) != "undefined" && respv.size != '') parameters.push("s=" + respv.size);
+                            var div = $('<div/>', { class: 'link' });
+                            var link_text = respv.type_name + (v == 'sizes' ? '' : "("+ respv.count +")")
+                            div.html(
+                                $('<a/>', {
+                                    href: '#' + parameters.join("&"),
+                                    text: link_text
+                                })
+                            ).appendTo(result_element);
                         });
                         result_container.slideDown();
                     }

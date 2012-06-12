@@ -7,7 +7,7 @@ class ItemModel < ActiveRecord::Base
   belongs_to :sub_category
   belongs_to :gender
 
-  default_scope :order => 'updated_at DESC'
+  # default_scope :order => 'item_models.updated_at DESC'
 
   PRICE_UPDATE_INTERVAL = 1.second
 
@@ -49,23 +49,18 @@ class ItemModel < ActiveRecord::Base
     conditions << "gender_id = '#{params[:gender]}'" if params[:gender]
     conditions << "sub_category_id = '#{params[:sub_category]}'" if params[:sub_category]
     conditions << "category_id = '#{params[:category]}'" if params[:category]
-    where(conditions.join(' AND ')).page(params[:page]).per(6)
+    where(conditions.join(' AND ')).order('item_models.updated_at DESC').page(params[:page]).per(6)
   end
 
   def self.get_items_extended(params = {})
-
     conditions = []
     conditions << "item_models.brand_id = '#{params[:brand_id]}'" if params[:brand_id]
     conditions << "item_models.gender_id = '#{params[:gender_id]}'" if params[:gender_id]
     conditions << "item_models.sub_category_id = '#{params[:sub_category_id]}'" if params[:sub_category_id]
     conditions << "item_models.category_id = '#{params[:category_id]}'" if params[:category_id]
     conditions << "styles.color = '#{params[:color]}'" if params[:color]
-    if params[:color]
-      joins(:product => [:styles]).includes(:brand, :sub_category, :product).includes(:product => [:styles]).where(conditions.join(' AND '))
-    else
-      includes(:brand, :sub_category, :product).includes(:product => [:styles]).where(conditions.join(' AND '))
-    end
-
+    conditions << "stocks.size = '#{params[:size].gsub(/\\/, '\&\&').gsub(/'/, "''")}'" if params[:size]
+    includes(:brand, :gender, :sub_category, :product => [:styles => :stocks]).where(conditions.join(' AND '))
 
   end
 

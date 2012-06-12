@@ -40,7 +40,7 @@ class SearchController < ApplicationController
           :type_name => count_group.first.brand.name,
           :brand_id => count_group.first.brand_id
       }.merge!(params)
-    }.sort_by{|result| result[:type_name]}
+    }.sort_by{|result| result[:type_name].first.capitalize + result[:type_name][1].capitalize}
   end
 
   def preload_genders
@@ -55,7 +55,14 @@ class SearchController < ApplicationController
   end
 
   def preload_sizes
-    respond_with nil
+    countings = ItemModel.get_items_extended(params).where("stocks.size IS NOT NULL").group_by{|item_model| item_model.product.styles.first.stocks.first.size}
+    respond_with countings.collect{|not_used, count_group|
+      {
+          :count => count_group.size,
+          :type_name => count_group.first.product.styles.first.stocks.first.size,
+          :size => count_group.first.product.styles.first.stocks.first.size
+      }.merge!(params)
+    }.sort_by{|result| result[:type_name] }
   end
 
   def preload_colors
