@@ -197,7 +197,11 @@ function load_search_page(params){
                 jQuery('html, body').animate( { scrollTop: 0 }, 'slow' );
         });
 //        $.each(["categories", "genders", "sub_categories", "brands", "colors", "sizes", "facet_list"], function(k, v){
-        $.each(["categories", "genders", "sub_categories", "brands"], function(k, v){
+        var initialized_params_count = 0;
+        for(var i in params){ if(typeof(params[i]) != 'undefined') initialized_params_count += 1 }
+        var sections = ["categories", "genders", "sub_categories", "brands"];
+        if(initialized_params_count >= 2) sections.push("sizes");
+        $.each(sections, function(k, v){
             $("."+v+" .content").html("<div class='loader'></div>");
             $.ajax({
                 url : "/search/preload_" + v,

@@ -25,17 +25,8 @@ class SearchController < ApplicationController
     respond_with RawSearch.get_counts(params, :gender)
   end
 
-  # TODO optimize size search and style search
-
   def preload_sizes
-    countings = ItemModel.get_items_extended(params).where("stocks.size IS NOT NULL").group_by{|item_model| item_model.product.styles.first.stocks.first.size}
-    respond_with countings.collect{|not_used, count_group|
-      {
-          :count => count_group.size,
-          :type_name => count_group.first.product.styles.first.stocks.first.size,
-          :size => count_group.first.product.styles.first.stocks.first.size
-      }.merge!(params)
-    }.sort_by{|result| result[:type_name] }
+    respond_with RawSearch.get_size_counts(params)
   end
 
   def preload_colors
