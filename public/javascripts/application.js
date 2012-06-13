@@ -197,7 +197,7 @@ function load_search_page(params){
                 jQuery('html, body').animate( { scrollTop: 0 }, 'slow' );
         });
 //        $.each(["categories", "genders", "sub_categories", "brands", "colors", "sizes", "facet_list"], function(k, v){
-        $.each(["categories", "genders", "sub_categories", "brands", "colors", "sizes"], function(k, v){
+        $.each(["categories", "genders", "sub_categories", "brands"], function(k, v){
             $("."+v+" .content").html("<div class='loader'></div>");
             $.ajax({
                 url : "/search/preload_" + v,

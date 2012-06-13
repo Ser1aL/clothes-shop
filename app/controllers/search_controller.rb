@@ -10,49 +10,22 @@ class SearchController < ApplicationController
 
   # next actions respond to Ajax Search Calls
   def preload_categories
-    countings = ItemModel.get_items_extended(params).group_by(&:category_id)
-    respond_with countings.collect{|not_used, count_group|
-      {
-        :count => count_group.size,
-        :type_name => count_group.first.category.display_name,
-        :category_id => count_group.first.category_id
-      }.merge!(params)
-    }.sort_by{|result| result[:type_name]}
+    respond_with RawSearch.get_counts(params, :category)
   end
 
   def preload_sub_categories
-    countings = ItemModel.get_items_extended(params).group_by(&:sub_category_id)
-    respond_with countings.collect{|not_used, count_group|
-      {
-          :count => count_group.size,
-          :type_name => count_group.first.sub_category.display_name,
-          :sub_category_id => count_group.first.sub_category_id,
-          :category_id => count_group.first.category_id
-      }.merge!(params)
-    }.sort_by{|result| result[:type_name]}
+    respond_with RawSearch.get_counts(params, :sub_category)
   end
 
   def preload_brands
-    countings = ItemModel.get_items_extended(params).group_by(&:brand_id)
-    respond_with countings.collect{|not_used, count_group|
-      {
-          :count => count_group.size,
-          :type_name => count_group.first.brand.name,
-          :brand_id => count_group.first.brand_id
-      }.merge!(params)
-    }.sort_by{|result| result[:type_name].first.capitalize + result[:type_name][1].capitalize}
+    respond_with RawSearch.get_counts(params, :brand)
   end
 
   def preload_genders
-    countings = ItemModel.get_items_extended(params).group_by(&:gender_id)
-    respond_with countings.collect{|not_used, count_group|
-      {
-          :count => count_group.size,
-          :type_name => count_group.first.gender.display_name,
-          :gender_id => count_group.first.gender_id
-      }.merge!(params)
-    }.sort_by{|result| result[:type_name]}
+    respond_with RawSearch.get_counts(params, :gender)
   end
+
+  # TODO optimize size search and style search
 
   def preload_sizes
     countings = ItemModel.get_items_extended(params).where("stocks.size IS NOT NULL").group_by{|item_model| item_model.product.styles.first.stocks.first.size}
