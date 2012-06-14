@@ -30,14 +30,7 @@ class SearchController < ApplicationController
   end
 
   def preload_colors
-    countings = ItemModel.get_items_extended(params).group_by{|item_model| item_model.product.styles.first.color}
-    respond_with countings.collect{|not_used, count_group|
-      {
-          :count => count_group.size,
-          :type_name => count_group.first.product.styles.first.color,
-          :color => count_group.first.product.styles.first.color
-      }.merge!(params)
-    }.sort_by{|result| result[:type_name]}
+    respond_with RawSearch.get_color_counts(params)
   end
 
   def preload_facet_list
