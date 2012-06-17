@@ -34,15 +34,15 @@ function prepare_paginated_links(page_type){
 
 function prepare_ajaxified_links(){
   $(".product_details_link a, .single_product_ajaxified_link").click(function() {
-    $('#loader').show();
     var url = $.url(this.href);
     var style_id = url.param('style');
     var item_model_id = url.segment(2);
     if(document.location.pathname == "" || document.location.pathname == "/"){
+        $('#loader').show();
         $.history.load( 'single/' + item_model_id + '/' + style_id );
     }
     else{
-        document.location = document.location.origin + "/#" + 'single/' + item_model_id + '/' + style_id;
+        document.location = document.location.protocol + '//' + document.location.host + "/#" + 'single/' + item_model_id + '/' + style_id;
     }
     return false;
   });
