@@ -38,8 +38,7 @@ function prepare_ajaxified_links(){
     var url = $.url(this.href);
     var style_id = url.param('style');
     var item_model_id = url.segment(2);
-    console.log(url);
-    if(document.location.pathname = ""){
+    if(document.location.pathname == "" || document.location.pathname == "/"){
         $.history.load( 'single/' + item_model_id + '/' + style_id );
     }
     else{
