@@ -22,17 +22,17 @@ namespace :data_feed do
     9fb8ecbdd912c0207da2bac17de16eb631db70ae
 
   )
-  limit = 100
+  current_product_limit = 8000000
 
   search_opts = {
     :term => "clothes",
-    :limit => limit,
+    :limit => 100,
     :includes => %w(categoryFacet txAttrFacet_Gender),
     :excludes => %w(styleId colorId productUrl thumbnailImageUrl percentOff)
   }
 
   product_search_opts = {
-    :includes => %w(gender description weight videoUrl styles sortedSizes styles stocks onSale),
+    :includes => %w(gender description weight videoUrl styles sortedSizes styles stocks onSale defaultCategory defaultSubCategory),
     :excludes => %w(productId brandName productName defaultImageUrl defaultProductUrl )
   }
 
@@ -42,8 +42,8 @@ namespace :data_feed do
   }
 
   image_search_opts = {
-    :recipe => %w(MULTIVIEW),
-    :excludes => %w(type format productId recipeName imageId styleId)
+    :recipe => %w(MULTIVIEW 4x),
+    :excludes => %w(format productId imageId styleId)
   }
 
   price_search_opts = {
@@ -58,136 +58,144 @@ namespace :data_feed do
 
   desc "fetches 'item_models' from remote api"
   task :item_models => :environment do
-    exit if ENV['start_from_page'].blank? || ENV['category'].blank?
 
-    terms = [ENV['term']]
-    start_from_page = ENV['start_from_page']
+    # ActiveRecord::Base.logger = Logger.new STDOUT
+
+    start_from_page = ENV['start_from_page'].blank? ? 0 : ENV['start_from_page']
     key_index = 0
-    terms.each do |term|
-      puts "Running for #{term}, saving to category #{ENV['category']} from page #{start_from_page}"
-      begin
-        key_index = 0 if key_list[key_index].blank?
-        puts "using key=#{key_list[key_index]}"
 
-        client = Zappos::Client.new(key_list[key_index], { :base_url => 'api.zappos.com' })
-        response = client.search(:term => term, :limit => 1)
 
-        total_count = response.totalResultCount.to_f
-        puts "found total #{total_count}"
+    #[ItemModel, Category, SubCategory, Brand, ImageAttachment, Gender].each &:destroy_all
+    begin
+      key_index = 0 if key_list[key_index].blank?
+      puts "using key=#{key_list[key_index]}"
 
-        (total_count.to_f/limit.to_f).ceil.times do |index|
-          begin
+      client = Zappos::Client.new(key_list[key_index], { :base_url => 'api.zappos.com' })
+      response = client.search(:limit => 1)
 
-            key_index = 0 if key_list[key_index].blank?
-            client = Zappos::Client.new(key_list[key_index], { :base_url => 'api.zappos.com' })
-            response = client.search( search_opts.merge!({:page => index + start_from_page.to_i, :term => term.downcase}) )
+      total_count = response.totalResultCount.to_i
+      puts "found total #{total_count}"
 
-            items = response.results
-            puts "found #{items.size}. Running loop. page=#{index+start_from_page.to_i}"
+      (total_count.to_f/search_opts[:limit].to_f).ceil.times do |index|
+        begin
+          key_index = 0 if key_list[key_index].blank?
+          client = Zappos::Client.new(key_list[key_index], { :base_url => 'api.zappos.com' })
+          response = client.search( search_opts.merge!({ :page => index + start_from_page.to_i }) )
 
-            items.each do |item|
+          items = response.results
+          puts "found #{items.size}. Running loop. page=#{index+start_from_page.to_i}"
 
-              begin
-
-                # puts "started item #{item.productId}"
-                if ItemModel.find_by_external_product_id(item.productId)
-                  # puts "item ##{item.productId} exists in db. Skipping"
-                  next
-                end
-
-                ActiveRecord::Base.transaction do
-                  # puts "started transaction"
-                  product = client.product( product_search_opts.merge!({:id => item.productId}) ).data.product.first
-                  # puts "fetched product"
-                  brand = Brand.find_by_external_brand_id(product.brandId)
-                  # puts "fetched brand"
-                  image_feed = client.image( image_search_opts.merge!({:productId => item.productId})).data.images
-                  # puts "fetched image"
-
-                  unless brand
-                    puts "creating brand: #{item.brandName} with id #{product.brandId}"
-                    brand_feed = client.brand(brand_search_opts.merge!({:id => product.brandId})).try(:data).try(:brands).try(:first)
-                    brand = Brand.create(
-                        :name => item.brandName,
-                        :description => brand_feed.try(:aboutText),
-                        :external_brand_id => product.brandId,
-                        :logo_url => brand_feed.try(:headerImageUrl)
-                    )
-                    begin
-                      brand.image_attachments.create(:image => ImageAttachment.image_from_url(brand_feed.imageUrl))
-                    rescue => image_error
-                      brand.image_attachments.create
-                      puts "error in creating image for brand. #{image_error.inspect}"
-                    end
-                  end
-
-                  styles = product.styles
-                  description = Nokogiri::XML(product.description)
-                  description.search("ul li a").each(&:remove)
-                  item_model = ItemModel.create(
-                    :external_product_id => item.productId,
-                    :product_name => item.productName,
-                    :brand => brand,
-                    :category => Category.find_or_create_by_name(ENV['category']),
-                    :sub_category => SubCategory.find_or_create_by_name(item.categoryFacet),
-                    :gender => Gender.find_or_create_by_name(product.gender),
-                    :description => description.to_s,
-                    :weight => product.weight,
-                    :video_url => product.videoUrl
-                  )
-                  # puts "item model created in db"
-
-                  product_model = Product.create(
-                    :item_model => item_model,
-                    :total_quantity => 0
-                  )
-
-                  styles.each do |style_feed|
-                    style = Style.create(
-                      :color => style_feed.color,
-                      :original_price => style_feed.originalPrice[1..-1].to_f,
-                      :discount_price => style_feed.price[1..-1].to_f,
-                      :product => product_model,
-                      :percent_off => style_feed.percentOff.to_i,
-                      :external_style_id => style_feed.styleId,
-                      :on_sale => style_feed.onSale == "true"
-                    )
-                    image_feed[style_feed.styleId].each do |image|
-                      style.image_attachments.create(:image => ImageAttachment.image_from_url(image.filename))
-                    end
-
-                    style_feed.stocks.each do |stock|
-                      Stock.create(
-                        :size => stock['size'],
-                        :quantity => stock.onHand,
-                        :width => stock.width,
-                        :external_stock_id => stock.stockId,
-                        :style => style
-                      )
-                    end
-                    puts "created #{style_feed.stocks.size} stocks"
-                  end
-                  puts "created #{styles.size} styles"
-                  puts "#{item_model.product_name} loaded. Id ##{item_model.id}"
-                end
-              rescue => error
-                puts "Error in inner loop"
-                p error.inspect
-                key_index += 1
+          items.each do |item|
+            begin
+              puts "started item #{item.productId}"
+              if ItemModel.find_by_external_product_id(item.productId)
+                # puts "item ##{item.productId} exists in db. Skipping"
+                next
               end
+
+              ActiveRecord::Base.transaction do
+                # puts "started transaction"
+
+                product = client.product( product_search_opts.merge!({:id => item.productId}) ).data.product.first
+                # puts "fetched product"
+
+                brand = Brand.find_by_external_brand_id(product.brandId)
+                # puts "fetched brand"
+
+                image_feed = client.image( image_search_opts.merge!({:productId => item.productId})).data.images
+                # puts "fetched image"
+
+                unless brand
+                  puts "creating brand: #{item.brandName} with id #{product.brandId}"
+                  brand_feed = client.brand(brand_search_opts.merge!({:id => product.brandId})).try(:data).try(:brands).try(:first)
+                  brand = Brand.create(
+                    :name => item.brandName,
+                    :description => brand_feed.try(:aboutText),
+                    :external_brand_id => product.brandId,
+                    :logo_url => brand_feed.try(:headerImageUrl)
+                  )
+
+                  begin
+                    brand.image_attachments.create(:image_url => brand_feed.imageUrl)
+                  rescue => image_error
+                    brand.image_attachments.create
+                    puts "error in creating image for brand. #{image_error.inspect}"
+                  end
+                end
+
+                styles = product.styles
+                description = Nokogiri::XML(product.description)
+                description.search("ul li a").each(&:remove)
+                item_model = ItemModel.create(
+                  :external_product_id => item.productId,
+                  :product_name => item.productName,
+                  :brand => brand,
+                  :category => Category.find_or_create_by_name(product.defaultCategory),
+                  :sub_category => SubCategory.find_or_create_by_name(product.defaultSubCategory),
+                  :gender => Gender.find_or_create_by_name(product.gender),
+                  :description => description.root.to_s,
+                  :weight => product.weight,
+                  :video_url => product.videoUrl
+                )
+                # puts "item model created in db"
+
+                product_model = Product.create(
+                  :item_model => item_model,
+                  :total_quantity => 0
+                )
+
+                styles.each do |style_feed|
+                  style = Style.create(
+                    :color => style_feed.color,
+                    :original_price => style_feed.originalPrice[1..-1].to_f,
+                    :discount_price => style_feed.price[1..-1].to_f,
+                    :product => product_model,
+                    :percent_off => style_feed.percentOff.to_i,
+                    :external_style_id => style_feed.styleId,
+                    :on_sale => style_feed.onSale == "true"
+                  )
+
+                  image_feed[style_feed.styleId].each do |image|
+                    style.image_attachments.create(
+                      :image_url => image.filename,
+                      :external_image_type => image.type,
+                      :is_zoomed => image.recipeName == "4x"
+                    )
+                  end
+
+                  style_feed.stocks.each do |stock|
+                    Stock.create(
+                      :size => stock['size'],
+                      :quantity => stock.onHand,
+                      :width => stock.width,
+                      :external_stock_id => stock.stockId,
+                      :style => style
+                    )
+                  end
+                  puts "created #{style_feed.stocks.size} stocks"
+                end
+                puts "created #{styles.size} styles"
+                puts "#{item_model.product_name} loaded. Id ##{item_model.id}"
+              end
+            rescue => error
+              puts "Error in inner loop"
+              p error.inspect
+              key_index += 1
             end
-          rescue => error
-            puts "Error in loop"
-            p error.inspect
-            key_index += 1
           end
+        rescue => error
+          puts "Error in loop"
+          p error.inspect
+          key_index += 1
         end
-      rescue => error
-        puts "Error in overall. Key rejected. Changing"
-        key_index += 1
-        retry
       end
+    rescue => error
+      p error
+      puts "Error in overall. Key rejected. Changing"
+      key_index += 1
+      retry
     end
+
   end
 
   desc "updates item model prices"

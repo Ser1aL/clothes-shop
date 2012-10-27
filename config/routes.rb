@@ -21,6 +21,10 @@ Watches::Application.routes.draw do
     post "brand_translate"
     get "brand_favorites"
     post "set_brand_favorite"
+    get "category_favorites"
+    post "set_category_favorite"
+    get "sub_category_favorites"
+    post "set_sub_category_favorite"
   end
 
   namespace :search do

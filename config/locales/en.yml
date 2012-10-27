@@ -57,6 +57,7 @@ en:
     name: 'Название:'
     width: 'Полнота:'
   browse_brands_by_letter: 'Бренды в алфавитном порядке: '
+  uncategorized: 'Без подкатегории'
   category_list: 'Разделы:'
   size_grid: 'Размерная сетка'
   brand_list: 'ПЕРЕЙТИ К СПИСКУ БРЕНДОВ'

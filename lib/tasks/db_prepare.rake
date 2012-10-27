@@ -8,9 +8,9 @@ namespace :db_prepare do
         item_models.category_id,
         IF(sub_categories.display_name IS NOT NULL, sub_categories.display_name, sub_categories.name) as sub_category_name,
         item_models.sub_category_id, count(*), 'CategoryCounting'
-      FROM item_models, categories, sub_categories
+      FROM categories, item_models
+        LEFT JOIN sub_categories ON item_models.sub_category_id = sub_categories.id
       WHERE item_models.category_id = categories.id
-        AND item_models.sub_category_id = sub_categories.id
       GROUP BY item_models.category_id, item_models.sub_category_id
     SQL
 
@@ -20,10 +20,10 @@ namespace :db_prepare do
         item_models.category_id,
         IF(sub_categories.display_name IS NOT NULL, sub_categories.display_name, sub_categories.name) as sub_category_name,
         item_models.sub_category_id, count(item_models.id), item_models.brand_id, 'BrandCounting'
-      FROM item_models, brands, categories, sub_categories
+      FROM brands, categories, item_models
+        LEFT JOIN sub_categories ON item_models.sub_category_id = sub_categories.id
       WHERE item_models.category_id = categories.id
-              AND item_models.sub_category_id = sub_categories.id
-      AND item_models.brand_id = brands.id
+        AND item_models.brand_id = brands.id
       GROUP BY item_models.brand_id, item_models.category_id, item_models.sub_category_id
     SQL
 

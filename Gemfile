@@ -28,7 +28,7 @@ gem 'passenger'
 
 gem 'childprocess', :git => "git://github.com/jarib/childprocess.git", :tag => 'v0.2.1'
 
-gem "thinking-sphinx", :require => 'thinking_sphinx', :git => "git://github.com/freelancing-god/thinking-sphinx.git", :branch => "rails3"
+gem "thinking-sphinx"#, :require => 'thinking_sphinx', :git => "git://github.com/freelancing-god/thinking-sphinx.git", :branch => "rails3"
 gem 'riddle'#, :git => "git://github.com/freelancing-god/riddle.git"
 
 gem 'heroku'

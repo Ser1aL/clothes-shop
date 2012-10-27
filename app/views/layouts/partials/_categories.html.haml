@@ -11,9 +11,7 @@
               %span.brand_name ВСЕ КАТЕГОРИИ
               %span.brand_quantity
                 = @category_total_counts
-          - %w(1 4 2 6 3 5).each_with_index do |category_id, index|
-            - category_count = @category_counts.find{|c| c["id"] == category_id.to_i}
-            - next if category_count.nil?
+          - @category_counts.each_with_index do |category_count, index|
             %div{:class => "brand_watch_block#{index % 2 == 0 ? '1' : ''}"}
               %a.brand_changable.brand_watch{:href => "/#cat/#{params[:brand]}/#{category_count['id']}/#{params[:sub_category]}/#{params[:gender]}"}
                 %span.brand_name

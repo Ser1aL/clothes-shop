@@ -51,7 +51,7 @@
           %td
             = order_line.product.item_model.product_name
           %td
-            = image_tag order_line.style.image_attachments[0].image.url(:thumb)
+            = image_tag order_line.style.not_zoomed_image_attachments[0].image_url
           %td
             = order_line.quantity
           %td

@@ -613,6 +613,10 @@ a.submit_comment{
     margin: 0px 0px 20px 0px;
 }
 
+.product_image a .img_file{
+    width: 140px;
+}
+
 .advanced_search .product_image{
     margin: 0;
     overflow: hidden;
@@ -622,7 +626,7 @@ a.submit_comment{
 
     margin: 0 23px 20px 0;
 }
-.detailed_product_image img{
+.detailed_product_image .img_file{
     width: 191px;
 }
 
@@ -1634,8 +1638,13 @@ a.submit_comment{
 }
 
 .sc_clock_image{
-  width: 110px;
-  height: 110px;
+    width: 110px;
+    height: 110px;
+    overflow: hidden;
+}
+
+.sc_clock_image img{
+    width: 110px;
 }
 
 .order_row{
@@ -2718,7 +2727,7 @@ a.submit_comment{
     background: url('/images/more.png') 170px 82px no-repeat;
 }
 
-a.previews img{
+a.previews .previews_img_file{
     width: 58px;
 }
 

@@ -4,3 +4,4 @@ log/*.log
 tmp/
 config/initializers/mail_settings.rb
 public/system*
+.idea

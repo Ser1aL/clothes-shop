@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120611120414) do
+ActiveRecord::Schema.define(:version => 20121023201717) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "user_id"
@@ -47,6 +47,7 @@ ActiveRecord::Schema.define(:version => 20120611120414) do
     t.string   "display_name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "favorite"
   end
 
   create_table "comments", :force => true do |t|
@@ -91,12 +92,11 @@ ActiveRecord::Schema.define(:version => 20120611120414) do
   create_table "image_attachments", :force => true do |t|
     t.integer  "association_id"
     t.string   "association_type"
-    t.string   "image_file_name"
-    t.string   "image_content_type"
-    t.string   "image_file_size"
-    t.string   "image_updated_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "image_url"
+    t.string   "external_image_type"
+    t.boolean  "is_zoomed"
   end
 
   add_index "image_attachments", ["association_id"], :name => "index_image_attachments_on_association_id"
@@ -268,6 +268,7 @@ ActiveRecord::Schema.define(:version => 20120611120414) do
     t.string   "display_name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "favorite"
   end
 
   create_table "users", :force => true do |t|

@@ -1,0 +1,15 @@
+%div{:style => "margin-bottom: 100px; width: 400px; float: left;"}
+  = form_tag administrator_set_sub_category_favorite_path do
+    - @sub_category.each do |sub_category|
+      %div
+        = text_field_tag :sub_category_name, sub_category.name, :disabled => true
+        = check_box_tag "favorites[]", sub_category.id, sub_category.favorite
+    = submit_tag t("save")
+%div{:style => "float: right; width: 350px;"}
+  %div
+    Выбранные Подкатегории:
+  - @sub_category_favorites.each_with_index do |sub_category, index|
+    %div
+      = "#{index+1}. #{sub_category.name}"
+.delimiter
+

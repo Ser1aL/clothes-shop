@@ -25,7 +25,7 @@ class ItemModel < ActiveRecord::Base
   end
 
   def full_description
-    [brand.name, sub_category.name, category.name, gender.name].delete_if{ |x| x.blank? }.join ', '
+    [brand.name, sub_category.try(:name).to_s, category.name, gender.name].delete_if{ |x| x.blank? }.join ', '
   end
 
   def self.counts_by_type type

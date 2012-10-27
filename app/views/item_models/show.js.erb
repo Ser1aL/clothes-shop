@@ -26,3 +26,20 @@ activate_lightbox();
 activate_video_link();
 activate_size_grid();
 $('#loader').hide();
+
+var options = {
+    zoomType: 'standard',
+    lens:true,
+    preloadImages: true,
+    alwaysOn:false,
+    zoomWidth: 800,
+    zoomHeight: 600,
+    xOffset:10,
+    position:'left',
+    howEffect: 'fadein',
+    hideEffect: 'fadeout'
+    //...MORE OPTIONS
+};
+$('.zoom').hover(function(){
+    $(this).jqzoom(options);
+});

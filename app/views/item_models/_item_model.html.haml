@@ -5,10 +5,10 @@
       = product.product_name.html_safe
   .product_image
     %a{:href => item_model_url(product, :style => product.product.styles.first), :class => 'single_product_ajaxified_link'}
-      - if product.try(:product).try(:styles).try(:first).try(:image_attachments).blank?
-        = image_tag ImageAttachment.new.image.url(:thumb), :class => 'missing'
+      - if product.try(:product).try(:styles).try(:first).try(:not_zoomed_image_attachments).blank?
+        = image_tag 'thumb/missing.png', :class => 'missing'
       - else
-        = image_tag product.product.styles.first.image_attachments[0].image.url(:thumb), :alt => product.product_name
+        = image_tag product.product.styles.first.not_zoomed_image_attachments[0].image_url, :alt => product.product_name, :class => 'img_file'
     %a{:href => item_model_url(product, :style => product.product.styles.first), :class => 'single_product_ajaxified_link more_link'}
       = "Подробнее"
   .product_description
@@ -22,7 +22,7 @@
   .product_description
     = t('product_description.sub_category')
   .product_description1
-    = product.sub_category.name
+    = product.sub_category.try(:name)
   .product_description
     = t('product_description.gender')
   .product_description1

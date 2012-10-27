@@ -1,4 +1,4 @@
-<% 
+<%
   rendered_content = escape_javascript(render :partial => 'category_tip')
   if !@item_models.empty?
     rendered_content += escape_javascript(render :partial => 'product', :collection => @item_models)
@@ -8,6 +8,7 @@
   end
 %>
 $('#ajax_content').html("<%= rendered_content %>");
+
 prepare_paginated_links('cat');
 
 $.history.load('cat/<%= "#{params[:brand]}/#{params[:category]}/#{params[:sub_category]}/#{params[:gender]}" %><%= params[:page] ? "/#{params[:page]}" : '' %>');
@@ -16,22 +17,22 @@ set_default_navigation();
 <% if params[:brand] %>
   activate_navigation_button('brand');
   <% @brand_name = Brand.find(params[:brand]).name %>
-  $('.navigation_buttons #brand .button_mid').html('<%= @brand_name %>');
+  $('.navigation_buttons #brand .button_mid').html('<%= escape_javascript @brand_name %>');
 <% end %>
 <% if params[:category] %>
     activate_navigation_button('category');
     <% @category_name = Category.find(params[:category]).name %>
-    $('.navigation_buttons #category .button_mid').html('<%= @category_name %>');
+    $('.navigation_buttons #category .button_mid').html('<%= escape_javascript @category_name %>');
 <% end %>
 <% if params[:sub_category] %>
   activate_navigation_button('sub_category');
   <% @sub_category_name = SubCategory.find(params[:sub_category]).name %>
-  $('.navigation_buttons #sub_category .button_mid').html('<%= @sub_category_name %>');
+  $('.navigation_buttons #sub_category .button_mid').html('<%= escape_javascript @sub_category_name %>');
 <% end %>
 <% if params[:gender] %>
     activate_navigation_button('gender');
     <% @gender_name = Gender.find(params[:gender]).name %>
-    $('.navigation_buttons #gender .button_mid').html('<%= @gender_name %>');
+    $('.navigation_buttons #gender .button_mid').html('<%= escape_javascript @gender_name %>');
 <% end %>
 jQuery('html, body').animate( { scrollTop: 0 }, 'slow' );
 

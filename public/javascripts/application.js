@@ -424,3 +424,4 @@ function activate_size_grid(){
         left:50
     });
 }
+

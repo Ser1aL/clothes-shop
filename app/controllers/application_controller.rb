@@ -9,10 +9,10 @@ class ApplicationController < ActionController::Base
       @brand_counts = Brand.favorite_with_counts
       @brand_total_counts = @brand_counts.map{|hash| hash['item_count']}.sum
 
-      @category_counts = ItemModel.counts_by_type(:category)
+      @category_counts = Category.favorite_with_counts
       @category_total_counts = @category_counts.map{|hash| hash['item_count']}.sum
 
-      @sub_category_counts = ItemModel.counts_by_type(:sub_category)
+      @sub_category_counts = SubCategory.favorite_with_counts
       @sub_category_total_counts = @sub_category_counts.map{|hash| hash['item_count']}.sum
 
       @gender_counts = ItemModel.counts_by_type(:gender)

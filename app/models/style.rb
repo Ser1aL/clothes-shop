@@ -16,4 +16,8 @@ class Style < ActiveRecord::Base
   def is_shoes?
     stocks[0].width.to_i.to_s != stocks[0].width && stocks[0].width != 'One Size'
   end
+
+  def not_zoomed_image_attachments
+    image_attachments.delete_if{ |image_attachment| image_attachment.is_zoomed }
+  end
 end

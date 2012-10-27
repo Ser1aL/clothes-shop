@@ -15,16 +15,17 @@ class RawSearch
     search_query = <<-SQL
       SELECT #{type.to_s.pluralize}.id as #{type.to_s}_id,
         IFNULL(#{type.to_s.pluralize}.display_name,#{type.to_s.pluralize}.name) as type_name
-      FROM item_models, brands, genders, sub_categories, products, styles, stocks, categories
+      FROM brands, genders, products, styles, stocks, categories, item_models
+        LEFT JOIN sub_categories ON sub_categories.id = item_models.sub_category_id
       WHERE brands.id = item_models.brand_id
         AND genders.id = item_models.gender_id
-        AND sub_categories.id = item_models.sub_category_id
         AND categories.id = item_models.category_id
         AND products.item_model_id = item_models.id
         AND styles.product_id = products.id
         AND stocks.style_id = styles.id
       #{conditions}
       GROUP BY item_models.id, #{type.to_s.pluralize}.id
+      ORDER BY type_name
     SQL
 
     ActiveRecord::Base.connection.select_all(search_query).group_by{|r| r["#{type.to_s}_id"]}.map{|type_id, group|

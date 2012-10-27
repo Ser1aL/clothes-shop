@@ -3,7 +3,7 @@ class SearchController < ApplicationController
   layout 'application', :only => :index
 
   def index
-    @category_countings =  CategoryCounting.order(:sub_category_name).group_by(&:category_id)
+    @category_countings =  CategoryCounting.order(:category_name).group_by(&:category_id)
     @gender_countings =  GenderCounting.order(:gender_name)
     @item_models = ItemModel.get_items
   end

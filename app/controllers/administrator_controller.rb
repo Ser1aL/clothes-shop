@@ -37,7 +37,7 @@ class AdministratorController < ApplicationController
   end
 
   def brand_favorites
-    @brand = Brand.order(:name).all
+    @brand = Brand.order("ifnull(display_name, name)").all
     @brand_favorites = Brand.find_all_by_favorite(true)
   end
 
@@ -47,9 +47,31 @@ class AdministratorController < ApplicationController
     redirect_to :back
   end
 
+  def category_favorites
+    @category = Category.order("ifnull(display_name, name)").all
+    @category_favorites = Category.find_all_by_favorite(true)
+  end
+
+  def set_category_favorite
+    Category.all.each{|category| category.update_attribute(:favorite, false)}
+    Category.find(params[:favorites]).each{|category| category.update_attribute(:favorite, true)} unless params[:favorites].blank?
+    redirect_to :back
+  end
+
+  def sub_category_favorites
+    @sub_category = SubCategory.order("ifnull(display_name, name)").all
+    @sub_category_favorites = SubCategory.find_all_by_favorite(true)
+  end
+
+  def set_sub_category_favorite
+    SubCategory.all.each{|sub_category| sub_category.update_attribute(:favorite, false)}
+    SubCategory.find(params[:favorites]).each{|sub_category| sub_category.update_attribute(:favorite, true)} unless params[:favorites].blank?
+    redirect_to :back
+  end
+
   def category_translates
-    @categories = Category.order(:display_name)
-    @sub_categories = SubCategory.order(:display_name)
+    @categories = Category.order("ifnull(display_name, name)")
+    @sub_categories = SubCategory.order("ifnull(display_name, name)")
     @genders = Gender.order(:display_name)
   end
 

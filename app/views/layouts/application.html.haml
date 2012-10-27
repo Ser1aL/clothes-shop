@@ -12,7 +12,7 @@
       = t('meta_title')
     = stylesheet_link_tag :all
     = javascript_include_tag 'jquery.min', 'jquery.simplemodal', 'jquery.log', 'rails', 'jwplayer', 'slides.min.jquery'
-    = javascript_include_tag 'jquery.history', 'url.parser', 'jquery.lightbox-0.5', 'jquery.jstree', 'popup.window', 'application'
+    = javascript_include_tag 'jquery.history', 'url.parser', 'jquery.lightbox-0.5', 'jquery.jstree', 'popup.window', 'jquery.jqzoom-core', 'application'
     = csrf_meta_tag
     = render :partial => '/layouts/partials/google_analytics'
   %body
@@ -114,8 +114,8 @@
           = link_to t('all_brands'), brands_path
         %div{:style => 'clear: both;'}
         #categories.path_link
-          = t('category_list')
-          = Category.all.map{|category| link_to category.name, category_path(category)}.join(' | ').html_safe
+          -#= t('category_list')
+          -#= Category.all.map{|category| link_to category.name, category_path(category)}.join(' | ').html_safe
           .short_link{:style => "float: right"}
             = link_to "Расширенный поиск", advanced_search_path
         %div{:style => 'clear: both;'}

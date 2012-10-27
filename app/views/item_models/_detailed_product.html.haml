@@ -7,10 +7,11 @@
     = link_to product.brand.name, "/#cat/#{product.brand.id}///"
   %span.short_link
     = link_to product.category.name, "/#cat/#{product.brand.id}/#{product.category.id}//"
+  - if product.sub_category
+    %span.short_link
+      = link_to product.sub_category.name, "/#cat/#{product.brand.id}/#{product.category.id}/#{product.sub_category.id}/"
   %span.short_link
-    = link_to product.sub_category.name, "/#cat/#{product.brand.id}/#{product.category.id}/#{product.sub_category.id}/"
-  %span.short_link
-    = link_to product.gender.name, "/#cat/#{product.brand.id}/#{product.category.id}/#{product.sub_category.id}/#{product.gender.id}"
+    = link_to product.gender.name, "/#cat/#{product.brand.id}/#{product.category.id}/#{product.sub_category.try(:id)}/#{product.gender.id}"
   %span.short_link.no_arrows
     = product.product_name.html_safe
 .separator_content
@@ -20,17 +21,17 @@
       %a.title_product-a.ajaxified_disabled_link
         = product.brand.name
     .product_image.detailed_product_image#clock_images
-      - if @style.try(:image_attachments).blank?
-        = image_tag ImageAttachment.new.image.url(:thumb), :class => 'missing'
+      - if @style.try(:not_zoomed_image_attachments).blank?
+        = image_tag 'thumb/missing.png', :class => 'missing'
       - else
-        %a{:href => @style.image_attachments[0].image.url(:original)}
-          = image_tag @style.image_attachments[0].image.url(:original), :alt => product.product_name
+        %a.zoom{:href => @style.not_zoomed_image_attachments[0].image_url, :rel => @style.not_zoomed_image_attachments[0].zoom_image, :title => 'zoom' }
+          = image_tag @style.not_zoomed_image_attachments[0].image_url, :alt => product.product_name, :class => 'img_file'
         #other_images
-          - @style.image_attachments.each_with_index do |image_attachment, index|
+          - @style.not_zoomed_image_attachments.each_with_index do |image_attachment, index|
             - next if index == 0
-            %a.previews{:href => image_attachment.image.url(:original)}
+            %a.previews.zoom{:href => image_attachment.image_url, :rel => image_attachment.zoom_image, :title => 'zoom'}
               - if index < 6
-                = image_tag image_attachment.image.url(:thumb), :alt => product.product_name
+                = image_tag image_attachment.image_url, :alt => product.product_name, :class => 'previews_img_file'
     .left
       .logo
         = image_tag product.brand.logo_url
@@ -45,7 +46,7 @@
       .product_description
         = t('product_description.sub_category')
       .product_description1
-        = product.sub_category.name
+        = product.sub_category.try(:name)
       .product_description
         = t('product_description.color')
       .product_description1
@@ -75,7 +76,7 @@
           - product.product.styles.each do |style|
             - next if style == @style
             %a{:href => "/#single/#{style.product.id}/#{style.id}"}
-              = image_tag style.image_attachments.try(:[], 0).try(:image).try(:url, :thumb), :alt => product.product_name, :style => 'width: 30px;'
+              = image_tag style.not_zoomed_image_attachments.try(:[], 0).try(:image_url), :alt => product.product_name, :style => 'width: 30px;'
     .delimiter
     #flv_player
   .block_description
@@ -155,9 +156,9 @@
   .filter_tips
     %a.arrow_down{:href => "#"}
     .filter_tips_text
-      %a#comments_toggle{:href => "#"} 
-        = t('comments.tip_total') 
-        = "( #{product.comments.size} )" 
+      %a#comments_toggle{:href => "#"}
+        = t('comments.tip_total')
+        = "( #{product.comments.size} )"
   .separator_content
   #comment_wrapper
     #comment_loader
