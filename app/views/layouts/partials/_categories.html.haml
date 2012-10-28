@@ -18,6 +18,12 @@
                   = category_count['name'].upcase
                 %span.brand_quantity
                   = category_count['item_count']
+          %div{:class => "brand_watch_block#{@category_counts.size % 2 == 0 ? '1' : ''}"}
+            %a.brand_watch{:href => "/"}
+              %span.brand_name
+                = t('get_category_list')
+              %span.brand_quantity
+                \-
         .functional_block_brands_footer
           .functional_block_brands_footer_left_bottom
           .functional_block_brands_footer_right_bottom

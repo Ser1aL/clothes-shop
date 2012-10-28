@@ -16,7 +16,7 @@
               %a.brand_changable.brand_watch{:href => "/#cat/#{params[:brand]}/#{params[:category]}/#{sub_category_count['id']}/#{params[:gender]}"}
                 %span.brand_name
                   = sub_category_count['name'].upcase
-                %span.brand_quantity 
+                %span.brand_quantity
                   = sub_category_count['item_count']
           %div{:class => "brand_watch_block#{@sub_category_counts.size % 2 == 0 ? '1' : ''}"}
             %a.brand_watch{:href => "/"}

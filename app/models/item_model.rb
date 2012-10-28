@@ -28,7 +28,7 @@ class ItemModel < ActiveRecord::Base
     [brand.name, sub_category.try(:name).to_s, category.name, gender.name].delete_if{ |x| x.blank? }.join ', '
   end
 
-  def self.counts_by_type type
+  def self.counts_by_type(type)
     return [] if !['brand', 'category', 'gender', 'sub_category'].include? type.to_s
     type = type.to_s
     find_by_sql("SELECT #{type.pluralize}.id,

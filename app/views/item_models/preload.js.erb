@@ -13,7 +13,12 @@ prepare_paginated_links('cat');
 
 $.history.load('cat/<%= "#{params[:brand]}/#{params[:category]}/#{params[:sub_category]}/#{params[:gender]}" %><%= params[:page] ? "/#{params[:page]}" : '' %>');
 set_default_navigation();
+<% popup_windows = render :partial => '/layouts/partials/brands' %>
+<% popup_windows += render :partial => '/layouts/partials/categories' %>
+<% popup_windows += render :partial => '/layouts/partials/sub_categories' %>
+<% popup_windows += render :partial => '/layouts/partials/genders' %>
 
+$("#items_popup_windows").html("<%= escape_javascript(popup_windows) %>");
 <% if params[:brand] %>
   activate_navigation_button('brand');
   <% @brand_name = Brand.find(params[:brand]).name %>

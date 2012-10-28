@@ -29,10 +29,11 @@
     / Header
     #conteiner_wraper
       #selection_top_wrapper
-        = render :partial => '/layouts/partials/brands'
-        = render :partial => '/layouts/partials/categories'
-        = render :partial => '/layouts/partials/sub_categories'
-        = render :partial => '/layouts/partials/genders'
+        #items_popup_windows
+          = render :partial => '/layouts/partials/brands'
+          = render :partial => '/layouts/partials/categories'
+          = render :partial => '/layouts/partials/sub_categories'
+          = render :partial => '/layouts/partials/genders'
       - if !current_user
         = render :partial => '/layouts/partials/registration_form'
         = render :partial => '/layouts/partials/login_form'
