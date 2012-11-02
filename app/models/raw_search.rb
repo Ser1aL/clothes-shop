@@ -28,13 +28,14 @@ class RawSearch
       ORDER BY type_name
     SQL
 
-    ActiveRecord::Base.connection.select_all(search_query).group_by{|r| r["#{type.to_s}_id"]}.map{|type_id, group|
+    ActiveRecord::Base.connection.select_all(search_query).group_by{|r| r["#{type.to_s}_id"]}.map do |type_id, group|
+      next if group.first["type_name"].blank?
       {
         :count => group.size,
         :type_name => group.first["type_name"],
         "#{type.to_s}_id".to_sym => type_id
       }.merge!(params)
-    }.sort_by{|r| r[:type_name].first.capitalize + r[:type_name].try(:[], 1).try(:capitalize).to_s}
+    end.compact.sort_by{|r| r[:type_name].first.capitalize + r[:type_name].try(:[], 1).try(:capitalize).to_s}
   end
 
   def self.get_size_counts(params)

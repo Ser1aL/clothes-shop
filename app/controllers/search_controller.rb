@@ -4,7 +4,7 @@ class SearchController < ApplicationController
 
   def index
     @category_countings =  CategoryCounting.order(:category_name).group_by(&:category_id)
-    @gender_countings =  GenderCounting.order(:gender_name)
+    @gender_countings =  CategoryCounting.group(:gender_id).select("sum(value) as value, gender_name, gender_id")
     @item_models = ItemModel.get_items
   end
 
