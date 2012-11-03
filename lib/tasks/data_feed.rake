@@ -25,7 +25,6 @@ namespace :data_feed do
   current_product_limit = 8000000
 
   search_opts = {
-    :term => "clothes",
     :limit => 100,
     :includes => %w(categoryFacet txAttrFacet_Gender),
     :excludes => %w(styleId colorId productUrl thumbnailImageUrl percentOff)
