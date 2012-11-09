@@ -9,6 +9,7 @@ class ItemModelsController < ApplicationController
   def show
     @product = ItemModel.find(params[:id])
     @style = @product.product.styles.find(params[:style_id])
+    update_prices @product, @style
   end
 
   def preload
@@ -35,6 +36,19 @@ class ItemModelsController < ApplicationController
 
     @gender_counts = CategoryCounting.counts_with_favorite(:gender, params)
     @gender_total_counts = @gender_counts.map{|hash| hash['item_count']}.sum
+  end
+
+  private
+
+  def update_prices(item_model, style)
+    begin
+      return if style.update_6pm_prices(item_model)
+    rescue
+    end
+    begin
+      style.update_attribute(:hidden, true) if style.update_zappos_prices(item_model)
+    rescue
+    end
   end
 
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121028154045) do
+ActiveRecord::Schema.define(:version => 20121109232658) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "user_id"
@@ -258,6 +258,8 @@ ActiveRecord::Schema.define(:version => 20121028154045) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "on_sale"
+    t.integer  "external_color_id"
+    t.boolean  "hidden",                                           :default => false
   end
 
   add_index "styles", ["product_id"], :name => "index_styles_on_product_id"

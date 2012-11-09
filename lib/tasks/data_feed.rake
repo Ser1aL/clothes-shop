@@ -20,7 +20,6 @@ namespace :data_feed do
     73d48a44f5aa34630603867d6f713214757581f
     36145a18b8611ac955474b3cace251fc724d779b
     9fb8ecbdd912c0207da2bac17de16eb631db70ae
-
   )
   current_product_limit = 8000000
 
@@ -31,7 +30,7 @@ namespace :data_feed do
   }
 
   product_search_opts = {
-    :includes => %w(gender description weight videoUrl styles sortedSizes styles stocks onSale defaultCategory defaultSubCategory),
+    :includes => %w(gender description weight videoUrl styles sortedSizes styles stocks onSale defaultCategory defaultSubCategory colorId),
     :excludes => %w(productId brandName productName defaultImageUrl defaultProductUrl )
   }
 
@@ -151,7 +150,8 @@ namespace :data_feed do
                     :product => product_model,
                     :percent_off => style_feed.percentOff.to_i,
                     :external_style_id => style_feed.styleId,
-                    :on_sale => style_feed.onSale == "true"
+                    :on_sale => style_feed.onSale == "true",
+                    :external_color_id => style_feed.colorId
                   )
 
                   image_feed[style_feed.styleId].each do |image|
