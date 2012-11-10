@@ -59,13 +59,13 @@ class Style < ActiveRecord::Base
     html.css("ul li#priceSlot .oldPrice").text =~ %r(\$([\d\.]*))
     original_price = $1
     if original_price.blank?
-      html.css("#price").text =~ %r(\$([\d\.]*))
+      html.css(".discount").text =~ %r(\$([\d\.]*))
       original_price = $1
     end
     html.css("ul li#priceSlot .price").text =~ %r(\$([\d\.]*))
     price = $1
     if price.blank?
-      html.css(".discount").text =~ %r(\$([\d\.]*))
+      html.css("#price").text =~ %r(\$([\d\.]*))
       price = $1
     end
     # recreating stocks
