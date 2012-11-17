@@ -199,16 +199,20 @@ namespace :data_feed do
 
   desc "updates item model prices"
   task :update_prices => :environment do
+    output_file = File.open("log/price_update_output.txt", "w")
     key_index = 0
     Style.all.each_with_index do |style, index|
+      output_file.puts "Style: #{style.inspect}"
       sleep 5 if index % 50 == 0
       begin
+        output_file.puts "Requesting 6pm. Color id: #{style.external_color_id}"
         if style.update_6pm_prices(style.product.item_model)
           style.update_attribute(:hidden, false) and next
         end
       rescue
       end
       begin
+        output_file.puts "Requesting zappos. Color id: #{style.external_color_id}"
         if style.update_zappos_prices(style.product.item_model, key_index)
           style.update_attribute(:hidden, false)
         else
@@ -219,11 +223,11 @@ namespace :data_feed do
       end
     end
     Style.where(:hidden => true).each do |style|
-      Rails.logger.info "Removing style: #{style.inspect}"
+      output_file.puts "Removing style: #{style.inspect}"
       item_model = style.product.item_model
       style.destroy
       unless item_model.product.styles.any?
-        Rails.logger.info "Removing item model: #{item_model.inspect}"
+        output_file.puts "Removing item model: #{item_model.inspect}"
         item_model.destroy
       end
     end
