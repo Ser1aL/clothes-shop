@@ -9,12 +9,11 @@
               %a{:href => banner.url}
                 = image_tag banner.image_attachments[0].image_url
     .categories_panel
-      - counter = 0
-      - %w(1 5 6 3 2 4).each do |top_level_category_id|
-        - next if @categories[top_level_category_id.to_i + 1].blank?
-        - counter += 1
+      - blocks_showed = 0
+      - %w(1 5 6 3 2 4).each_with_index do |top_level_category_id, index|
+        - next if @categories[index].blank?
         - categories = @categories[top_level_category_id.to_i].sort_by{ |category| category.name }
-        - if counter % 3 == 0
+        - if blocks_showed % 3 == 0
           .delimiter
         .category_block
           .category_header
@@ -29,3 +28,4 @@
                 .sub_category_count
                   = "(#{@countings[category.id].sum(&:value)})"
               .delimiter
+        - blocks_showed += 1
