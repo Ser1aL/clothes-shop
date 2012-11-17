@@ -219,9 +219,11 @@ namespace :data_feed do
       end
     end
     Style.where(:hidden => true).each do |style|
+      Rails.logger.info "Removing style: #{style.inspect}"
       item_model = style.product.item_model
       style.destroy
       unless item_model.product.styles.any?
+        Rails.logger.info "Removing item model: #{item_model.inspect}"
         item_model.destroy
       end
     end
