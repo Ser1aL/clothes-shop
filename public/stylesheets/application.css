@@ -2250,7 +2250,7 @@ a.submit_comment{
 	width: 368px;
 	height: 30px;
 	margin: 0 -15px;
-	padding: 0 15px;
+	padding: 0 0 0 15px;
 	vertical-align: middle;
 	line-height: 30px;
 	background-color: #f3f3f3;
@@ -2293,7 +2293,7 @@ a.submit_comment{
 }
 
 .brand_name, .brand_quantity{
-	width: 330px;
+	width: 315px;
 	height: 30px;
 	vertical-align: middle;
 	line-height: 30px;
@@ -2304,8 +2304,9 @@ a.submit_comment{
 }
 
 .brand_quantity{
-	width: 35px;
+	width: 51px;
 	color: #c2c2c2;
+    float: right;
 }
 
 

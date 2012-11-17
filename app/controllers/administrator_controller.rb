@@ -102,6 +102,15 @@ class AdministratorController < ApplicationController
 
   end
 
+  def category_mapping
+    @categories = Category.order("ifnull(display_name, name)")
+  end
+
+  def set_category_mapping
+    @category = Category.find(params[:category_id])
+    @category.update_attribute(:top_category, params[:top_category])
+  end
+
   def do_login
     if params[:login] == 'gri74@bk.ru' && params[:password] == 'gri74bkru'
       session[:admin_loginned] = true and redirect_to(administrator_path)

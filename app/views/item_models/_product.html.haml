@@ -27,7 +27,7 @@
   .product_description1
     = product.gender.name
   .grey_area
-    - if product.product
+    - if product.product && product.product.styles.map(&:hidden?).include?(false)
       .presence_color
       .presence_note
         = t('product_exists')

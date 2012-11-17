@@ -143,3 +143,9 @@ en:
         subject: "Инструкции по подтверждению учётной записи"
       reset_password_instructions:
         subject: "Инструкции по восстановлению пароля"
+
+  clothes: "Одежда"
+  shoes: "Обувь"
+  accessories: "Аксессуары"
+  watches: "Часы"
+  sunglasses: "Очки"

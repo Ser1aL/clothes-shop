@@ -1,0 +1,12 @@
+.hint
+  Категории
+- @categories.each do |category|
+  = form_tag administrator_set_category_mapping_path, :remote => true, :id => "category_form_#{category.id}" do
+    = hidden_field_tag :type, "category"
+    = hidden_field_tag :category_id, category.id
+    - if category.top_category_name
+      = text_field_tag :name, "#{category.name}(#{t(category.top_category_name)})", :disabled => true, :style => "width: 300px;"
+    - else
+      = text_field_tag :name, category.name, :disabled => true, :style => "width: 300px;"
+    = select_tag :top_category, options_for_select(Category::TOP_CATEGORIES.map{|k,v| [t(k), v]}, category.top_category)
+    = submit_tag t("save"), :class => 'ajaxified_translation'

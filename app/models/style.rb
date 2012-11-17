@@ -45,6 +45,7 @@ class Style < ActiveRecord::Base
 
   def update_6pm_prices(item_model)
     path_to_product = "http://6pm.com/product/#{item_model.external_product_id}/color/#{external_color_id}"
+    Rails.logger.debug("updating info from 6pm url: #{path_to_product}")
     html = Nokogiri::HTML(open(path_to_product))
 
     # ensure we are on this page
@@ -70,6 +71,8 @@ class Style < ActiveRecord::Base
     end
     # recreating stocks
     feed_stocks = html.css("select[name=dimensionValues] option")
+
+    return if percent_off.blank? || price.blank? || original_price.blank? || feed_stocks.size <= 0
     stocks.destroy_all
     feed_stocks[1..feed_stocks.size].each{ |stock| self.stocks.create(:size => stock.text, :quantity => 1) }
     self.update_attributes(
@@ -81,6 +84,7 @@ class Style < ActiveRecord::Base
   end
 
   def update_zappos_prices(item_model)
+    Rails.logger.debug("updating info from zappos api")
     product_search_opts = {
       :includes => %w(gender description weight videoUrl styles sortedSizes styles stocks onSale defaultCategory defaultSubCategory colorId),
       :excludes => %w(productId brandName productName defaultImageUrl defaultProductUrl )

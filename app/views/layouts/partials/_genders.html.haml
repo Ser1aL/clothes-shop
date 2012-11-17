@@ -11,6 +11,7 @@
               %span.brand_name ВСЕ ТИПЫ
               %span.brand_quantity
                 = @gender_total_counts
+          .delimiter
           - @gender_counts.each_with_index do |gender, index|
             %div{:class => "brand_watch_block#{index % 2 == 0 ? '1' : ''}"}
               %a.brand_changable.brand_watch{:href => "/#cat/#{params[:brand]}/#{params[:category]}/#{params[:sub_category]}/#{gender['id']}"}
@@ -18,7 +19,9 @@
                   = gender['name'].upcase
                 %span.brand_quantity 
                   = gender['item_count']
+            .delimiter
         .functional_block_brands_footer
           .functional_block_brands_footer_left_bottom
           .functional_block_brands_footer_right_bottom
+        .delimiter
     %div{:style => 'clear: both'}

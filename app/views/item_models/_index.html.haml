@@ -9,21 +9,20 @@
               %a{:href => banner.url}
                 = image_tag banner.image_attachments[0].image_url
     .categories_panel
-      - countings.each_with_index do |(category_id, countings), index|
+      - %w(1 5 3 2 4).each_with_index do |top_level_category_id, index|
+        - categories = @categories[top_level_category_id.to_i].sort_by{ |category| category.name }
         - if index % 3 == 0
           .delimiter
         .category_block
           .category_header
             .category_name
-              = link_to "#{countings[0].category_name}", "/#cat//#{category_id}//"
+              = link_to t(categories.first.top_category_name), category_path(top_level_category_id)
             .category_count
-              = "(#{countings.map(&:value).sum})"
           .category_content
-            - countings.each do |counting|
-              - next unless counting.sub_category_name
+            - categories.each do |category|
               %div
                 .sub_category_name
-                  = link_to "#{counting.sub_category_name}", "/#cat//#{category_id}/#{counting.sub_category_id}/"
+                  = link_to category.name, "/#cat//#{category.id}//"
                 .sub_category_count
-                  = "(#{counting.value})"
+                  = "(#{@countings[category.id].sum(&:value)})"
               .delimiter

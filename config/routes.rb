@@ -25,6 +25,8 @@ Watches::Application.routes.draw do
     post "set_category_favorite"
     get "sub_category_favorites"
     post "set_sub_category_favorite"
+    get "category_mapping"
+    post "set_category_mapping"
   end
 
   namespace :search do

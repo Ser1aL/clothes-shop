@@ -6,7 +6,7 @@
       .banners
         #slides
           .slides_container
-            - @category.banners.each do |banner|
+            - @banners.each do |banner|
               %div
                 %a{:href => banner.url}
                   = image_tag banner.image_attachments[0].image_url
@@ -16,15 +16,13 @@
         .category_block
           .category_header
             .category_name
-              = link_to "#{@countings.first.category_name}", category_path(@countings.first.category_id)
+              = link_to t(@categories.first.top_category_name), category_path(params[:id])
             .category_count
-              = "(#{@countings.map(&:value).sum})"
           .category_content
-            - @countings.each do |counting|
-              - next unless counting.sub_category_name
+            - @categories.each do |category|
               %div
                 .sub_category_name
-                  = link_to "#{counting.sub_category_name}", "/#cat//#{@countings.first.category_id}/#{counting.sub_category_id}/"
+                  = link_to "#{category.name}", "/#cat//#{category.id}//"
                 .sub_category_count
-                  = "(#{counting.value})"
+                  = "(#{@countings[category.id].sum(&:value)})"
               .delimiter

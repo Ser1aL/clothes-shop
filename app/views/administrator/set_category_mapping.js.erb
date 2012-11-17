@@ -1,0 +1,6 @@
+var display_name = "<%= @category.name.html_safe %>(<%= t(@category.top_category_name) %>)";
+var form = $("#category_form_<%= params[:category_id] %>");
+if(display_name != ""){
+    form.find("input:text").first().val(display_name);
+}
+form.find("input:submit").val("Сохранить");

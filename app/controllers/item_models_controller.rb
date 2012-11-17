@@ -1,6 +1,7 @@
 class ItemModelsController < ApplicationController
   def index
     if request.xhr?
+      @categories = Category.all.group_by(&:top_category).delete_if{ |key, _| key.blank? }
       @countings = CategoryCounting.grouped_by_category
       @banners = Banner.where("banners.category_id IS NULL")
     end
@@ -14,7 +15,6 @@ class ItemModelsController < ApplicationController
 
   def preload
     prepare_counts_with_conditions
-    File.open('f.txt', 'a+'){|f| f.puts params.inspect}
     @item_models = ItemModel.get_items(params)
   end
 
@@ -42,11 +42,17 @@ class ItemModelsController < ApplicationController
 
   def update_prices(item_model, style)
     begin
-      return if style.update_6pm_prices(item_model)
+      if style.update_6pm_prices(item_model)
+        style.update_attribute(:hidden, false) and return
+      end
     rescue
     end
     begin
-      style.update_attribute(:hidden, true) if style.update_zappos_prices(item_model)
+      if style.update_zappos_prices(item_model)
+        style.update_attribute(:hidden, false)
+      else
+        style.update_attribute(:hidden, true)
+      end
     rescue
     end
   end
