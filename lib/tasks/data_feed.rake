@@ -200,41 +200,22 @@ namespace :data_feed do
   desc "updates item model prices"
   task :update_prices => :environment do
     key_index = 0
-    ItemModel.with_price_not_updated.each do |item_model|
+    Style.all.each_with_index do |style, index|
+      sleep 5 if index % 50 == 0
       begin
-        client = Zappos::Client.new(key_list[key_index], { :base_url => 'api.zappos.com' })
-        price_feed = client.product( price_search_opts.merge!({:id => item_model.external_product_id}) ).data.product.first
-        item_model.product.styles.each do |style|
-          ActiveRecord::Base.transaction do
-            # secondary check for multi run
-            next if style.updated_at > Time.now - ItemModel::PRICE_UPDATE_INTERVAL
-
-            price_feed.styles.each do |style_feed|
-              if style_feed.styleId == style.external_style_id
-                style.update_attributes(
-                  :original_price => (style_feed.originalPrice[1..-1].to_f * ExchangeRate.first.value.to_f).to_i,
-                  :discount_price => (style_feed.price[1..-1].to_f * ExchangeRate.first.value.to_f).to_i,
-                  :percent_off => style_feed.percentOff.to_i,
-                  :updated_at => Time.now,
-                  :on_sale => style_feed.onSale == "true"
-                )
-                style.stocks.destroy_all
-                style_feed.stocks.each do |stock|
-                  Stock.create(
-                    :size => stock['size'],
-                    :quantity => stock.onHand,
-                    :width => stock.width,
-                    :external_stock_id => stock.stockId,
-                    :style => style
-                  )
-                end
-              end
-            end
-          end
+        if style.update_6pm_prices(style.product.item_model)
+          style.update_attribute(:hidden, false) and next
         end
       rescue
-        key_index += 1
-        retry
+      end
+      begin
+        if style.update_zappos_prices(style.product.item_model, key_index)
+          style.update_attribute(:hidden, false)
+        else
+          style.update_attribute(:hidden, true)
+        end
+      rescue
+        key_index += 1 and next
       end
     end
   end
@@ -251,6 +232,7 @@ namespace :data_feed do
         :sunglasses => 'sunglasses',
         :index => ''
     }
+    # TOP_CATEGORIES = { :clothes => 1, :shoes => 2, :accessories => 3, :watches => 4, :sunglasses => 5 }
     category_mapping.each do |category_name, page_name|
       if category = Category.find_by_name(category_name) || category_name == :index
         if category_name != :index
@@ -294,4 +276,5 @@ namespace :data_feed do
       end
     end
   end
+
 end

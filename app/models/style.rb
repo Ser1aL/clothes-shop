@@ -83,13 +83,14 @@ class Style < ActiveRecord::Base
     true
   end
 
-  def update_zappos_prices(item_model)
+  def update_zappos_prices(item_model, key_index = 0)
     Rails.logger.debug("updating info from zappos api")
     product_search_opts = {
       :includes => %w(gender description weight videoUrl styles sortedSizes styles stocks onSale defaultCategory defaultSubCategory colorId),
       :excludes => %w(productId brandName productName defaultImageUrl defaultProductUrl )
     }
-    client = Zappos::Client.new(KEY_LIST.first, { :base_url => 'api.zappos.com' })
+    key = KEY_LIST[key_index] || KEY_LIST.first
+    client = Zappos::Client.new(key, { :base_url => 'api.zappos.com' })
     product = client.product( product_search_opts.merge!({:id => item_model.external_product_id}) ).data.product
     return false unless product
     styles = product.first.styles
