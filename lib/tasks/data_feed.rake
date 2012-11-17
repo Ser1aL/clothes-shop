@@ -218,6 +218,13 @@ namespace :data_feed do
         key_index += 1 and next
       end
     end
+    Style.where(:hidden => true).each do |style|
+      item_model = style.product.item_model
+      style.destroy
+      unless item_model.product.styles.any?
+        item_model.destroy
+      end
+    end
   end
 
   desc "load banners"
