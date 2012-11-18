@@ -8,6 +8,8 @@ class Style < ActiveRecord::Base
   has_many :order_lines
 
   KEY_LIST = %w(
+    682e77c7447636780d5679a9bf6aa95c512e906c
+    36145a18b8611ac955474b3cace251fc724d779b
     8bffaa3d5e1ccb6857544756293cf624f7d371d7
     3ae517aa832c98fc1d47c6d9d4669f05a5bda4cb
     1c256e0d9206018da4c6b574f4a7727369a821e6
@@ -20,7 +22,6 @@ class Style < ActiveRecord::Base
     611c3a7ab7dd6cc24c8eecf3d914a21511e549e3
     4fd6ec8ee757905d08c6b0e063ee53a3277d9903
     b9b79a15b2c0efeaa17e18d5d9ff1c0ba7f0fceb
-    682e77c7447636780d5679a9bf6aa95c512e906c
     73d48a44f5aa34630603867d6f713214757581f
     36145a18b8611ac955474b3cace251fc724d779b
     9fb8ecbdd912c0207da2bac17de16eb631db70ae
@@ -89,9 +90,11 @@ class Style < ActiveRecord::Base
       :includes => %w(gender description weight videoUrl styles sortedSizes styles stocks onSale defaultCategory defaultSubCategory colorId),
       :excludes => %w(productId brandName productName defaultImageUrl defaultProductUrl )
     }
-    key = KEY_LIST[key_index] || KEY_LIST.first
+    key = KEY_LIST[key_index] || KEY_LIST.sample
     client = Zappos::Client.new(key, { :base_url => 'api.zappos.com' })
-    product = client.product( product_search_opts.merge!({:id => item_model.external_product_id}) ).data.product
+    response = client.product( product_search_opts.merge!({:id => item_model.external_product_id}) )
+    raise if response.data.statusCode.to_i == 401
+    product = response.data.product
     return false unless product
     styles = product.first.styles
     styles.each do |feed_style|
