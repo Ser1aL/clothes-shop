@@ -201,7 +201,7 @@ namespace :data_feed do
   task :update_prices => :environment do
     output_file = File.open("log/price_update_output.txt", "w")
     key_index = 0
-    Style.all.each_with_index do |style, index|
+    Style.order("created_at DESC").limit(20000).each_with_index do |style, index|
       output_file.puts "Style: #{style.inspect}"
       sleep 5 if index % 50 == 0
       begin
