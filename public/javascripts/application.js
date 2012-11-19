@@ -1,3 +1,7 @@
+$.ajaxSetup({
+    cache: true
+});
+
 function prepare_paginated_links(page_type){
   $(".pager a").click(function() {
     $('#loader').show();
@@ -121,7 +125,7 @@ function activate_selection_popups(){
 }
 
 function load_categorized_or_single_page(url_parser){
-    var script_name = '/.js';
+    var script_name = '/';
     var query = '';
     var page_type = url_parser.fsegment(1);
     if (page_type == 'top'){
@@ -271,12 +275,18 @@ $(function(){
   });
 
   $('.submit_search').click(function(){
-    if ($('#search_query').val() == '') return false;
     $('#search_form').submit();
     return false;
   });
 
+  $("#search_button").click(function(event){
+    event.preventDefault();
+  });
+
   $('#search_form').submit(function(){
+    var search_query = $.trim($('#search_query').val());
+    if (search_query == '') return false;
+    $.history.load('search/'+encodeURI(search_query)+'/');
     $('#loader').show();
   });
 

@@ -18,7 +18,7 @@ class ShoppingCartController < ApplicationController
 
     if @product && @style && @stock
       if session[:shopping_cart_id].nil?
-        @shopping_cart = ShoppingCart.create(:user_id => nil, :status => 'open')
+        @shopping_cart = ShoppingCart.create!(:user_id => nil, :status => :open)
         @shopping_cart.shopping_cart_lines.create(
           :product_id => params[:product_id],
           :quantity => 1,

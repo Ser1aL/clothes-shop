@@ -361,6 +361,11 @@ a.submit_comment{
 	float: left;
 }
 
+#search_query{
+    outline: none;
+    line-height: 22px;
+}
+
 /* Поле регистрации и корзины */
 
 .gray_area_conteiner_header {
@@ -1428,6 +1433,7 @@ a.submit_comment{
 	font-size: 13px;
 	font-family: Arial;
 	text-align: left;
+    outline: none;
 }
 
 .lable {

@@ -99,9 +99,9 @@
           #navigation_search
             = form_tag search_path, :method => 'post', :id => 'search_form', :remote => true do
               %a#search_button.button{:href => "#"}
-                .button_left
+                .button_left.submit_search
                 .button_mid.submit_search Найти
-                .button_right
+                .button_right.submit_search
               .input_bg
                 .input_left_bg
                 = text_field_tag 'search_query', '', :class => 'input_style'
