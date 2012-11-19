@@ -1,5 +1,5 @@
 class Users::PasswordsController < Devise::PasswordsController
-  include Devise::Controllers::InternalHelpers
+
   def successfully_sent?(resource)
     true if resource.errors.empty?
   end
