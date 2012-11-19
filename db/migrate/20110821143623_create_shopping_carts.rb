@@ -2,7 +2,7 @@ class CreateShoppingCarts < ActiveRecord::Migration
   def self.up
     create_table :shopping_carts do |t|
       t.integer :user_id
-      t.column :status, :enum, :limit => ['open', 'close'], :default => 'open'
+      t.string :status, :default => 'open'
       t.timestamps
     end
   end

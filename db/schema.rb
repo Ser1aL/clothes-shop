@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121117062541) do
+ActiveRecord::Schema.define(:version => 20121119005149) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "user_id"
@@ -20,15 +20,15 @@ ActiveRecord::Schema.define(:version => 20121117062541) do
     t.string   "line1"
     t.string   "phone1"
     t.string   "phone2"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "banners", :force => true do |t|
     t.integer  "category_id"
     t.string   "url"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "brands", :force => true do |t|
@@ -37,27 +37,31 @@ ActiveRecord::Schema.define(:version => 20121117062541) do
     t.string   "external_brand_id"
     t.string   "logo_url"
     t.string   "display_name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
     t.boolean  "favorite"
   end
+
+  add_index "brands", ["name"], :name => "index_brands_on_name"
 
   create_table "categories", :force => true do |t|
     t.string   "name"
     t.string   "display_name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
     t.boolean  "favorite"
     t.integer  "top_category"
   end
+
+  add_index "categories", ["name"], :name => "index_categories_on_name"
 
   create_table "comments", :force => true do |t|
     t.integer  "user_id"
     t.string   "association_id"
     t.string   "association_type"
     t.text     "body"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
   end
 
   create_table "countings", :force => true do |t|
@@ -68,8 +72,8 @@ ActiveRecord::Schema.define(:version => 20121117062541) do
     t.integer  "value"
     t.string   "category_name"
     t.string   "sub_category_name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
     t.string   "gender_name"
     t.string   "brand_name"
   end
@@ -79,22 +83,22 @@ ActiveRecord::Schema.define(:version => 20121117062541) do
     t.decimal  "markup",     :precision => 10, :scale => 2
     t.string   "currency"
     t.string   "domain"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                                :null => false
+    t.datetime "updated_at",                                :null => false
   end
 
   create_table "genders", :force => true do |t|
     t.string   "name"
     t.string   "display_name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
   end
 
   create_table "image_attachments", :force => true do |t|
     t.integer  "association_id"
     t.string   "association_type"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
     t.string   "image_url"
     t.string   "external_image_type"
     t.boolean  "is_zoomed"
@@ -108,8 +112,8 @@ ActiveRecord::Schema.define(:version => 20121117062541) do
     t.integer  "sub_category_id"
     t.integer  "gender_id"
     t.text     "description"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                                                :null => false
+    t.datetime "updated_at",                                                :null => false
     t.string   "external_product_id"
     t.string   "product_name"
     t.string   "video_url"
@@ -176,6 +180,7 @@ ActiveRecord::Schema.define(:version => 20121117062541) do
   add_index "item_models", ["category_id"], :name => "index_item_models_on_category_id"
   add_index "item_models", ["external_product_id"], :name => "index_item_models_on_external_product_id"
   add_index "item_models", ["gender_id"], :name => "index_item_models_on_gender_id"
+  add_index "item_models", ["product_name"], :name => "index_item_models_on_product_name"
   add_index "item_models", ["sub_category_id"], :name => "index_item_models_on_sub_category_id"
 
   create_table "order_lines", :force => true do |t|
@@ -184,8 +189,8 @@ ActiveRecord::Schema.define(:version => 20121117062541) do
     t.integer  "quantity"
     t.integer  "style_id"
     t.integer  "stock_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                                :null => false
+    t.datetime "updated_at",                                :null => false
     t.decimal  "price",      :precision => 10, :scale => 2
     t.string   "currency"
   end
@@ -193,11 +198,11 @@ ActiveRecord::Schema.define(:version => 20121117062541) do
   create_table "orders", :force => true do |t|
     t.integer  "user_id"
     t.datetime "order_time"
-    t.enum     "status",     :limit => [:submitted, :paid, :sent]
-    t.boolean  "reviewed",                                                                        :default => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.decimal  "total",                                            :precision => 10, :scale => 2
+    t.string   "status"
+    t.boolean  "reviewed",                                  :default => false
+    t.datetime "created_at",                                                   :null => false
+    t.datetime "updated_at",                                                   :null => false
+    t.decimal  "total",      :precision => 10, :scale => 2
     t.string   "city"
     t.string   "address"
     t.string   "country"
@@ -206,8 +211,8 @@ ActiveRecord::Schema.define(:version => 20121117062541) do
   create_table "products", :force => true do |t|
     t.integer  "total_quantity"
     t.integer  "item_model_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
   end
 
   create_table "shopping_cart_lines", :force => true do |t|
@@ -218,23 +223,23 @@ ActiveRecord::Schema.define(:version => 20121117062541) do
     t.integer  "stock_id"
     t.decimal  "price",            :precision => 10, :scale => 2
     t.string   "currency"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                                      :null => false
+    t.datetime "updated_at",                                      :null => false
   end
 
   create_table "shopping_carts", :force => true do |t|
     t.integer  "user_id"
-    t.enum     "status",     :limit => [:open, :close], :default => :open
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.string   "status",     :default => "open"
+    t.datetime "created_at",                     :null => false
+    t.datetime "updated_at",                     :null => false
   end
 
   create_table "static_pages", :force => true do |t|
     t.string   "name"
     t.string   "human_name"
     t.text     "text"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "stocks", :force => true do |t|
@@ -243,8 +248,8 @@ ActiveRecord::Schema.define(:version => 20121117062541) do
     t.integer  "quantity"
     t.string   "external_stock_id"
     t.integer  "style_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
   end
 
   add_index "stocks", ["style_id"], :name => "index_stocks_on_style_id"
@@ -256,8 +261,8 @@ ActiveRecord::Schema.define(:version => 20121117062541) do
     t.integer  "product_id"
     t.integer  "percent_off"
     t.string   "external_style_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                                                          :null => false
+    t.datetime "updated_at",                                                          :null => false
     t.boolean  "on_sale"
     t.integer  "external_color_id"
     t.boolean  "hidden",                                           :default => false
@@ -269,21 +274,24 @@ ActiveRecord::Schema.define(:version => 20121117062541) do
     t.string   "name"
     t.integer  "category_id"
     t.string   "display_name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
     t.boolean  "favorite"
   end
 
+  add_index "sub_categories", ["name"], :name => "index_sub_categories_on_name"
+
   create_table "users", :force => true do |t|
-    t.string   "email",                                 :default => "", :null => false
-    t.string   "encrypted_password",     :limit => 128, :default => "", :null => false
+    t.string   "email",                  :default => "", :null => false
+    t.string   "encrypted_password",     :default => "", :null => false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
     t.string   "confirmation_token"
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
-    t.integer  "sign_in_count",                         :default => 0
+    t.string   "unconfirmed_email"
+    t.integer  "sign_in_count",          :default => 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
@@ -291,8 +299,8 @@ ActiveRecord::Schema.define(:version => 20121117062541) do
     t.string   "middle_name"
     t.string   "first_name"
     t.string   "last_name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                             :null => false
+    t.datetime "updated_at",                             :null => false
     t.string   "phone_number"
     t.string   "address"
     t.string   "city"
