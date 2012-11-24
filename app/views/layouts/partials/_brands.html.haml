@@ -12,13 +12,13 @@
               %span.brand_quantity
                 = @brand_total_counts
           .delimiter
-          - @brand_counts.each_with_index do |brand_count, index|
+          - @brand_counts.each_with_index do |brand, index|
             %div{:class => "brand_watch_block#{index % 2 == 0 ? '1' : ''}"}
-              %a.brand_watch{:href => "/#cat/#{brand_count['id']}/#{params[:category]}/#{params[:sub_category]}/#{params[:gender]}"}
+              %a.brand_watch{:href => "/#cat/#{brand.brand_id}/#{params[:category]}/#{params[:sub_category]}/#{params[:gender]}"}
                 %span.brand_name
-                  = brand_count['name'].upcase
+                  = brand.brand_name.upcase
                 %span.brand_quantity
-                  = brand_count['item_count']
+                  = brand.value
             .delimiter
           %div{:class => "brand_watch_block#{@brand_counts.size % 2 == 0 ? '1' : ''}"}
             %a.brand_watch{:href => "/brands"}

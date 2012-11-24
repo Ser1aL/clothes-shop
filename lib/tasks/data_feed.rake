@@ -201,7 +201,7 @@ namespace :data_feed do
   task :update_prices => :environment do
     output_file = File.open("log/price_update_output.txt", "w")
     key_index = 0
-    Style.order("created_at DESC").limit(20000).each_with_index do |style, index|
+    Style.where(:hidden => false).order("created_at DESC").limit(20000).each_with_index do |style, index|
       output_file.puts "Style: #{style.inspect}"
       sleep 5 if index % 50 == 0
       begin
@@ -222,15 +222,16 @@ namespace :data_feed do
         key_index += 1 and next
       end
     end
-    Style.where(:hidden => true).each do |style|
-      output_file.puts "Removing style: #{style.inspect}"
-      item_model = style.product.item_model
-      style.destroy
-      unless item_model.product.styles.any?
-        output_file.puts "Removing item model: #{item_model.inspect}"
-        item_model.destroy
-      end
-    end
+    # Remove hidden
+    #Style.where(:hidden => true).each do |style|
+    #  output_file.puts "Removing style: #{style.inspect}"
+    #  item_model = style.product.item_model
+    #  style.destroy
+    #  unless item_model.product.styles.any?
+    #    output_file.puts "Removing item model: #{item_model.inspect}"
+    #    item_model.destroy
+    #  end
+    #end
   end
 
   desc "load banners"

@@ -39,6 +39,7 @@ class SearchController < ApplicationController
 
   def load_items
     @item_models = ItemModel.get_items_extended(params).page(params[:page]).per(6)
+    render :layout => false
   end
 
 end

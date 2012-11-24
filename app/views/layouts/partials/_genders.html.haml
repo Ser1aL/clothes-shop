@@ -14,11 +14,11 @@
           .delimiter
           - @gender_counts.each_with_index do |gender, index|
             %div{:class => "brand_watch_block#{index % 2 == 0 ? '1' : ''}"}
-              %a.brand_changable.brand_watch{:href => "/#cat/#{params[:brand]}/#{params[:category]}/#{params[:sub_category]}/#{gender['id']}"}
+              %a.brand_changable.brand_watch{:href => "/#cat/#{params[:brand]}/#{params[:category]}/#{params[:sub_category]}/#{(gender.try(:[], "gender_id") || gender.try(:gender_id))}"}
                 %span.brand_name
-                  = gender['name'].upcase
-                %span.brand_quantity 
-                  = gender['item_count']
+                  = (gender.try(:[], "name") || gender.gender_name).upcase
+                %span.brand_quantity
+                  = gender.try(:[], "item_count") || gender.value
             .delimiter
         .functional_block_brands_footer
           .functional_block_brands_footer_left_bottom

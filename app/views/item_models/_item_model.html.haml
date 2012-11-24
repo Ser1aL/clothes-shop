@@ -1,15 +1,16 @@
 - product = item_model
+- style = product.product.styles.first
 .block.advanced_search
   .title_product
-    %a.title_product-a{:href => item_model_url(product, :style => product.product.styles.first), :class => 'single_product_ajaxified_link'}
+    %a.title_product-a{:href => item_model_url(product, :style => style), :class => 'single_product_ajaxified_link'}
       = product.product_name.html_safe
   .product_image
-    %a{:href => item_model_url(product, :style => product.product.styles.first), :class => 'single_product_ajaxified_link'}
+    %a{:href => item_model_url(product, :style => style), :class => 'single_product_ajaxified_link'}
       - if product.try(:product).try(:styles).try(:first).try(:not_zoomed_image_attachments).blank?
         = image_tag 'thumb/missing.png', :class => 'missing'
       - else
-        = image_tag product.product.styles.first.not_zoomed_image_attachments[0].image_url, :alt => product.product_name, :class => 'img_file'
-    %a{:href => item_model_url(product, :style => product.product.styles.first), :class => 'single_product_ajaxified_link more_link'}
+        = image_tag style.not_zoomed_image_attachments[0].image_url, :alt => product.product_name, :class => 'img_file'
+    %a{:href => item_model_url(product, :style => style), :class => 'single_product_ajaxified_link more_link'}
       = "Подробнее"
   .product_description
     = t('product_description.brand')
@@ -28,13 +29,13 @@
   .product_description1
     = product.gender.name
   .grey_area
-    - if product.product
+    - if product.product && !style.hidden?
       .presence_color
       .price
         = t('product_description.price')
       %div
         %a.sum-a{:href => "#"}
-          = number_to_currency(product.product.styles.first.discount_price_extra(@exchange_rate, @markup), :unit => '')
+          = number_to_currency(style.discount_price_extra(@exchange_rate, @markup), :unit => '')
       .price
         = @currency
     - else
@@ -42,7 +43,7 @@
       .presence_note_no
         = t('product_not_exists')
     .product_details_link
-      = link_to t('more'), item_model_path(product, :style => product.product.styles.first), :class => 'more single_product_ajaxified_link'
+      = link_to t('more'), item_model_path(product, :style => style), :class => 'more single_product_ajaxified_link'
       .image_arrow1
 - if item_model_counter % 2 == 1
   .delimiter

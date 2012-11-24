@@ -6,17 +6,12 @@ class ApplicationController < ActionController::Base
 
   def prepare_counts
     if !request.xhr? and params[:controller] != 'administrator'
-      @brand_counts = Brand.favorite_with_counts
-      @brand_total_counts = @brand_counts.map{|hash| hash['item_count']}.sum
-
-      @category_counts = Category.favorite_with_counts
-      @category_total_counts = @category_counts.map{|hash| hash['item_count']}.sum
-
-      @sub_category_counts = SubCategory.favorite_with_counts
-      @sub_category_total_counts = @sub_category_counts.map{|hash| hash['item_count']}.sum
-
-      @gender_counts = ItemModel.counts_by_type(:gender)
-      @gender_total_counts = @gender_counts.map{|hash| hash['item_count']}.sum
+      %w(brand category sub_category gender).each do |type|
+        counting = CategoryCounting.joins(type.to_sym).group("#{type}_id").select("sum(value) as value, #{type}_id, #{type}_name")
+        counting = counting.where("#{type.pluralize}.favorite = 1") unless type == 'gender'
+        instance_variable_set("@#{type}_counts", counting)
+        instance_variable_set("@#{type}_total_counts", counting.sum(&:value))
+      end
     end
   end
 

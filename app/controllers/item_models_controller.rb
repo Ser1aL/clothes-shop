@@ -39,8 +39,6 @@ class ItemModelsController < ApplicationController
     @gender_total_counts = @gender_counts.map{|hash| hash['item_count']}.sum
   end
 
-  private
-
   def update_prices(item_model, style)
     begin
       if style.update_6pm_prices(item_model)

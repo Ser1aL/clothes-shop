@@ -29,7 +29,7 @@ class ItemModel < ActiveRecord::Base
   end
 
   def self.counts_by_type(type)
-    return [] if !['brand', 'category', 'gender', 'sub_category'].include? type.to_s
+    return [] unless %w(brand category gender sub_category).include?(type.to_s)
     type = type.to_s
     find_by_sql("SELECT #{type.pluralize}.id,
       IF(#{type.pluralize}.display_name IS NOT NULL,
@@ -44,16 +44,16 @@ class ItemModel < ActiveRecord::Base
   end
 
   def self.get_items(params = {})
-    conditions = []
+    conditions = ["styles.hidden = 0"]
     conditions << "brand_id = '#{params[:brand]}'" if params[:brand]
     conditions << "gender_id = '#{params[:gender]}'" if params[:gender]
     conditions << "sub_category_id = '#{params[:sub_category]}'" if params[:sub_category]
     conditions << "category_id = '#{params[:category]}'" if params[:category]
-    where(conditions.join(' AND ')).order('item_models.updated_at DESC').page(params[:page]).per(6)
+    joins(:product => :styles).where(conditions.join(' AND ')).order('item_models.updated_at DESC').page(params[:page]).per(6)
   end
 
   def self.get_items_extended(params = {})
-    conditions = []
+    conditions = ["styles.hidden = 0"]
     conditions << "item_models.brand_id = '#{params[:brand_id]}'" if params[:brand_id]
     conditions << "item_models.gender_id = '#{params[:gender_id]}'" if params[:gender_id]
     conditions << "item_models.sub_category_id = '#{params[:sub_category_id]}'" if params[:sub_category_id]

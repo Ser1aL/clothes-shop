@@ -2,7 +2,7 @@ class RawSearch
 
   def self.get_counts(params, type)
 
-    conditions = []
+    conditions = ["styles.hidden = 0"]
     conditions << "item_models.brand_id = '#{params[:brand_id]}'" if params[:brand_id]
     conditions << "item_models.gender_id = '#{params[:gender_id]}'" if params[:gender_id]
     conditions << "item_models.sub_category_id = '#{params[:sub_category_id]}'" if params[:sub_category_id]
@@ -40,7 +40,7 @@ class RawSearch
 
   def self.get_size_counts(params)
 
-    conditions = []
+    conditions = ["styles.hidden = 0"]
     conditions << "item_models.brand_id = '#{params[:brand_id]}'" if params[:brand_id]
     conditions << "item_models.gender_id = '#{params[:gender_id]}'" if params[:gender_id]
     conditions << "item_models.sub_category_id = '#{params[:sub_category_id]}'" if params[:sub_category_id]
@@ -71,7 +71,7 @@ class RawSearch
 
   def self.get_color_counts(params)
 
-    conditions = []
+    conditions = ["styles.hidden = 0"]
     conditions << "item_models.brand_id = '#{params[:brand_id]}'" if params[:brand_id]
     conditions << "item_models.gender_id = '#{params[:gender_id]}'" if params[:gender_id]
     conditions << "item_models.sub_category_id = '#{params[:sub_category_id]}'" if params[:sub_category_id]
