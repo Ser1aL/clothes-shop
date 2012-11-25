@@ -10,7 +10,7 @@
   %br
 - @exchange_rates.each do |exchange_rate|
   - next if exchange_rate.domain.blank?
-  - form_tag administrator_change_exchange_rate_path do
+  = form_tag administrator_change_exchange_rate_path do
     = hidden_field_tag :id, exchange_rate.id
     .exchange_rates
       = text_field_tag :domain, exchange_rate.domain, :disabled => true
