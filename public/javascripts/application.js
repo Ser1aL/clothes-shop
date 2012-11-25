@@ -189,8 +189,11 @@ function load_search_page(params){
             prepare_paginated_links();
             jQuery('html, body').animate( { scrollTop: 0 }, 'slow' );
             if(typeof(params.brand_id) != 'undefined' && params.brand_id != ''){
-                var selected_brand_name = $("#brand_id_"+params.brand_id+" a .brand_name").html().trim();
-                $(".navigation_buttons #brand .button_mid").html(selected_brand_name);
+                var brand_element = $("#brand_id_"+params.brand_id+" a .brand_name");
+                if(brand_element != undefined){
+                    var selected_brand_name = brand_element.html().trim();
+                    $(".navigation_buttons #brand .button_mid").html(selected_brand_name);
+                }
             }
         });
         var initialized_params_count = 0;
