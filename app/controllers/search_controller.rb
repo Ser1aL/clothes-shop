@@ -10,27 +10,27 @@ class SearchController < ApplicationController
 
   # next actions respond to Ajax Search Calls
   def preload_categories
-    respond_with RawSearch.get_counts(params, :category)
+    respond_with RawSearch.get_counts(params, :category, @exchange_rate, @markup)
   end
 
   def preload_sub_categories
-    respond_with RawSearch.get_counts(params, :sub_category)
+    respond_with RawSearch.get_counts(params, :sub_category, @exchange_rate, @markup)
   end
 
   def preload_brands
-    respond_with RawSearch.get_counts(params, :brand)
+    respond_with RawSearch.get_counts(params, :brand, @exchange_rate, @markup)
   end
 
   def preload_genders
-    respond_with RawSearch.get_counts(params, :gender)
+    respond_with RawSearch.get_counts(params, :gender, @exchange_rate, @markup)
   end
 
   def preload_sizes
-    respond_with RawSearch.get_size_counts(params)
+    respond_with RawSearch.get_size_counts(params, @exchange_rate, @markup)
   end
 
   def preload_colors
-    respond_with RawSearch.get_color_counts(params)
+    respond_with RawSearch.get_color_counts(params, @exchange_rate, @markup)
   end
 
   def preload_facet_list
@@ -38,7 +38,7 @@ class SearchController < ApplicationController
   end
 
   def load_items
-    @item_models = ItemModel.get_items_extended(params).page(params[:page]).per(6)
+    @item_models = ItemModel.get_items_extended(params, @exchange_rate, @markup).page(params[:page]).per(6)
     render :layout => false
   end
 

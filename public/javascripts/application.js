@@ -165,6 +165,7 @@ function parse_search_parameters(url_parser){
         category_id : fragment.cat,
         sub_category_id : fragment.sub,
         gender_id : fragment.g,
+        price_range : fragment.price_range,
         brand_id : fragment.b,
         page : fragment.p,
         color : fragment.c,
@@ -187,8 +188,11 @@ function load_search_page(params){
             $(".item_models").html(resp);
             prepare_paginated_links();
             jQuery('html, body').animate( { scrollTop: 0 }, 'slow' );
+            if(typeof(params.brand_id) != 'undefined' && params.brand_id != ''){
+                var selected_brand_name = $("#brand_id_"+params.brand_id+" a .brand_name").html().trim();
+                $(".navigation_buttons #brand .button_mid").html(selected_brand_name);
+            }
         });
-//        $.each(["categories", "genders", "sub_categories", "brands", "colors", "sizes", "facet_list"], function(k, v){
         var initialized_params_count = 0;
         for(var i in params){ if(typeof(params[i]) != 'undefined') initialized_params_count += 1 }
         var sections = ["categories", "genders", "sub_categories", "brands"];
@@ -214,6 +218,7 @@ function load_search_page(params){
                         if( typeof(respv.brand_id) != "undefined" && respv.brand_id != '') parameters.push("b=" + respv.brand_id);
                         if( typeof(respv.color) != "undefined" && respv.color != '') parameters.push("c=" + respv.color);
                         if( typeof(respv.size) != "undefined" && respv.size != '') parameters.push("s=" + respv.size);
+                        if( typeof(respv.price_range) != "undefined" && respv.price_range != '') parameters.push("price_range=" + respv.price_range);
                         var div = $('<div/>', { class: 'link' });
                         var link_text = respv.type_name + (v == 'sizes' ? '' : "("+ respv.count +")")
                         div.html(
@@ -378,6 +383,7 @@ $(function(){
   });
 
   prepare_paginated_links();
+  activate_price_filter();
 
 });
 
@@ -421,6 +427,38 @@ function activate_size_grid(){
         width:1200,
         top:50,
         left:50
+    });
+}
+
+function activate_price_filter(){
+    var max_price = $("#max_price").html();
+    var currency = $("#currency").html();
+    $('#price_filter').val('0-' + max_price);
+    $("#price_slider").slider({
+        range:true,
+        min: 0,
+        max: max_price,
+        values:[0, max_price],
+        step: 5,
+        slide: function( event, ui ) {
+            $("#price_range_label").html(ui.values[ 0 ] + ' ' + currency + ' - ' + ui.values[ 1 ] + ' ' + currency);
+        },
+        stop: function(event, ui){
+            var current_price_range = $.url(location.href).data.param.fragment.price_range;
+            var current_hash = location.hash;
+            var new_hash = '';
+            var price_range = ui.values[0] + '-' + ui.values[1];
+            if(current_hash == ''){
+                new_hash = 'price_range=' + price_range;
+            }
+            else if(typeof(current_price_range) == 'undefined' || current_price_range == ''){
+                new_hash = current_hash + '&price_range=' + price_range;
+            }
+            else{
+                new_hash = current_hash.replace(/price_range=(\d+)-(\d+)/, 'price_range=' + price_range);
+            }
+            $.history.load(new_hash);
+        }
     });
 }
 

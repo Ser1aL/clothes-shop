@@ -28,7 +28,7 @@
 (function($) {
     var locationWrapper = {
         put: function(hash, win) {
-            (win || window).location.hash = this.encoder(hash);
+            (win || window).location.hash = hash;//this.encoder(hash);
         },
         get: function(win) {
             var hash = ((win || window).location.hash).replace(/^#/, '');

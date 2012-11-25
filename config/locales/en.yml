@@ -92,6 +92,7 @@ en:
   brands: 'Бренды'
   colors: 'Цвета'
   sizes: 'Размеры'
+  prices: 'Фильтр цены'
 
   views:
     pagination:

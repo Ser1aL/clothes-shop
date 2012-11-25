@@ -1,6 +1,6 @@
 class RawSearch
 
-  def self.get_counts(params, type)
+  def self.get_counts(params, type, exchange_rate, markup)
 
     conditions = ["styles.hidden = 0"]
     conditions << "item_models.brand_id = '#{params[:brand_id]}'" if params[:brand_id]
@@ -9,6 +9,14 @@ class RawSearch
     conditions << "item_models.category_id = '#{params[:category_id]}'" if params[:category_id]
     conditions << "styles.color = '#{params[:color]}'" if params[:color]
     conditions << "stocks.size = '#{params[:size].gsub(/\\/, '\&\&').gsub(/'/, "''")}'" if params[:size]
+    if params[:price_range].present?
+      min_price, max_price = params[:price_range].split("-")
+      min_price = (min_price.to_i - min_price.to_i * markup / 100 ) / exchange_rate
+      max_price = (max_price.to_i - max_price.to_i * markup / 100 ) / exchange_rate
+      conditions << "styles.discount_price > #{min_price.to_i}"
+      conditions << "styles.discount_price < #{max_price.to_i}"
+    end
+
 
     conditions = conditions.blank? ? "" : "AND " + conditions.join(" AND ")
 
@@ -38,7 +46,7 @@ class RawSearch
     end.compact.sort_by{|r| r[:type_name].first.capitalize + r[:type_name].try(:[], 1).try(:capitalize).to_s}
   end
 
-  def self.get_size_counts(params)
+  def self.get_size_counts(params, exchange_rate, markup)
 
     conditions = ["styles.hidden = 0"]
     conditions << "item_models.brand_id = '#{params[:brand_id]}'" if params[:brand_id]
@@ -47,6 +55,13 @@ class RawSearch
     conditions << "item_models.category_id = '#{params[:category_id]}'" if params[:category_id]
     conditions << "styles.color = '#{params[:color]}'" if params[:color]
     conditions << "stocks.size = '#{params[:size].gsub(/\\/, '\&\&').gsub(/'/, "''")}'" if params[:size]
+    if params[:price_range].present?
+      min_price, max_price = params[:price_range].split("-")
+      min_price = (min_price.to_i - min_price.to_i * markup / 100 ) / exchange_rate
+      max_price = (max_price.to_i - max_price.to_i * markup / 100 ) / exchange_rate
+      conditions << "styles.discount_price > #{min_price.to_i}"
+      conditions << "styles.discount_price < #{max_price.to_i}"
+    end
 
     conditions = conditions.blank? ? "" : "AND " + conditions.join(" AND ")
 
@@ -69,7 +84,7 @@ class RawSearch
     }.sort_by{|r| r[:type_name].first.capitalize}
   end
 
-  def self.get_color_counts(params)
+  def self.get_color_counts(params, exchange_rate, markup)
 
     conditions = ["styles.hidden = 0"]
     conditions << "item_models.brand_id = '#{params[:brand_id]}'" if params[:brand_id]
@@ -78,6 +93,13 @@ class RawSearch
     conditions << "item_models.category_id = '#{params[:category_id]}'" if params[:category_id]
     conditions << "styles.color = '#{params[:color]}'" if params[:color]
     conditions << "stocks.size = '#{params[:size].gsub(/\\/, '\&\&').gsub(/'/, "''")}'" if params[:size]
+    if params[:price_range].present?
+      min_price, max_price = params[:price_range].split("-")
+      min_price = (min_price.to_i - min_price.to_i * markup / 100 ) / exchange_rate
+      max_price = (max_price.to_i - max_price.to_i * markup / 100 ) / exchange_rate
+      conditions << "styles.discount_price > #{min_price.to_i}"
+      conditions << "styles.discount_price < #{max_price.to_i}"
+    end
 
     conditions = conditions.blank? ? "" : "AND " + conditions.join(" AND ")
 

@@ -15,6 +15,17 @@
         - @gender_countings.each do |counting|
           .link
             = link_to "#{counting.gender_name}(#{counting.value})", "#g=#{counting.gender_id}"
+    .price_filter_container.navigation_block
+      #max_price.invisible= 1000*@exchange_rate.to_i
+      #currency.invisible= @currency
+      .header
+        = t("prices")
+      .content
+        %span#price_range_label
+          = "0 #@currency - #{1000*@exchange_rate.to_i} #@currency"
+        .price_filter
+          #price_slider
+          = link_to "eggs", "", :id => "price_filter", :class => "invisible"
     .sub_categories.navigation_block
       .header
         = t("sub_categories")

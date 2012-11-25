@@ -37,6 +37,10 @@ textarea {
 	font-family: Arial;
 }
 
+.invisible{
+    display: none;
+}
+
 #loader, #comment_loader{
   background: url('../images/loader.gif') no-repeat;
   width: 26px;
@@ -2977,8 +2981,17 @@ a.previews .previews_img_file{
     margin: 21px 0 0 89px;
 }
 
-.navigation_panel .categories, .navigation_panel .genders{
+.navigation_panel .categories, .navigation_panel .genders, .navigation_panel .price_filter_container{
     display: block;
+}
+
+.navigation_panel .price_filter_container .content{
+    height: 52px;
+}
+.navigation_panel .price_filter_container .content div.price_filter{
+    width: 145px;
+    margin-left: 6px;
+    margin-top: 11px;
 }
 
 .item_models{

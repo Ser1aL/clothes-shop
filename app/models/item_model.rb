@@ -49,7 +49,7 @@ class ItemModel < ActiveRecord::Base
     joins(:product => :styles).group('item_models.id').where(conditions.join(' AND ')).order('item_models.updated_at DESC').page(params[:page]).per(6)
   end
 
-  def self.get_items_extended(params = {})
+  def self.get_items_extended(params, exchange_rate, markup)
     conditions = ["styles.hidden = 0"]
     conditions << "item_models.brand_id = '#{params[:brand_id]}'" if params[:brand_id]
     conditions << "item_models.gender_id = '#{params[:gender_id]}'" if params[:gender_id]
@@ -57,6 +57,13 @@ class ItemModel < ActiveRecord::Base
     conditions << "item_models.category_id = '#{params[:category_id]}'" if params[:category_id]
     conditions << "styles.color = '#{params[:color]}'" if params[:color]
     conditions << "stocks.size = '#{params[:size].gsub(/\\/, '\&\&').gsub(/'/, "''")}'" if params[:size]
+    if params[:price_range].present?
+      min_price, max_price = params[:price_range].split("-")
+      min_price = (min_price.to_i - min_price.to_i * markup / 100 ) / exchange_rate
+      max_price = (max_price.to_i - max_price.to_i * markup / 100 ) / exchange_rate
+      conditions << "styles.discount_price > #{min_price}"
+      conditions << "styles.discount_price < #{max_price}"
+    end
     includes(:brand, :gender, :sub_category, :product => [:styles => :stocks]).where(conditions.join(' AND ')).order('item_models.updated_at DESC')
 
   end
