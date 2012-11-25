@@ -196,7 +196,14 @@ function load_search_page(params){
         var initialized_params_count = 0;
         for(var i in params){ if(typeof(params[i]) != 'undefined') initialized_params_count += 1 }
         var sections = ["categories", "genders", "sub_categories", "brands"];
-        if(initialized_params_count >= 2) sections.push("sizes") && sections.push("colors");
+        if(initialized_params_count >= 2){
+            sections.push("sizes");
+            sections.push("colors");
+            $(".price_filter_container").slideDown();
+        }
+        else{
+            $(".price_filter_container").slideUp();
+        }
         $.each(sections, function(k, v){
             $("."+v+" .content").html("<div class='loader'></div>");
             $.ajax({

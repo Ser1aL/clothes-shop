@@ -1,13 +1,6 @@
 = render 'search_tip'
 .search_wrapper.advanced_search_wrapper
   .navigation_panel
-    .categories.navigation_block
-      .header
-        = t("categories")
-      .content
-        - @category_countings.each do |category_id, count_group|
-          .link
-            = link_to "#{count_group.first[:category_name]}(#{count_group.sum(&:value)})", "#cat=#{category_id}"
     .genders.navigation_block
       .header
         = t("genders")
@@ -15,6 +8,20 @@
         - @gender_countings.each do |counting|
           .link
             = link_to "#{counting.gender_name}(#{counting.value})", "#g=#{counting.gender_id}"
+    .categories.navigation_block
+      .header
+        = t("categories")
+      .content
+        - @category_countings.each do |category_id, count_group|
+          .link
+            = link_to "#{count_group.first[:category_name]}(#{count_group.sum(&:value)})", "#cat=#{category_id}"
+    .brands.navigation_block
+      .header
+        = t("brands")
+      .content
+        - @brand_countings.each do |counting|
+          .link
+            = link_to "#{counting.brand_name}(#{counting.value})", "#b=#{counting.brand_id}"
     .price_filter_container.navigation_block
       #max_price.invisible= 1000*@exchange_rate.to_i
       #currency.invisible= @currency
@@ -29,10 +36,6 @@
     .sub_categories.navigation_block
       .header
         = t("sub_categories")
-      .content
-    .brands.navigation_block
-      .header
-        = t("brands")
       .content
     .colors.navigation_block
       .header
