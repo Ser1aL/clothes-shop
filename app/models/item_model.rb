@@ -46,7 +46,7 @@ class ItemModel < ActiveRecord::Base
     conditions << "gender_id = '#{params[:gender]}'" if params[:gender]
     conditions << "sub_category_id = '#{params[:sub_category]}'" if params[:sub_category]
     conditions << "category_id = '#{params[:category]}'" if params[:category]
-    joins(:product => :styles).group('item_models.id').where(conditions.join(' AND ')).order('item_models.updated_at DESC').page(params[:page]).per(6)
+    joins(:product => :styles).group('item_models.id').where(conditions.join(' AND ')).page(params[:page]).per(6)
   end
 
   def self.get_items_extended(params, exchange_rate, markup)
@@ -64,7 +64,7 @@ class ItemModel < ActiveRecord::Base
       conditions << "styles.discount_price > #{min_price}"
       conditions << "styles.discount_price < #{max_price}"
     end
-    includes(:brand, :gender, :sub_category, :product => [:styles => :stocks]).where(conditions.join(' AND ')).order('item_models.updated_at DESC')
+    includes(:brand, :gender, :sub_category, :product => [:styles => :stocks]).where(conditions.join(' AND '))
 
   end
 
