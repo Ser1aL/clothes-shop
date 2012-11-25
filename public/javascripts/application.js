@@ -190,7 +190,7 @@ function load_search_page(params){
             jQuery('html, body').animate( { scrollTop: 0 }, 'slow' );
             if(typeof(params.brand_id) != 'undefined' && params.brand_id != ''){
                 var brand_element = $("#brand_id_"+params.brand_id+" a .brand_name");
-                if(brand_element != undefined){
+                if(brand_element.length > 0){
                     var selected_brand_name = brand_element.html().trim();
                     $(".navigation_buttons #brand .button_mid").html(selected_brand_name);
                 }
