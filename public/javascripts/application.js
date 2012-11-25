@@ -3,8 +3,25 @@ $.ajaxSetup({
 });
 
 function prepare_paginated_links(page_type){
+  // Replace url for advanced search pagination
+  if(page_type != 'cat' && page_type != 'search') {
+      var page = ''
+      $.each($(".pager a"), function(index, url) {
+          page = $.url(url.href).data.param.query.page;
+          if(page == undefined) page = '1';
+          var current_hash = location.hash;
+          if(current_hash.match(/p=(\d+)/)){
+              $(url).attr('href', current_hash.replace(/p=(\d+)/, 'p='+page));
+          }
+          else if(current_hash == ''){
+              $(url).attr('href', '#p=' + page);
+          }
+          else{
+              $(url).attr('href', current_hash + '&p=' + page);
+          }
+      });
+  }
   $(".pager a").click(function() {
-    $('#loader').show();
     var url = $.url(this.href);
     if (page_type == 'cat'){
       var brand = url.param('brand') == undefined ? '' : url.param('brand');
@@ -21,16 +38,7 @@ function prepare_paginated_links(page_type){
       $.history.load( page_type + '/' + search_query + '/' + page );
     }
     // else it is an advanced search
-    else{
-      var page = url.param().page;
-      var current_hash = location.hash;
-      if(current_hash.match(/\&p=(\d+)/)){
-          $.history.load( unescape(current_hash + "&p="+page) );
-      }
-      else{
-          $.history.load( current_hash.replace(/\&p=(\d+)/, "&p"+page) );
-      }
-    }
+    else return true;
     return false;
   });
   prepare_ajaxified_links();
@@ -51,13 +59,6 @@ function prepare_ajaxified_links(){
     return false;
   });
   $('.ajaxified_disabled_link').click(function(){ return false; })
-}
-
-function prepare_advanced_search_buttons(){
-    $(".advanced_search_wrapper .category_link a").click(function() {
-        $.history.load( "cat:" + params );
-        return false;
-    });
 }
 
 function incrementCommentCount(){
@@ -84,18 +85,6 @@ function set_default_navigation(){
   $('.navigation_buttons #sub_category .button_mid_idle').html('Подкатегории');
   $('.navigation_buttons #gender .button_mid_idle').html('Тип');
 
-}
-
-function reload_selection_links(brand_id, category_id, style_id, mechanism_id){
-  $('.brand_changable').each(function(){
-    var href = $(this).attr('href');
-    var matches = href.match(/(#cat)\/(.*)\/(.*)\/(.*)\/(.*)/);
-    var brand = brand_id == '' ? matches[2] : brand_id;
-    var category = category_id == '' ? matches[3] : category_id;
-    var style = style_id == '' ? matches[4] : style_id;
-    var mechanism = mechanism_id == '' ? matches[5] : mechanism_id;
-    $(this).attr('href', '/' + matches[1] + '/' + brand + '/' + category + '/' + style + '/' + mechanism);
-  })
 }
 
 function activate_selection_popups(){
@@ -195,9 +184,9 @@ function load_search_page(params){
             url : "/search/load_items",
             data : params
         }).success(function(resp){
-                $(".item_models").html(resp);
-                prepare_paginated_links();
-                jQuery('html, body').animate( { scrollTop: 0 }, 'slow' );
+            $(".item_models").html(resp);
+            prepare_paginated_links();
+            jQuery('html, body').animate( { scrollTop: 0 }, 'slow' );
         });
 //        $.each(["categories", "genders", "sub_categories", "brands", "colors", "sizes", "facet_list"], function(k, v){
         var initialized_params_count = 0;
@@ -210,32 +199,32 @@ function load_search_page(params){
                 url : "/search/preload_" + v,
                 data : params
             }).success(function(resp){
-                    result_container = $("."+v);
-                    result_element = $("."+v+" .content");
-                    if(resp == null || resp == ''){
-                        result_container.slideUp();
-                    }
-                    else{
-                        result_element.html("");
-                        $.each(resp, function(k, respv){
-                            var parameters = [];
-                            if( typeof(respv.category_id) != "undefined" && respv.category_id != '') parameters.push("cat=" + respv.category_id);
-                            if( typeof(respv.gender_id) != "undefined" && respv.gender_id != '') parameters.push("g=" + respv.gender_id);
-                            if( typeof(respv.sub_category_id) != "undefined" && respv.sub_category_id != '') parameters.push("sub=" + respv.sub_category_id);
-                            if( typeof(respv.brand_id) != "undefined" && respv.brand_id != '') parameters.push("b=" + respv.brand_id);
-                            if( typeof(respv.color) != "undefined" && respv.color != '') parameters.push("c=" + respv.color);
-                            if( typeof(respv.size) != "undefined" && respv.size != '') parameters.push("s=" + respv.size);
-                            var div = $('<div/>', { class: 'link' });
-                            var link_text = respv.type_name + (v == 'sizes' ? '' : "("+ respv.count +")")
-                            div.html(
-                                $('<a/>', {
-                                    href: '#' + parameters.join("&"),
-                                    text: link_text
-                                })
-                            ).appendTo(result_element);
-                        });
-                        result_container.slideDown();
-                    }
+                result_container = $("."+v);
+                result_element = $("."+v+" .content");
+                if(resp == null || resp == ''){
+                    result_container.slideUp();
+                }
+                else{
+                    result_element.html("");
+                    $.each(resp, function(k, respv){
+                        var parameters = [];
+                        if( typeof(respv.category_id) != "undefined" && respv.category_id != '') parameters.push("cat=" + respv.category_id);
+                        if( typeof(respv.gender_id) != "undefined" && respv.gender_id != '') parameters.push("g=" + respv.gender_id);
+                        if( typeof(respv.sub_category_id) != "undefined" && respv.sub_category_id != '') parameters.push("sub=" + respv.sub_category_id);
+                        if( typeof(respv.brand_id) != "undefined" && respv.brand_id != '') parameters.push("b=" + respv.brand_id);
+                        if( typeof(respv.color) != "undefined" && respv.color != '') parameters.push("c=" + respv.color);
+                        if( typeof(respv.size) != "undefined" && respv.size != '') parameters.push("s=" + respv.size);
+                        var div = $('<div/>', { class: 'link' });
+                        var link_text = respv.type_name + (v == 'sizes' ? '' : "("+ respv.count +")")
+                        div.html(
+                            $('<a/>', {
+                                href: '#' + parameters.join("&"),
+                                text: link_text
+                            })
+                        ).appendTo(result_element);
+                    });
+                    result_container.slideDown();
+                }
             });
         });
     }

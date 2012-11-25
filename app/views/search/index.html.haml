@@ -36,3 +36,4 @@
       .content
   .item_models
     = render @item_models
+    = paginate(@item_models, :window => 6)
