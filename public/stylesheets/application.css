@@ -3009,3 +3009,42 @@ a.previews .previews_img_file{
 .search_wrapper{
     padding-top: 18px;
 }
+
+.selected_filters{
+    padding-left: 232px;
+}
+
+.selected_filters .hint,
+.selected_filters .brand_id_filter,
+.selected_filters .gender_id_filter,
+.selected_filters .category_id_filter,
+.selected_filters .sub_category_id_filter,
+.selected_filters .price_range_filter,
+.selected_filters .size_filter,
+.selected_filters .color_filter{
+    display: none;
+    float: left;
+}
+
+.selected_filters .hint{
+    line-height: 22px;
+}
+
+.selected_filters .selected_filter{
+    border: 1px #F6E6E9 solid;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    line-height: 22px;
+    padding: 0 7px;
+    margin: 0 4px;
+    cursor: pointer;
+}
+
+.selected_filters .selected_filter:hover span{
+    font-weight: bold;
+}
+
+.selected_filters .selected_filter span.remove{
+    color: #8b0000;
+}

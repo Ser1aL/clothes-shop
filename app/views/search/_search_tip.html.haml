@@ -1,5 +1,14 @@
 .tips
   %p.text1 Расширенный поиск
-  .removal_links
+  .delimiter
+  .selected_filters
+    .hint
+      Выбранные фильтры:
+    - %w(brand_id_filter gender_id_filter category_id_filter sub_category_id_filter price_range_filter size_filter color_filter).each do |filter|
+      %div{:class => "selected_filter #{filter}"}
+        %span.hint
+        %span.content
+        %span.remove X
+    .delimiter
 .separator_content
 .delimiter

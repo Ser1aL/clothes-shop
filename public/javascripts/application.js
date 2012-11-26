@@ -198,6 +198,8 @@ function load_search_page(params){
         });
         var initialized_params_count = 0;
         for(var i in params){ if(typeof(params[i]) != 'undefined') initialized_params_count += 1 }
+        update_filter_removal_panel(params);
+        if(initialized_params_count > 0) $(".selected_filters .hint").show(); else $(".selected_filters .hint").hide();
         var sections = ["categories", "genders", "sub_categories", "brands"];
         if(initialized_params_count >= 2){
             sections.push("sizes");
@@ -222,15 +224,48 @@ function load_search_page(params){
                     result_element.html("");
                     $.each(resp, function(k, respv){
                         var parameters = [];
-                        if( typeof(respv.category_id) != "undefined" && respv.category_id != '') parameters.push("cat=" + respv.category_id);
-                        if( typeof(respv.gender_id) != "undefined" && respv.gender_id != '') parameters.push("g=" + respv.gender_id);
-                        if( typeof(respv.sub_category_id) != "undefined" && respv.sub_category_id != '') parameters.push("sub=" + respv.sub_category_id);
-                        if( typeof(respv.brand_id) != "undefined" && respv.brand_id != '') parameters.push("b=" + respv.brand_id);
-                        if( typeof(respv.color) != "undefined" && respv.color != '') parameters.push("c=" + respv.color);
-                        if( typeof(respv.size) != "undefined" && respv.size != '') parameters.push("s=" + respv.size);
-                        if( typeof(respv.price_range) != "undefined" && respv.price_range != '') parameters.push("price_range=" + respv.price_range);
+                        var current_type = '';
+                        var filter_element = '';
+                        if( typeof(respv.category_id) != "undefined" && respv.category_id != ''){
+                            parameters.push("cat=" + respv.category_id);
+                            filter_element = $(".category_id_filter span.content");
+                            if( parseInt(filter_element.html()) == parseInt(respv.category_id) && v == 'categories' ){
+                                filter_element.html(respv.type_name);
+                            }
+
+                        }
+                        if( typeof(respv.gender_id) != "undefined" && respv.gender_id != ''){
+                            parameters.push("g=" + respv.gender_id);
+                            filter_element = $(".gender_id_filter span.content");
+                            if( parseInt(filter_element.html()) == parseInt(respv.gender_id) && v == 'genders' ){
+                                filter_element.html(respv.type_name);
+                            }
+                        }
+                        if( typeof(respv.sub_category_id) != "undefined" && respv.sub_category_id != ''){
+                            parameters.push("sub=" + respv.sub_category_id);
+                            filter_element = $(".sub_category_id_filter span.content");
+                            if( parseInt(filter_element.html()) == parseInt(respv.sub_category_id) && v == 'sub_categories' ){
+                                filter_element.html(respv.type_name);
+                            }
+                        }
+                        if( typeof(respv.brand_id) != "undefined" && respv.brand_id != ''){
+                            parameters.push("b=" + respv.brand_id);
+                            filter_element = $(".brand_id_filter span.content");
+                            if( parseInt(filter_element.html()) == parseInt(respv.brand_id) && v == 'brands' ){
+                                filter_element.html(respv.type_name);
+                            }
+                        }
+                        if( typeof(respv.color) != "undefined" && respv.color != ''){
+                            parameters.push("c=" + respv.color);
+                        }
+                        if( typeof(respv.size) != "undefined" && respv.size != ''){
+                            parameters.push("s=" + respv.size);
+                        }
+                        if( typeof(respv.price_range) != "undefined" && respv.price_range != ''){
+                            parameters.push("price_range=" + respv.price_range);
+                        }
                         var div = $('<div/>', { class: 'link' });
-                        var link_text = respv.type_name + (v == 'sizes' ? '' : "("+ respv.count +")")
+                        var link_text = respv.type_name + (v == 'sizes' ? '' : "("+ respv.count +")");
                         div.html(
                             $('<a/>', {
                                 href: '#' + parameters.join("&"),
@@ -469,6 +504,46 @@ function activate_price_filter(){
             }
             $.history.load(new_hash);
         }
+    });
+}
+
+function update_filter_removal_panel(params){
+    var filter = '';
+    var exceptional_array = [];
+    var param_to_hash_map = {
+        gender_id: 'g',
+        brand_id: 'b',
+        category_id: 'cat',
+        sub_category_id: 'sub',
+        color: 'c',
+        size: 's',
+        price_range: 'price_range'
+    };
+    // Set name and url
+    $.each(params, function(type, param){
+        filter = $("." + type + '_filter');
+        exceptional_array = [];
+        if(typeof(param) != 'undefined'){
+            filter.find('span.content').html(param);
+            $.each(params, function(type2, param2){
+                if( typeof(param2) != 'undefined' && type2 != 'page'){
+                    if (param == param2 && type == type2){}
+                    else exceptional_array.push(param_to_hash_map[type2] + '=' + param2);
+                }
+            });
+            filter.find('span.content').data('url', exceptional_array.join('&'));
+            filter.show();
+        }
+        else{
+            filter.hide();
+        }
+    });
+
+    // Activate
+    $(".selected_filter").click(function(){
+        var url = $(this).find('span.content').data().url;
+        if(url == '') location.href = location.protocol + '//' + location.host + location.pathname;
+        else $.history.load(url);
     });
 }
 

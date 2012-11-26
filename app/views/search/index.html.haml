@@ -7,23 +7,23 @@
       .content
         - @gender_countings.each do |counting|
           .link
-            = link_to "#{counting.gender_name}(#{counting.value})", "#g=#{counting.gender_id}"
+            = link_to "#{counting.gender_name}(#{counting.value})", "#g=#{counting.gender_id}", :id => "gender_id_#{counting.gender_id}"
     .categories.navigation_block
       .header
         = t("categories")
       .content
         - @category_countings.each do |category_id, count_group|
           .link
-            = link_to "#{count_group.first[:category_name]}(#{count_group.sum(&:value)})", "#cat=#{category_id}"
+            = link_to "#{count_group.first[:category_name]}(#{count_group.sum(&:value)})", "#cat=#{category_id}", :id => "category_id_#{category_id}"
     .brands.navigation_block
       .header
         = t("brands")
       .content
         - @brand_countings.each do |counting|
           .link
-            = link_to "#{counting.brand_name}(#{counting.value})", "#b=#{counting.brand_id}"
+            = link_to "#{counting.brand_name}(#{counting.value})", "#b=#{counting.brand_id}", :id => "brand_id_#{counting.brand_id}"
     .price_filter_container.navigation_block
-      #max_price.invisible= 1000*@exchange_rate.to_i
+      #max_price.invisible= (1000*@exchange_rate).to_i
       #currency.invisible= @currency
       .header
         = t("prices")
