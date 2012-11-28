@@ -1,5 +1,5 @@
 class Usermail < ActionMailer::Base
-  default :from => "customer_service@otpravka.com.ua"
+  default :from => "customer_service@shop-mydostavka.com"
 
   def autoregistration(user, random_password)
     @random_password = random_password
