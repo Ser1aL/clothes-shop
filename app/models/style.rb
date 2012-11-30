@@ -85,9 +85,8 @@ class Style < ActiveRecord::Base
   end
 
   def update_zappos_prices(item_model, key_index = 0)
-    Rails.logger.debug("updating info from zappos api")
     product_search_opts = {
-      :includes => %w(gender description weight videoUrl styles sortedSizes styles stocks onSale defaultCategory defaultSubCategory colorId),
+      :includes => %w(styles sortedSizes styles stocks onSale),
       :excludes => %w(productId brandName productName defaultImageUrl defaultProductUrl )
     }
     key = KEY_LIST[key_index] || KEY_LIST.sample
@@ -99,6 +98,12 @@ class Style < ActiveRecord::Base
     styles = product.first.styles
     styles.each do |feed_style|
       next unless feed_style.styleId == external_style_id
+      update_attributes(
+        :original_price => feed_style.originalPrice[1..-1].to_f,
+        :discount_price => feed_style.price[1..-1].to_f,
+        :percent_off => feed_style.percentOff.to_i,
+        :on_sale => feed_style.onSale == "true"
+      )
       stocks.destroy_all
       feed_style.stocks.each do |feed_stock|
         self.stocks.create(

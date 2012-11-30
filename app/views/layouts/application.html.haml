@@ -45,7 +45,8 @@
             = link_to 'Отзывы', reviews_path, :class => 'link_menu'
             = link_to 'Оплата', payments_path, :class => 'link_menu'
             = link_to 'Доставка', deliveries_path, :class => 'link_menu'
-            = link_to 'Сервис покупок в зарубежных интернет магазинах', "http://mydostavka.com/", :class => 'link_menu', :target => "_blank"
+            %b
+              = link_to 'Сервис покупок в зарубежных интернет магазинах', "http://mydostavka.com/", :class => 'link_menu', :target => "_blank"
             = link_to 'Контакты', contacts_path, :class => 'link_menu'
             - if !current_user
               %a.login_button.button{:href => "#"}

@@ -1,13 +1,6 @@
 = render 'search_tip'
 .search_wrapper.advanced_search_wrapper
   .navigation_panel
-    .genders.navigation_block
-      .header
-        = t("genders")
-      .content
-        - @gender_countings.each do |counting|
-          .link
-            = link_to "#{counting.gender_name}(#{counting.value})", "#g=#{counting.gender_id}", :id => "gender_id_#{counting.gender_id}"
     .categories.navigation_block
       .header
         = t("categories")
@@ -15,6 +8,13 @@
         - @category_countings.each do |category_id, count_group|
           .link
             = link_to "#{count_group.first[:category_name]}(#{count_group.sum(&:value)})", "#cat=#{category_id}", :id => "category_id_#{category_id}"
+    .genders.navigation_block
+      .header
+        = t("genders")
+      .content
+        - @gender_countings.each do |counting|
+          .link
+            = link_to "#{counting.gender_name}(#{counting.value})", "#g=#{counting.gender_id}", :id => "gender_id_#{counting.gender_id}"
     .brands.navigation_block
       .header
         = t("brands")

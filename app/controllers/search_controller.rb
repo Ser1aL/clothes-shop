@@ -39,7 +39,7 @@ class SearchController < ApplicationController
   end
 
   def load_items
-    @item_models = ItemModel.get_items_extended(params, @exchange_rate, @markup).page(params[:page]).per(6)
+    @item_models = ItemModel.get_items_extended(params, @exchange_rate, @markup)
     render :layout => false
   end
 

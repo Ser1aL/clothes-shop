@@ -14,7 +14,7 @@
           .delimiter
           - @sub_category_counts.each_with_index do |sub_category, index|
             %div{:class => "brand_watch_block#{index % 2 == 0 ? '1' : ''}"}
-              %a.brand_changable.brand_watch{:href => "/#cat/#{params[:brand]}/#{params[:category]}/#{sub_category.sub_category_id}/#{params[:gender]}"}
+              %a.brand_changable.brand_watch{:href => build_advanced_searh_url(params[:brand], params[:category_id], sub_category.sub_category_id, params[:gender])}
                 %span.brand_name
                   = sub_category.sub_category_name.upcase
                 %span.brand_quantity

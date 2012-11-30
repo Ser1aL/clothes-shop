@@ -681,6 +681,11 @@ a.submit_comment{
 .advanced_search .product_description1{
     width: 81px;
 }
+
+#video_link{
+    color: #F12B50;
+    font-weight: bold;
+}
 .product_description2 {
 	width: 100px;
 	color: #818181;
@@ -2777,6 +2782,10 @@ a.previews .previews_img_file{
     text-align: center;
 }
 
+.admin table.orders td img, .admin #detailed_order table td img{
+    width: 240px;
+}
+
 .admin #detailed_order div{
     font-size: 13px;
     color: #444;
@@ -2981,7 +2990,7 @@ a.previews .previews_img_file{
     margin: 21px 0 0 89px;
 }
 
-.navigation_panel .categories, .navigation_panel .genders, .navigation_panel .brands{
+.navigation_panel .categories{
     display: block;
 }
 

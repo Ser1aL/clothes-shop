@@ -1,5 +1,5 @@
 - product = item_model
-- style = product.product.styles.first
+- style = item_model.product.styles.sort_by(&:discount_price).first
 .block.advanced_search
   .title_product
     %a.title_product-a{:href => item_model_url(product, :style => style), :class => 'single_product_ajaxified_link'}

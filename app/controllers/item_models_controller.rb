@@ -8,9 +8,11 @@ class ItemModelsController < ApplicationController
   end
 
   def show
-    @product = ItemModel.find(params[:id])
-    @style = @product.product.styles.find(params[:style_id])
-    update_prices @product, @style
+    @product = ItemModel.find(params[:id]) rescue nil
+    if @product
+      @style = @product.product.styles.find(params[:style_id]) rescue nil
+      update_prices @product, @style if @style
+    end
   end
 
   def preload

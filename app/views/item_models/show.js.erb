@@ -1,45 +1,49 @@
-<% rendered_content = escape_javascript render( :partial => 'detailed_product', :locals => { :product => @product } ) %>
+<% if @product && @style %>
+    <% rendered_content = escape_javascript render( :partial => 'detailed_product', :locals => { :product => @product } ) %>
 
-$('#ajax_content').html("<%= rendered_content %>");
+    $('#ajax_content').html("<%= rendered_content %>");
 
-jQuery('html, body').animate( { scrollTop: 0 }, 'slow' );
-$('#comments_toggle').click(function(){
-  $('#comment_wrapper').toggle();
-  return false;
-});
+    jQuery('html, body').animate( { scrollTop: 0 }, 'slow' );
+    $('#comments_toggle').click(function(){
+      $('#comment_wrapper').toggle();
+      return false;
+    });
 
-$('.submit_comment').click(function(){
-  if ( $('#comment_text_area textarea').val() != '' ){
-    $('#comment_loader').show();
-    $('#new_comment_form').submit();
-  }
-  return false;
-});
+    $('.submit_comment').click(function(){
+      if ( $('#comment_text_area textarea').val() != '' ){
+        $('#comment_loader').show();
+        $('#new_comment_form').submit();
+      }
+      return false;
+    });
 
-$('.delete_comment').click(function(){
-  $('#comment_loader').show();
-});
+    $('.delete_comment').click(function(){
+      $('#comment_loader').show();
+    });
 
-prepare_ajaxified_links();
-activate_sizes_dropdown();
-activate_lightbox();
-activate_video_link();
-activate_size_grid();
-$('#loader').hide();
+    prepare_ajaxified_links();
+    activate_sizes_dropdown();
+    activate_lightbox();
+    activate_video_link();
+    activate_size_grid();
+    $('#loader').hide();
 
-var options = {
-    zoomType: 'standard',
-    lens:true,
-    preloadImages: true,
-    alwaysOn:false,
-    zoomWidth: 800,
-    zoomHeight: 600,
-    xOffset:10,
-    position:'left',
-    howEffect: 'fadein',
-    hideEffect: 'fadeout'
-    //...MORE OPTIONS
-};
-$('.zoom').hover(function(){
-    $(this).jqzoom(options);
-});
+    var options = {
+        zoomType: 'standard',
+        lens:true,
+        preloadImages: true,
+        alwaysOn:false,
+        zoomWidth: 800,
+        zoomHeight: 600,
+        xOffset:10,
+        position:'left',
+        howEffect: 'fadein',
+        hideEffect: 'fadeout'
+        //...MORE OPTIONS
+    };
+    $('.zoom').hover(function(){
+        $(this).jqzoom(options);
+    });
+<% else %>
+    setTimeout("location.href = '/';", 3000);
+<% end %>
