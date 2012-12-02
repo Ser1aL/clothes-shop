@@ -35,44 +35,57 @@
     .left
       .logo
         = image_tag product.brand.logo_url
+
       .product_description
         = t('product_description.name')
       .product_description1
         = product.product_name.truncate(25).html_safe
       .delimiter
+
       .product_description
         = t('product_description.category')
       .product_description1
         = product.category.name
       .delimiter
+
       .product_description
         = t('product_description.sub_category')
       .product_description1
         = product.sub_category.try(:name)
       .delimiter
+
       .product_description
         = t('product_description.color')
       .product_description1
         = @style.color
       .delimiter
+
       .product_description
         = t('product_description.gender')
       .product_description1
         = product.gender.name
+      .delimiter
+
       - if @style.is_shoes?
         .product_description
           = t('product_description.width')
         .product_description1
           = @style.stocks[0].width
+        .delimiter
+
       .product_description
         SKU #:
       .product_description1
         = product.external_product_id
+      .delimiter
+
       - if @product.video_url
         .product_description
           = t('product_description.video')
         .product_description1
           = link_to t('product_description.show_video'), '#', :id => 'video_link'
+        .delimiter
+
       - if product.product.styles.size > 1
         .product_description
           = t('product_description.other_colors')
@@ -81,6 +94,7 @@
             - next if style == @style
             %a{:href => "/#single/#{product.id}/#{style.id}"}
               = image_tag style.not_zoomed_image_attachments.try(:[], 0).try(:image_url), :alt => product.product_name, :style => 'width: 30px;'
+        .delimiter
     .delimiter
     #flv_player
   .block_description
