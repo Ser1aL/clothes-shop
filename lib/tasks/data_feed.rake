@@ -143,6 +143,9 @@ namespace :data_feed do
                 )
 
                 styles.each do |style_feed|
+                  # Zappos from time to time provides products with 1$ price. Skip them
+                  next if style_feed.discount_price.to_i <= 3
+
                   style = Style.create(
                     :color => style_feed.color,
                     :original_price => style_feed.originalPrice[1..-1].to_f,

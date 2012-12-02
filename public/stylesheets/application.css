@@ -682,6 +682,35 @@ a.submit_comment{
     width: 81px;
 }
 
+.single_product .left{
+    padding: 0;
+    float: left;
+    width: 246px;
+    padding-left: 28px;
+}
+
+.single_product .left .product_description{
+    margin: 0 0 10px 20px;
+    float: left;
+    width: 84px;
+}
+
+.single_product .left .detailed_product_image{
+    margin: 0 0 20px 0;
+    width: 191px;
+}
+
+.single_product .left .product_description1{
+    width: 122px !important;
+    margin: 0 0 10px 20px;
+    height: auto;
+    line-height: 17px;
+}
+
+.single_product .red_button{
+    float: right;
+}
+
 #video_link{
     color: #F12B50;
     font-weight: bold;

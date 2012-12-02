@@ -14,7 +14,7 @@
           .delimiter
           - @brand_counts.each_with_index do |brand, index|
             %div{:class => "brand_watch_block#{index % 2 == 0 ? '1' : ''}", :id => "brand_id_#{brand.brand_id}"}
-              %a.brand_watch{:href => "/advanced_search/#b=#{brand.brand_id}"}
+              %a.brand_watch{:href => "/brands/#{brand.brand_id}"}
                 %span.brand_name
                   = brand.brand_name.upcase
                 %span.brand_quantity

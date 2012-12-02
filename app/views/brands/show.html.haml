@@ -14,10 +14,10 @@
     %ul
       - @category_tree[:root].each do |category_name, root_child|
         %li.jstree-open
-          %a{:href => "/#cat/#{@brand.id}/#{root_child[:id]}//"}
+          %a{:href => "/advanced_search/#b=#{@brand.id}&cat=#{root_child[:id]}"}
             = "#{category_name}(#{root_child[:count]})"
           %ul
             - root_child[:tree].delete_if{ |child| child[:count].to_i <= 0 }.each do |child|
               %li
-                %a{:href => "/#cat/#{@brand.id}/#{root_child[:id]}/#{child[:id]}/"}
+                %a{:href => "/advanced_search/#b=#{@brand.id}&cat=#{root_child[:id]}&sub=#{child[:id]}"}
                   = "#{child[:name]}(#{child[:count]})"
