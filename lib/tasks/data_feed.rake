@@ -249,21 +249,13 @@ namespace :data_feed do
         :sunglasses => 'sunglasses',
         :index => ''
     }
-    # TOP_CATEGORIES = { :clothes => 1, :shoes => 2, :accessories => 3, :watches => 4, :sunglasses => 5 }
-    category_mapping.each do |category_name, page_name|
-      if category = Category.find_by_name(category_name) || category_name == :index
-        if category_name != :index
-          category.banners.destroy_all
-        else
-          Banner.where("banners.category_id IS NULL").destroy_all
-        end
+    top_level_categories = Category::TOP_CATEGORIES
+    category_mapping.each do |category_name, page_name_6pm|
+      Banner.where(:category_id => top_level_categories[category_name]).destroy_all
 
-        nokogiri_page = Nokogiri::HTML(open("#{root_page}/#{page_name}"))
-        nokogiri_page.css(".baffinGallery a img").map{|element| element.attributes["src"].to_s}.each do |image_link|
-
-          banner = category_name == :index ? Banner.create : category.banners.create
-          banner.image_attachments.create(:image => ImageAttachment.image_from_url("#{root_page}#{image_link}"))
-        end
+      nokogiri_page = Nokogiri::HTML(open("#{root_page}/#{page_name_6pm}"))
+      nokogiri_page.css(".baffinGallery a img").map{|element| element.attributes["src"].to_s}.each do |image_link|
+        banner = Banner.create(:category_id => top_level_categories[category_name], :image_url => "#{root_page}#{image_link}")
       end
     end
 

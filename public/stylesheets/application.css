@@ -2875,13 +2875,13 @@ a.previews .previews_img_file{
 
 .slides_container {
     width:800px;
-    height: 304px;
+    height: 398px;
     padding-top: 17px;
     padding-left: 190px;
 }
 
 .index_page .slides_container{
-    height: 397px;
+    height: 306px;
 }
 .slides_container div {
     width:800px;

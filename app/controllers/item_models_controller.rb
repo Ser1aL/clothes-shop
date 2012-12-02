@@ -3,7 +3,7 @@ class ItemModelsController < ApplicationController
     if request.xhr?
       @categories = Category.all.group_by(&:top_category).delete_if{ |key, _| key.blank? }
       @countings = CategoryCounting.grouped_by_category
-      @banners = Banner.where("banners.category_id IS NULL")
+      @banners = Banner.where("category_id IS NULL")
     end
   end
 

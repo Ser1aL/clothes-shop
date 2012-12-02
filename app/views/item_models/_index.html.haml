@@ -7,10 +7,10 @@
           - banners.each do |banner|
             %div
               %a{:href => banner.url}
-                = image_tag banner.image_attachments[0].image_url
+                = image_tag banner.image_url
     .categories_panel
       - blocks_showed = 0
-      - %w(1 5 6 3 2 4).each do |top_level_category_id|
+      - %w(1 2 6 3 5 4).each do |top_level_category_id|
         - next if @categories[top_level_category_id.to_i].blank?
         - categories = @categories[top_level_category_id.to_i].sort_by{ |category| category.name }
         - if blocks_showed % 3 == 0
