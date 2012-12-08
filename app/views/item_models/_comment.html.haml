@@ -1,11 +1,11 @@
 %div{:id => 'comment_' + comment.id.to_s}
   .post_name
     .nic_name
-      - if comment.user
-        = comment.user.first_name
-        = comment.user.last_name
-      - else
-        = t('author_unkown')
+      -#- if comment.user
+      -#  = comment.user.first_name
+      -#  = comment.user.last_name
+      -#- else
+      = t('author_unkown')
     .data_post
       = t 'comments.comment_created_at'
       = l comment.created_at.to_date, :format => :comment_date
@@ -14,9 +14,9 @@
     .comment_text
       %p.text
         = comment.body
-    - if comment.user and comment.user == current_user
-      #delete_comment
-        = link_to t('delete'), destroy_comment_path(comment.id), :remote => true
+    -#- if comment.user and comment.user == current_user
+    -#  #delete_comment
+    -#    = link_to t('delete'), destroy_comment_path(comment.id), :remote => true
     .down_delim
       .comment_image_down
   .separator_comment

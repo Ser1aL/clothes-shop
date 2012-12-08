@@ -82,7 +82,7 @@ en:
   time:
     formats:
       shopping_cart_date: "%d.%m.%Y %H:%M"
-  author_unkown: 'no name'
+  author_unkown: 'Неизвестный автор'
   submit_order: 'Оформить заказ'
   chosen_brand: 'Вы выбрали'
 

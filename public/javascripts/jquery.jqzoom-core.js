@@ -81,8 +81,8 @@
                     img.wrap(el.zoomPad);
                 }
                 if(settings.zoomType == 'innerzoom'){
-                    settings.zoomWidth  = smallimage.w;
-                    settings.zoomHeight  =   smallimage.h;
+                    settings.zoomWidth  = smallimage.w + 300;
+                    settings.zoomHeight  =   smallimage.h + 300;
                 }
                 //creating ZoomPup
                 if ($(".zoomPup", el).length == 0) {

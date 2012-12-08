@@ -1,9 +1,7 @@
 class CommentsController < ApplicationController
   def create
-    item_model = ItemModel.find(params[:item_model_id])
-    @comment = Comment.create(:body => params[:comment_body], :user => current_user)
-    item_model.comments << @comment
-    item_model.save
+    #@comment = ItemModel.find(params[:item_model_id]).comments.create(:body => params[:comment_body], :user_id => current_user.try(:id))
+    @comment = ItemModel.find(params[:item_model_id]).comments.create(:body => params[:comment_body], :user_id => current_user.try(:id))
   end
 
   def destroy
