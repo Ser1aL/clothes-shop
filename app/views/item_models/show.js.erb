@@ -23,27 +23,14 @@
 
     prepare_ajaxified_links();
     activate_sizes_dropdown();
-    activate_lightbox();
-    activate_video_link();
+//    activate_lightbox();
+//    activate_video_link();
+    activate_previews();
     activate_size_grid();
+    activate_zoom();
     $('#loader').hide();
 
-    var options = {
-        zoomType: 'standard',
-        lens:true,
-        preloadImages: true,
-        alwaysOn:false,
-        zoomWidth: 800,
-        zoomHeight: 600,
-        xOffset:10,
-        position:'left',
-        howEffect: 'fadein',
-        hideEffect: 'fadeout'
-        //...MORE OPTIONS
-    };
-    $('.zoom').hover(function(){
-        $(this).jqzoom(options);
-    });
+
 <% else %>
     setTimeout("location.href = '/';", 3000);
 <% end %>

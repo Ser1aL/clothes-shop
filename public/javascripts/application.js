@@ -547,3 +547,28 @@ function update_filter_removal_panel(params){
     });
 }
 
+function activate_previews(){
+    $(".previews").click(function(event){
+        $(".inner_zoom").attr("href", $(this).attr("href"));
+        $(".inner_zoom").attr("rel", $(this).attr("rel"));
+        $(".inner_zoom img").remove();
+        $(".inner_zoom").data("jqzoom", false);
+        $(".inner_zoom").append("<img src='" + $(this).attr("href") + "' title=''>");
+        $(".inner_zoom").unbind();
+        $(".zoomPad").remove()
+        event.preventDefault();
+        activate_zoom();
+    });
+}
+
+function activate_zoom(){
+    var inner_zoom_options = {
+        zoomType: 'innerzoom',
+        howEffect: 'fadein',
+        hideEffect: 'fadeout'
+    };
+
+    $('.inner_zoom').hover(function(){
+        if( typeof($(this).attr("rel")) != 'undefined' ) $(this).jqzoom(inner_zoom_options);
+    });
+}

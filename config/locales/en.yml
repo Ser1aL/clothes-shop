@@ -48,7 +48,7 @@ en:
     style: 'Стиль:'
     specials: 'Особенности:'
     no_specials: 'Нет'
-    size: 'Размер: '
+    size: 'Выберите размер: '
     description: 'Описание: '
     gender: 'Пол:'
     price_off: 'Скидка: '

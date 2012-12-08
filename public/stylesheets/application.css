@@ -565,12 +565,12 @@ a.submit_comment{
 .block .left .logo{
     padding-bottom: 7px;
 }
-
+.single_product_description{
+    margin: 22px auto 0 auto;
+}
 .item_model_description{
-    border: 1px #eee solid;
-    margin-top: 10px;
-    width: 464px;
-    margin-left: 54px;
+    border: 1px #EEE solid;
+    width: 954px;
 }
 
 .item_model_description ul{
@@ -709,6 +709,75 @@ a.submit_comment{
 
 .single_product .red_button{
     float: right;
+}
+
+.new_single_product .mid_block{
+    width: 480px;
+    float: left;
+}
+
+.new_single_product .mid_block .brand_logo{
+    margin: 0 auto;
+    width: 287px;
+}
+
+.new_single_product .left_block, .new_single_product .right_block{
+    float: left;
+    width: 240px;
+    min-height: 1px;
+    /*border: 1px #424242 solid;*/
+}
+
+.new_single_product .other_images{
+    margin: 0 auto;
+    width: 310px;
+}
+
+.new_single_product .right_block .size_grid,
+.new_single_product .right_block .size,
+.new_single_product .right_block .buy_button{
+    float: right;
+    margin-bottom: 10px;
+}
+
+.new_single_product .left_block .product_description{
+    width: 84px;
+    color: #818181;
+    font-size: 13px;
+    font-family: Arial;
+    text-align: right;
+    margin: 0 0 10px 0;
+    float: left;
+}
+
+.new_single_product .left_block .product_description1{
+    width: 144px;
+    color: #444;
+    font-size: 13px;
+    font-family: Arial;
+    text-align: left;
+    margin: 0px 0px 10px 10px;
+    float: left;
+    height: auto;
+    line-height: 18px;
+}
+
+.new_single_product .left_block .other_colors .other_color_image{
+    float: left;
+}
+
+.new_single_product .left_block .other_colors .other_color_image img{
+    width: 60px;
+}
+
+.new_single_product .left_block .other_colors .label{
+    color: #818181;
+    font-size: 13px;
+    font-family: Arial;
+}
+
+.new_single_product .left_block .other_colors .images{
+    padding-top: 20px;
 }
 
 #video_link{
@@ -1619,8 +1688,9 @@ a.submit_comment{
 }
 
 #flv_player_wrapper{
-    margin-top: 146px;
-    display: none;
+    width: 450px;
+    height: 305px;
+    margin: 30px auto 10px auto;
 }
 
 #google_sectional_element{
