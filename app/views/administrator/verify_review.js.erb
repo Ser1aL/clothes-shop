@@ -1,0 +1,6 @@
+<% if params[:verified] == "true" %>
+    $("#review_form_<%= params[:review_id] %>").closest(".review").removeClass("unverified").addClass("verified");
+<% else %>
+    $("#review_form_<%= params[:review_id] %>").closest(".review").removeClass("verified").addClass("unverified");
+<% end %>
+$(".ajaxified_translation").val("<%= t('save') %>");

@@ -1,0 +1,24 @@
+.hint
+  Отзывы
+.reviews
+  - @reviews.each do |review|
+    .review{:class => (review.verified? ? "verified" : "unverified")}
+      = form_tag administrator_verify_review_path, :remote => true, :id => "review_form_#{review.id}" do
+        = hidden_field_tag :review_id, review.id
+        .name
+          .label
+            Имя:
+          .content
+            = review.name
+        .email
+          .label
+            Email:
+          .content
+            = review.email
+        .body
+          .label
+            Сообщение:
+          .content
+            = review.body
+        = select_tag :verified, options_for_select([["Подтвердить", true], ['Убрать', false]], review.verified != true)
+        = submit_tag t("save"), :class => 'ajaxified_translation'

@@ -1,0 +1,22 @@
+%div{:id => 'comment_' + review.id.to_s}
+  .post_name
+    .nic_name
+      -#- if comment.user
+      -#  = comment.user.first_name
+      -#  = comment.user.last_name
+      -#- else
+      = review.name
+    .data_post
+      = t 'comments.comment_created_at'
+      = l review.created_at.to_date, :format => :comment_date
+  .comment
+    .comment_image_top
+    .comment_text
+      %p.text
+        = review.body
+    -#- if comment.user and comment.user == current_user
+    -#  #delete_comment
+    -#    = link_to t('delete'), destroy_comment_path(comment.id), :remote => true
+    .down_delim
+      .comment_image_down
+  .separator_comment

@@ -27,6 +27,8 @@ Watches::Application.routes.draw do
     post "set_sub_category_favorite"
     get "category_mapping"
     post "set_category_mapping"
+    get "reviews"
+    post "verify_review"
   end
 
   namespace :search do
@@ -43,7 +45,8 @@ Watches::Application.routes.draw do
 
   resources :item_models
   
-  match 'reviews', :to => 'static#reviews', :as => 'reviews'
+  #match 'reviews', :to => 'reviews#index', :as => 'reviews'
+  resources :reviews, :only => %w(index create)
   match 'payments', :to => 'static#payments', :as => 'payments'
   match 'deliveries', :to => 'static#deliveries', :as => 'deliveries'
   match 'contacts', :to => 'static#contacts', :as => 'contacts'

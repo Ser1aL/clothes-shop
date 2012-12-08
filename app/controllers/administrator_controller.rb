@@ -119,6 +119,14 @@ class AdministratorController < ApplicationController
     end
   end
 
+  def reviews
+    @reviews = Review.order(:verified)
+  end
+
+  def verify_review
+    Review.find(params[:review_id]).update_attribute(:verified, params[:verified])
+  end
+
 private
 
   def check_admin

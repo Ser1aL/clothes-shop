@@ -1142,7 +1142,7 @@ a.submit_comment{
 #footer_content_wraper {
 	width: 960px;
 	margin: 0 auto;
-	height: 280px;
+	height: 310px;
 	overflow: hidden
 }
 
@@ -1265,8 +1265,8 @@ a.submit_comment{
 
 .footer_button_send {
 	width: 620px;
-  height: 32px;
-  padding: 162px 0 0 336px;
+    height: 32px;
+    padding: 8px 0 0 334px;
 }
 
 #email_image {
@@ -2914,6 +2914,24 @@ a.previews .previews_img_file{
 
 .admin .orders a{
     text-decoration: underline;
+}
+
+.admin .reviews .review{
+    border: 1px #c6c6c6 solid;
+}
+
+.admin .reviews .review .label{
+    font-family: Arial;
+    font-size: 13px;
+    color: #828282;
+}
+
+.admin .reviews .review.verified{
+    background-color: #a7cd8e;
+}
+
+.admin .reviews .review.unverified{
+    background-color: #9c403e;
 }
 
 #custom_block{

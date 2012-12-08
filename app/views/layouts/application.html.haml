@@ -181,31 +181,42 @@
                       udg2010
           .footer_h_sep
           .footer_blok_content
-            %p.title_text Обратная связь
-            %p.footer_help_text Вы можете задать свой вопрос нашему менеджеру
-            .footer_separator
-            .footer_label_input
-              .footer_label
-                %p.text1 Ваш e-mail:
-              #footer_input
-                .input_bg
-                  .input_left_bg
-                  %input.footer_input_style{:type => "text"}/
-                  .input_right_bg
-            .footer_label_input1
-              .footer_label
-                %p.text1 Сообщение:
-              #footer_text_area
-                .text_area_bg
-                  .text_area_left_bg
-                  .text_area_style
-                    %textarea{:type => "text"}
-                  .text_area_right_bg
-            .footer_button_send
-              %a.button{:href => "#"}
-                .button_left
-                .button_mid Отправить
-                .button_right
+            = form_for Review.new do |f|
+              %p.title_text Обратная связь
+              %p.footer_help_text Вы можете задать свой вопрос нашему менеджеру
+              .footer_separator
+              .footer_label_input
+                .footer_label
+                  %p.text1 Ваше имя:
+                #footer_input
+                  .input_bg
+                    .input_left_bg
+                    = f.text_field :name, :class => "footer_input_style", :data => { :error_message => t("review_validation_errors.name") }
+                    .input_right_bg
+              .footer_label_input
+                .footer_label
+                  %p.text1 Ваш e-mail:
+                #footer_input
+                  .input_bg
+                    .input_left_bg
+                    = f.text_field :email, :class => "footer_input_style", :data => { :error_message => t("review_validation_errors.email") }
+                    .input_right_bg
+              .footer_label_input1
+                .footer_label
+                  %p.text1 Сообщение:
+                #footer_text_area
+                  .text_area_bg
+                    .text_area_left_bg
+                    .text_area_style
+                      = f.text_area :body, :data => { :error_message => t("review_validation_errors.body") }
+                    .text_area_right_bg
+              .footer_button_send
+                %a.button{:href => "#"}
+                  .button_left
+                  .button_mid Отправить
+                  .button_right
+                  .delimiter
+              .delimiter
         .footer_separator1
         #footer_end_wraper
           .coperait
