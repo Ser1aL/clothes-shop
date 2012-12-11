@@ -68,6 +68,8 @@ en:
   product_not_exists: 'Нет в наличии.'
   currency: 'грн.'
   more: 'Подробнее'
+  show_video: '%{product} видео'
+  show_description: '%{product} описание'
   add_to_cart: 'Добавить в корзину'
   email_when_available: 'Сообщить когда появится'
   comments:

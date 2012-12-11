@@ -116,4 +116,8 @@ class Style < ActiveRecord::Base
     end
     true
   end
+
+  def primary_image
+    not_zoomed_image_attachments.select{|i| i.image_url =~ /-p/ || i.image_url =~ /p-/ }.first || not_zoomed_image_attachments.first
+  end
 end

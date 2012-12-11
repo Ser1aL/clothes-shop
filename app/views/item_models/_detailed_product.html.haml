@@ -83,8 +83,8 @@
         - if @style.try(:not_zoomed_image_attachments).blank?
           = image_tag 'thumb/missing.png', :class => 'missing'
         - else
-          %a.inner_zoom{:href => @style.not_zoomed_image_attachments[0].image_url, :rel => @style.not_zoomed_image_attachments[0].zoom_image, :title => 'zoom' }
-            = image_tag @style.not_zoomed_image_attachments[0].image_url, :alt => product.product_name, :class => 'img_file'
+          %a.inner_zoom{:href => @style.primary_image.image_url, :rel => @style.primary_image.zoom_image, :title => 'zoom' }
+            = image_tag @style.primary_image.image_url, :alt => product.product_name, :class => 'img_file'
           .other_images
             - @style.not_zoomed_image_attachments.each_with_index do |image_attachment, index|
               %a.previews{:href => image_attachment.image_url, :rel => image_attachment.zoom_image, :title => 'zoom'}
@@ -114,10 +114,15 @@
   .delimiter
 - if @product.video_url
   .separator_content
-  #flv_player
+  .trigger_video
+    = link_to t("show_video", :product => @product.product_name), "#"
+  .video.invisible
+    #flv_player
 .separator_content
 .delimiter
-.single_product_description
+.trigger_description
+  = link_to t("show_description", :product => @product.product_name), "#"
+.single_product_description.invisible
   .item_model_description.goog-trans-section
     = @product.description.html_safe
     .goog-trans-control

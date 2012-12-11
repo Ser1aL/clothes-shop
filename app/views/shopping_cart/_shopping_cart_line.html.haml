@@ -8,7 +8,7 @@
       %a{:href => "/#/single/#{shopping_cart_line.product.item_model.id}/#{shopping_cart_line.style.id}"}
         .sc_clock_image
           .sc_clock_image
-            = image_tag shopping_cart_line.style.not_zoomed_image_attachments[0].image_url
+            = image_tag shopping_cart_line.style.primary_image.image_url
   %td.shopping_card_content_description
     .shopping_card_content_title_product
       %a.shopping_card_content_title_product-a{:href => "/#/single/#{shopping_cart_line.product.item_model.id}/#{shopping_cart_line.style.id}"}
