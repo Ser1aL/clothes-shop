@@ -115,13 +115,13 @@
 - if @product.video_url
   .separator_content
   .trigger_video
-    = link_to t("show_video", :product => @product.product_name), "#"
+    = link_to t("show_video", :product => @product.product_name.html_safe), "#"
   .video.invisible
     #flv_player
 .separator_content
 .delimiter
 .trigger_description
-  = link_to t("show_description", :product => @product.product_name), "#"
+  = link_to t("show_description", :product => @product.product_name.html_safe), "#"
 .single_product_description.invisible
   .item_model_description.goog-trans-section
     = @product.description.html_safe

@@ -635,12 +635,21 @@ a.submit_comment{
 
     margin: 0 23px 20px 0;
 }
-.detailed_product_image .img_file{
-    width: 191px;
+.product_description_wrapper{
+    width: 296px;
+    float: right;
 }
 
 .advanced_search .product_description,  .advanced_search .product_description1{
-    overflow: hidden;
+    /*overflow: hidden;*/
+}
+
+.advanced_search .product_description_wrapper{
+    width: 196px;
+}
+
+.product_description_wrapper .product_description1{
+    height: auto;
 }
 
 
@@ -668,14 +677,13 @@ a.submit_comment{
 }
 
 .product_description1 {
-    width: 176px;
+    width: 167px;
 	color: #444444;
 	font-size: 13px;
 	font-family: Arial;
 	text-align: left;
 	margin: 0px 0px 10px 20px;
 	float: left;
-  height: 16px;	
 }
 
 .advanced_search .product_description1{

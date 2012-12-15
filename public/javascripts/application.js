@@ -1,7 +1,3 @@
-$.ajaxSetup({
-    cache: true
-});
-
 function prepare_paginated_links(page_type){
   // Replace url for advanced search pagination
   if(page_type != 'cat' && page_type != 'search') {
