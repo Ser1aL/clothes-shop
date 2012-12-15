@@ -40,7 +40,7 @@ class RawSearch
       next if group.first["type_name"].blank?
       {
         :count => group.size,
-        :type_name => group.first["type_name"],
+        :type_name => group.first["type_name"].html_safe,
         "#{type.to_s}_id".to_sym => type_id
       }.merge!(params)
     end.compact.sort_by{|r| r[:type_name].first.capitalize + r[:type_name].try(:[], 1).try(:capitalize).to_s}

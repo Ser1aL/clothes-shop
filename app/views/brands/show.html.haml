@@ -1,7 +1,7 @@
 = render 'brand_tip'
 .brand_description_wrapper
   .brand_description_name
-    = @brand.name
+    = @brand.name.html_safe
   .delimiter
   .brand_text
     .logo
