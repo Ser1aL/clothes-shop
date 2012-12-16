@@ -96,6 +96,7 @@ function activate_selection_popups(){
         });
       },
       function(){
+        $('.pop_up_style_choice_'+value).hide();
       }
     );
     $('.pop_up_style_choice_'+value).hover(
