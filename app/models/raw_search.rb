@@ -104,7 +104,7 @@ class RawSearch
     conditions = conditions.blank? ? "" : "AND " + conditions.join(" AND ")
 
     search_query = <<-SQL
-      SELECT count(item_models.id) as count, styles.color
+      SELECT count(item_models.id) as count, styles.color, styles.swatch_url
       FROM item_models, products, styles, stocks
       WHERE products.item_model_id = item_models.id
         AND styles.product_id = products.id
@@ -113,13 +113,14 @@ class RawSearch
       GROUP BY item_models.id, styles.color
     SQL
 
-    ActiveRecord::Base.connection.select_all(search_query).group_by{|r| r["color"]}.map{|color, group|
+    ActiveRecord::Base.connection.select_all(search_query).group_by{|r| r["color"]}.map do |color, group|
       {
         :count => group.size,
         :type_name => color,
+        :swatch_url => group.first['swatch_url'],
         :color => color
       }.merge!(params)
-    }.sort_by{|r| r[:type_name].first.capitalize}
+    end.sort_by{|r| r[:type_name].first.capitalize}
   end
 
 end

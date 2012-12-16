@@ -263,12 +263,21 @@ function load_search_page(params){
                         }
                         var div = $('<div/>', { class: 'link' });
                         var link_text = respv.type_name + (v == 'sizes' ? '' : "("+ respv.count +")");
-                        div.html(
-                            $('<a/>', {
-                                href: '#' + parameters.join("&"),
-                                text: link_text
-                            })
-                        ).appendTo(result_element);
+                        if(respv.action != 'preload_colors') {
+                            div.html(
+                                $('<a/>', {
+                                    href: '#' + parameters.join("&"),
+                                    text: link_text
+                                })
+                            ).appendTo(result_element);
+                        }
+                        else {
+                            div.html(
+                                $('<a/>', {
+                                    href: '#' + parameters.join("&")
+                                }).append($("<img/>", { src: respv.swatch_url }))
+                            ).appendTo(result_element);
+                        }
                     });
                     result_container.slideDown();
                 }

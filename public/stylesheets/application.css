@@ -3060,6 +3060,11 @@ a.previews .previews_img_file{
     padding: 7px 0px 0 6px;
 }
 
+.navigation_block.colors .link{
+    float: left;
+    margin-right: 6px;
+}
+
 .category_block{
     float: left;
     width: 244px;

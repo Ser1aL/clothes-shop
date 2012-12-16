@@ -40,7 +40,7 @@ namespace :data_feed do
   }
 
   image_search_opts = {
-    :recipe => %w(MULTIVIEW 4x),
+    :recipe => %w(MULTIVIEW 4x SWATCH),
     :excludes => %w(format productId imageId styleId)
   }
 
@@ -141,10 +141,12 @@ namespace :data_feed do
                   :item_model => item_model,
                   :total_quantity => 0
                 )
-
+                #puts "styles = #{styles.inspect}"
                 styles.each do |style_feed|
-                  # Zappos from time to time provides products with 1$ price. Skip them
-                  next if style_feed.discount_price.to_i <= 3
+                  # Zappos from time to time provides products with 1-3$ price. Skip them
+                  next if style_feed.price[1..-1].to_f <= 3
+
+                  swatch_url = image_feed[style_feed.styleId].select{ |image| image.recipeName == "SWATCH" }.first.try(:filename)
 
                   style = Style.create(
                     :color => style_feed.color,
@@ -154,10 +156,12 @@ namespace :data_feed do
                     :percent_off => style_feed.percentOff.to_i,
                     :external_style_id => style_feed.styleId,
                     :on_sale => style_feed.onSale == "true",
-                    :external_color_id => style_feed.colorId
+                    :external_color_id => style_feed.colorId,
+                    :swatch_url => swatch_url
                   )
 
                   image_feed[style_feed.styleId].each do |image|
+                    next if image.recipeName == "SWATCH"
                     style.image_attachments.create(
                       :image_url => image.filename,
                       :external_image_type => image.type,
@@ -255,7 +259,7 @@ namespace :data_feed do
 
       nokogiri_page = Nokogiri::HTML(open("#{root_page}/#{page_name_6pm}"))
       nokogiri_page.css(".baffinGallery a img").map{|element| element.attributes["src"].to_s}.each do |image_link|
-        banner = Banner.create(:category_id => top_level_categories[category_name], :image_url => "#{root_page}#{image_link}")
+        Banner.create(:category_id => top_level_categories[category_name], :image_url => "#{root_page}#{image_link}")
       end
     end
 
@@ -286,4 +290,23 @@ namespace :data_feed do
     end
   end
 
+  desc "load swatch images for existing styles"
+  task :load_swatches => :environment do
+    styles = Style.where(:swatch_url => nil, :hidden => false)
+    image_search_opts = { :recipe => "SWATCH" }
+    styles.each_with_index do |style, index|
+      puts index
+      key_index = 0
+      begin
+        key_index = 0 if key_list[key_index].blank?
+        client = Zappos::Client.new(key_list[key_index], { :base_url => 'api.zappos.com' })
+        image_feed = client.image( image_search_opts.merge!({ :productId => style.product.item_model.external_product_id, :styleId => style.external_style_id })).data
+        style.update_attribute(:swatch_url, image_feed[style.external_style_id].first.filename)
+      rescue => e
+        key_index += 1
+        puts "error in request: #{e.inspect}"
+        retry
+      end
+    end
+  end
 end

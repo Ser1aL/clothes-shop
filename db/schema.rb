@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121208015829) do
+ActiveRecord::Schema.define(:version => 20121216105445) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "user_id"
@@ -278,8 +278,10 @@ ActiveRecord::Schema.define(:version => 20121208015829) do
     t.boolean  "on_sale"
     t.integer  "external_color_id"
     t.boolean  "hidden",                                           :default => false
+    t.string   "swatch_url"
   end
 
+  add_index "styles", ["color"], :name => "index_styles_on_color"
   add_index "styles", ["discount_price"], :name => "index_styles_on_discount_price"
   add_index "styles", ["product_id"], :name => "index_styles_on_product_id"
 
