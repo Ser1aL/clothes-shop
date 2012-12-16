@@ -74,7 +74,7 @@ class ItemModel < ActiveRecord::Base
   # change to sphinx when 2.0+ is well tested
   def self.search(query, page)
     query = "%#{query.to_s.strip}%"
-    joins(:gender, :category, :brand, "LEFT JOIN `sub_categories` ON `sub_categories`.`id` = `item_models`.`sub_category_id` ").where('
+    joins(:category, :brand, "LEFT JOIN `sub_categories` ON `sub_categories`.`id` = `item_models`.`sub_category_id` ").where('
       brands.name like ? OR
       categories.name LIKE ? OR
       sub_categories.name LIKE ? OR

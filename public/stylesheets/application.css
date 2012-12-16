@@ -772,10 +772,12 @@ a.submit_comment{
 
 .new_single_product .left_block .other_colors .other_color_image{
     float: left;
+    margin-right: 6px;
 }
 
 .new_single_product .left_block .other_colors .other_color_image img{
-    width: 60px;
+    width: 19px;
+    height: 19px;
 }
 
 .new_single_product .left_block .other_colors .label{
@@ -785,7 +787,7 @@ a.submit_comment{
 }
 
 .new_single_product .left_block .other_colors .images{
-    padding-top: 20px;
+    padding-top: 8px;
 }
 
 #video_link{

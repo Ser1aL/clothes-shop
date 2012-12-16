@@ -272,11 +272,13 @@ function load_search_page(params){
                             ).appendTo(result_element);
                         }
                         else {
-                            div.html(
-                                $('<a/>', {
-                                    href: '#' + parameters.join("&")
-                                }).append($("<img/>", { src: respv.swatch_url }))
-                            ).appendTo(result_element);
+                            if(respv.swatch_url != null){
+                                div.html(
+                                    $('<a/>', {
+                                        href: '#' + parameters.join("&")
+                                    }).append($("<img/>", { src: respv.swatch_url }))
+                                ).appendTo(result_element);
+                            }
                         }
                     });
                     result_container.slideDown();
