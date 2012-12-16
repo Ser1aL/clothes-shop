@@ -261,6 +261,14 @@ namespace :data_feed do
       nokogiri_page.css(".baffinGallery a img").map{|element| element.attributes["src"].to_s}.each do |image_link|
         Banner.create(:category_id => top_level_categories[category_name], :image_url => "#{root_page}#{image_link}")
       end
+
+      # for index page load 2 more banners
+      if page_name_6pm.blank?
+        first_banner = nokogiri_page.css(".imageFarm")[0].css("a img")[0].attribute("src").value
+        second_banner = nokogiri_page.css(".imageFarm")[0].css("a img")[2].attribute("src").value
+        Banner.create(:category_id => top_level_categories[category_name], :image_url => "#{root_page}#{first_banner}", :side => "left")
+        Banner.create(:category_id => top_level_categories[category_name], :image_url => "#{root_page}#{second_banner}", :side => "right")
+      end
     end
 
   end
@@ -292,20 +300,24 @@ namespace :data_feed do
 
   desc "load swatch images for existing styles"
   task :load_swatches => :environment do
-    styles = Style.where(:swatch_url => nil, :hidden => false)
+    styles = Style.where(:swatch_url => nil, :hidden => false).order("id desc")
+    key_index = 0
     image_search_opts = { :recipe => "SWATCH" }
     styles.each_with_index do |style, index|
       puts index
-      key_index = 0
+      next if style.swatch_url.present?
       begin
         key_index = 0 if key_list[key_index].blank?
         client = Zappos::Client.new(key_list[key_index], { :base_url => 'api.zappos.com' })
-        image_feed = client.image( image_search_opts.merge!({ :productId => style.product.item_model.external_product_id, :styleId => style.external_style_id })).data
+        image_feed = client.image( image_search_opts.merge!({ :productId => style.product.item_model.external_product_id, :styleId => style.external_style_id }))
+        puts "im: #{style.product.item_model.external_product_id}, style: #{style.external_style_id}, resp: #{image_feed.response}"
+        image_feed = image_feed.data
         style.update_attribute(:swatch_url, image_feed[style.external_style_id].first.filename)
+        sleep 0.3
       rescue => e
         key_index += 1
         puts "error in request: #{e.inspect}"
-        retry
+        next
       end
     end
   end

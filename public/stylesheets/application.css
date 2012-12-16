@@ -2971,27 +2971,52 @@ a.previews .previews_img_file{
 
 .slides_container {
     width:800px;
-    height: 398px;
+    height: 346px;
     padding-top: 17px;
     padding-left: 190px;
 }
 
-.index_page .slides_container{
-    height: 306px;
-}
 .slides_container div {
     width:800px;
     height:450px;
     display:block;
 }
 
+.index_page .slides_container img{
+    width: 514px;
+}
+
+.index_page .pagination{
+    margin-top: 12px !important;
+}
+
+.index_page .slides_container{
+    height: 255px;
+    padding-left: 0;
+    width: 514px;
+}
+
+.banners .left_side, .index_page#slides, .banners .right_side{
+    float: left;
+    width: 520px;
+}
+
+.banners .left_side, .banners .right_side{
+    width: 220px;
+    height: 255px;
+    padding-top: 25px;
+}
+
+.banners .left_side img, .banners .right_side img{
+    width: 212px;
+}
 .slides_container img{
-    width:600px;
+    width:500px;
 }
 
 
 #slides .pagination {
-    margin: 10px 0 0 412px;
+    margin: 0 auto;
     width:100px;
     clear: none;
 }

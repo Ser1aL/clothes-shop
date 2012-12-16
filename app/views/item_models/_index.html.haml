@@ -1,13 +1,23 @@
+- left_banner = banners.where(:side => "left").first
+- right_banner = banners.where(:side => "right").first
 - cache do
   .delimiter
   .categories_wrapper
     .banners
+      .left_side
+        %div
+          %a{ :href => left_banner.url }
+            = image_tag left_banner.image_url
       #slides.index_page
         .slides_container
-          - banners.each do |banner|
+          - banners.where(:side => nil).each do |banner|
             %div
               %a{:href => banner.url}
                 = image_tag banner.image_url
+      .right_side
+        %div
+          %a{ :href => right_banner.url }
+            = image_tag right_banner.image_url
     .categories_panel
       - blocks_showed = 0
       - %w(1 2 6 3 5 4).each do |top_level_category_id|
