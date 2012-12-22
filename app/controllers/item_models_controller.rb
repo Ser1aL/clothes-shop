@@ -22,7 +22,7 @@ class ItemModelsController < ApplicationController
 
   def search
     params[:search_query].gsub!("+", " ")
-    @products = ItemModel.search(params[:search_query], params[:page])
+    @products = ItemModel.search(params[:search_query], :page => params[:page])
   end
 
   private
