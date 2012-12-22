@@ -1134,7 +1134,7 @@ a.submit_comment{
 /* Footer */
 
 #footer {
-	height: 380px;
+    height: 432px;
 	background-color: #ececec;
 }
 
@@ -1146,13 +1146,13 @@ a.submit_comment{
 #footer_conteiner_wraper {
 	width: 1000px;
 	margin: 0 auto;
-	height: 374px;
+    height: 402px;
 }
 
 #footer_content_wraper {
 	width: 960px;
 	margin: 0 auto;
-	height: 310px;
+    height: 331px;
 	overflow: hidden
 }
 
