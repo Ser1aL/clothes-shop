@@ -22,7 +22,7 @@
             - @categories.each do |category|
               %div
                 .sub_category_name
-                  = link_to "#{category.name}", "/#cat//#{category.id}//"
+                  = link_to "#{category.name}", "/advanced_search#cat=#{category.id}"
                 .sub_category_count
                   = "(#{@countings[category.id].sum(&:value)})"
               .delimiter

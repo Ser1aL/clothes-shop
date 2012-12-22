@@ -38,6 +38,8 @@ gem 'devise'
 
 group :development, :test do
   gem 'rspec-rails'#, :git => "git://github.com/rspec/rspec-rails.git"
+  gem 'pry'
+  #gem 'rails-console-pry'
 end
 group :test do
   gem "mocha"#, :git => "git://github.com/floehopper/mocha.git"
