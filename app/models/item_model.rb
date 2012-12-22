@@ -75,7 +75,7 @@ class ItemModel < ActiveRecord::Base
     indexes :product_name
     indexes :external_product_id
     indexes brand.name, :as => :brand_name
-    indexes category.name, :as => :category_name
-    indexes sub_category.name, :as => :sub_category_name
+    indexes [category.name, category.display_name], :as => :category_name
+    indexes [sub_category.name, sub_category.display_name], :as => :sub_category_name
   end
 end
