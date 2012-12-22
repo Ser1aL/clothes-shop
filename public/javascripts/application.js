@@ -41,19 +41,6 @@ function prepare_paginated_links(page_type){
 }
 
 function prepare_ajaxified_links(){
-  $(".product_details_link a, .single_product_ajaxified_link").click(function() {
-    var url = $.url(this.href);
-    var style_id = url.param('style');
-    var item_model_id = url.segment(2);
-    if(document.location.pathname == "" || document.location.pathname == "/"){
-        $('#loader').show();
-//        $.history.load( 'single/' + item_model_id + '/' + style_id );
-    }
-    else{
-        document.location = document.location.protocol + '//' + document.location.host + "/#" + 'single/' + item_model_id + '/' + style_id;
-    }
-//    return false;
-  });
   $('.ajaxified_disabled_link').click(function(){ return false; })
 }
 
@@ -333,7 +320,7 @@ $(function(){
   $('#search_form').submit(function(){
     var search_query = $.trim($('#search_query').val());
     if (search_query == '') return false;
-    $.history.load('search/'+encodeURI(search_query)+'/');
+    location.href = location.protocol + '//' + location.host + '/#search/'+encodeURI(search_query)+'/';
     $('#loader').show();
   });
 
