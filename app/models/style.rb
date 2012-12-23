@@ -96,8 +96,10 @@ class Style < ActiveRecord::Base
     product = response.data.product
     return false unless product
     styles = product.first.styles
+    updated_styles_count = 0
     styles.each do |feed_style|
       next unless feed_style.styleId == external_style_id
+      updated_styles_count += 1
       update_attributes(
         :original_price => feed_style.originalPrice[1..-1].to_f,
         :discount_price => feed_style.price[1..-1].to_f,
@@ -114,7 +116,7 @@ class Style < ActiveRecord::Base
         )
       end
     end
-    true
+    updated_styles_count > 0 ? true : false
   end
 
   def primary_image
