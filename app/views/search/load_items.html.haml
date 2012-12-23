@@ -1,2 +1,2 @@
-= render @item_models
+= render @item_models, locals: { params: params }
 = paginate @item_models, :window => 6

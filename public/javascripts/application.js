@@ -181,14 +181,19 @@ function load_search_page(params){
             }
         });
         var initialized_params_count = 0;
-        for(var i in params){ if(typeof(params[i]) != 'undefined') initialized_params_count += 1 }
+        $.each(params, function(key, value){
+            if(typeof(value) != 'undefined' && key != 'page') initialized_params_count += 1;
+        });
         update_filter_removal_panel(params);
         if(initialized_params_count > 0) $(".selected_filters .hint").show(); else $(".selected_filters .hint").hide();
         var sections = ["categories", "genders", "sub_categories", "brands"];
-        if(initialized_params_count >= 2){
+        if(initialized_params_count >= 3){
             sections.push("sizes");
             sections.push("colors");
             $(".price_filter_container").slideDown();
+        }
+        else if(initialized_params_count == 2){
+            sections.push("colors");
         }
         else{
             $(".price_filter_container").slideUp();
@@ -236,7 +241,7 @@ function load_search_page(params){
                             parameters.push("b=" + respv.brand_id);
                             filter_element = $(".brand_id_filter span.content");
                             if( parseInt(filter_element.html()) == parseInt(respv.brand_id) && v == 'brands' ){
-                                filter_element.html(respv.type_name);
+                                filter_element.html($('<div/>').html(respv.type_name).text());
                             }
                         }
                         if( typeof(respv.color) != "undefined" && respv.color != ''){
@@ -254,7 +259,7 @@ function load_search_page(params){
                             div.html(
                                 $('<a/>', {
                                     href: '#' + parameters.join("&"),
-                                    text: link_text
+                                    text: $('<div/>').html(link_text).text()
                                 })
                             ).appendTo(result_element);
                         }

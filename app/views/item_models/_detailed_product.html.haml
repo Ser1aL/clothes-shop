@@ -4,7 +4,7 @@
   %span.short_link
     = t('chosen_brand')
   %span.short_link
-    = link_to product.brand.name, "/#cat/#{product.brand.id}///"
+    = link_to product.brand.name.html_safe, "/#cat/#{product.brand.id}///"
   %span.short_link
     = link_to product.category.name, "/#cat/#{product.brand.id}/#{product.category.id}//"
   - if product.sub_category
@@ -115,13 +115,13 @@
 - if @product.video_url
   .separator_content
   .trigger_video
-    = link_to t("show_video", :product => @product.product_name.html_safe), "#"
+    = link_to t("show_video", :product => @product.product_name).html_safe, "#"
   .video.invisible
     #flv_player
 .separator_content
 .delimiter
 .trigger_description
-  = link_to t("show_description", :product => @product.product_name.html_safe), "#"
+  = link_to t("show_description", :product => @product.product_name).html_safe, "#"
 .single_product_description.invisible
   .item_model_description.goog-trans-section
     = @product.description.html_safe

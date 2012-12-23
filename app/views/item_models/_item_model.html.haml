@@ -1,5 +1,7 @@
 - product = item_model
 - style = item_model.product.styles.sort_by(&:discount_price).first
+- if params[:color].present?
+  - style = item_model.product.styles.select{ |s| s.color == params[:color] }.try(:first) || style
 .block.advanced_search
   .title_product
     %a.title_product-a{:href => "/#single/#{product.id}/#{style.id}", :class => 'single_product_ajaxified_link'}
