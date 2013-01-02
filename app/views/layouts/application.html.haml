@@ -15,6 +15,7 @@
     = javascript_include_tag 'jquery.history', 'url.parser', 'jquery.lightbox-0.5', 'jquery.jstree', 'popup.window', 'jquery.jqzoom-core', 'filter', 'application'
     = csrf_meta_tag
     = render :partial => '/layouts/partials/google_analytics'
+    = render :partial => '/layouts/partials/yandex_analytics'
   %body
     - if flash[:message_type]
       = render :partial => "/flash/#{flash[:message_type]}"
