@@ -71,6 +71,10 @@ class ItemModel < ActiveRecord::Base
     relation.where(conditions.join(' AND ')).page(params[:page]).per(6)
   end
 
+  def to_param
+    "#{id}-#{product_name.parameterize}"
+  end
+
   define_index do
     indexes :product_name
     indexes :external_product_id
