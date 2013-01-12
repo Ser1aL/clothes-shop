@@ -44,6 +44,7 @@ Watches::Application.routes.draw do
   end
 
   resources :item_models
+  get 'i/:id/:style_id', :to => 'item_models#show', :as => 'single_model'
   
   #match 'reviews', :to => 'reviews#index', :as => 'reviews'
   resources :reviews, :only => %w(index create)

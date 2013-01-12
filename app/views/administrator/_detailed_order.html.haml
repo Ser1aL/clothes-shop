@@ -63,4 +63,4 @@
             = order_line.total
             = order_line.currency
           %td
-            = link_to "Details", "/#single/#{order_line.product.item_model.id}/#{order_line.style.id}"
+            = link_to "Details", single_model_path(order_line.product.item_model, order_line.style)

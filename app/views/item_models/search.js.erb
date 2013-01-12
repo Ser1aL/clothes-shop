@@ -1,5 +1,6 @@
 <% 
   rendered_content = escape_javascript(render :partial => 'search_tip')
+  rendered_content += content_for(:no_index){ 'true' }
   if @products.size > 0
     rendered_content += escape_javascript(render :partial => 'product', :collection => @products)
     params[:search_query] = escape_javascript(params[:search_query])

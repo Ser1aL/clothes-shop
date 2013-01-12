@@ -1,3 +1,4 @@
+- content_for(:no_index){ 'true' }
 .login_block#login_form_detailed
   = form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f|
     .login_block_body

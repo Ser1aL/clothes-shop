@@ -4,31 +4,8 @@
     $('#ajax_content').html("<%= rendered_content %>");
 
     jQuery('html, body').animate( { scrollTop: 0 }, 'slow' );
-    $('#comments_toggle').click(function(){
-      $('#comment_wrapper').toggle();
-      return false;
-    });
 
-    $('.submit_comment').click(function(){
-      if ( $('#comment_text_area textarea').val() != '' ){
-        $('#comment_loader').show();
-        $('#new_comment_form').submit();
-      }
-      return false;
-    });
 
-    $('.delete_comment').click(function(){
-      $('#comment_loader').show();
-    });
-
-    prepare_ajaxified_links();
-    activate_sizes_dropdown();
-//    activate_lightbox();
-//    activate_video_link();
-    activate_previews();
-    activate_size_grid();
-    activate_zoom();
-    activate_video_and_description_links();
     $('#loader').hide();
 
 

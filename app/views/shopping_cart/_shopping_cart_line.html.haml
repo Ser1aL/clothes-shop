@@ -1,17 +1,17 @@
 %tr.shopping_card_content{:id => 'cart_item_row_' + shopping_cart_line.id.to_s}
   %td.shopping_card_content_image
     - if shopping_cart_line.style.image_attachments.blank?
-      %a{:href => "/#/single/#{shopping_cart_line.product.item_model.id}/#{shopping_cart_line.style.id}"}
+      %a{:href => single_model_path(shopping_cart_line.product.item_model, shopping_cart_line.style)}
         .sc_clock_image
           = image_tag 'thumb/missing.png'
     - else
-      %a{:href => "/#/single/#{shopping_cart_line.product.item_model.id}/#{shopping_cart_line.style.id}"}
+      %a{:href => single_model_path(shopping_cart_line.product.item_model, shopping_cart_line.style)}
         .sc_clock_image
           .sc_clock_image
             = image_tag shopping_cart_line.style.primary_image.image_url
   %td.shopping_card_content_description
     .shopping_card_content_title_product
-      %a.shopping_card_content_title_product-a{:href => "/#/single/#{shopping_cart_line.product.item_model.id}/#{shopping_cart_line.style.id}"}
+      %a.shopping_card_content_title_product-a{:href => single_model_path(shopping_cart_line.product.item_model, shopping_cart_line.style)}
         = shopping_cart_line.product.item_model.brand.name
     .shopping_card_content_product_description
       = shopping_cart_line.product.item_model.full_description

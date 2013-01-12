@@ -1,43 +1,45 @@
 function prepare_paginated_links(page_type){
-  // Replace url for advanced search pagination
-  if(page_type != 'cat' && page_type != 'search') {
-      var page = ''
-      $.each($(".pager a"), function(index, url) {
-          page = $.url(url.href).data.param.query.page;
-          if(page == undefined) page = '1';
-          var current_hash = location.hash;
-          if(current_hash.match(/p=(\d+)/)){
-              $(url).attr('href', current_hash.replace(/p=(\d+)/, 'p='+page));
-          }
-          else if(current_hash == ''){
-              $(url).attr('href', '#p=' + page);
-          }
-          else{
-              $(url).attr('href', current_hash + '&p=' + page);
-          }
-      });
-  }
-  $(".pager a").click(function() {
-    var url = $.url(this.href);
-    if (page_type == 'cat'){
-      var brand = url.param('brand') == undefined ? '' : url.param('brand');
-      var category = url.param('category') == undefined ? '' : url.param('category');
-      var sub_category = url.param('sub_category') == undefined ? '' : url.param('sub_category');
-      var gender = url.param('gender') == undefined ? '' : url.param('gender');
-      var page = url.param('page') == undefined ? '' : url.param('page');
-      var params = brand + '/' + category + '/' + sub_category + '/' + gender + '/' + page;
-      $.history.load( page_type + '/' + params );
+    if(page_type != 'cat' && page_type != 'search') {
+        var page = ''
+        $.each($(".pager a"), function(index, url) {
+            page = $.url(url.href).data.param.query.page;
+            if(page == undefined) page = '1';
+            var current_hash = location.hash;
+            if(current_hash.match(/p=(\d+)/)){
+                $(url).attr('href', current_hash.replace(/p=(\d+)/, 'p='+page));
+            }
+            else if(current_hash == ''){
+                $(url).attr('href', '#p=' + page);
+            }
+            else{
+                $(url).attr('href', current_hash + '&p=' + page);
+            }
+        });
     }
-    else if (page_type == 'search'){
-      var page = url.param('page') == undefined ? '' : url.param('page');
-      var search_query = url.param('search_query') == undefined ? '' : url.param('search_query');
-      $.history.load( page_type + '/' + search_query + '/' + page );
+    if(page_type == 'search') {
+        $.each($(".pager a"), function(index, pager_url) {
+            var url = $.url(this.href);
+            var page = url.param('page') == undefined ? 1 : parseInt(url.param('page'));
+            var search_query = url.param('search_query') == undefined ? '' : url.param('search_query');
+            $(pager_url).attr('href', '#' + page_type + '/' + search_query + '/' + page);
+        });
     }
-    // else it is an advanced search
-    else return true;
-    return false;
-  });
-  prepare_ajaxified_links();
+    $(".pager a").click(function() {
+        var url = $.url(this.href);
+        if (page_type == 'cat'){
+            var brand = url.param('brand') == undefined ? '' : url.param('brand');
+            var category = url.param('category') == undefined ? '' : url.param('category');
+            var sub_category = url.param('sub_category') == undefined ? '' : url.param('sub_category');
+            var gender = url.param('gender') == undefined ? '' : url.param('gender');
+            var page = url.param('page') == undefined ? '' : url.param('page');
+            var params = brand + '/' + category + '/' + sub_category + '/' + gender + '/' + page;
+            $.history.load( page_type + '/' + params );
+        }
+        // else it is an advanced search
+        else return true;
+        return false;
+    });
+    prepare_ajaxified_links();
 }
 
 function prepare_ajaxified_links(){
@@ -429,8 +431,16 @@ $(function(){
 
   prepare_paginated_links();
   activate_price_filter();
+  prepare_ajaxified_links();
+  activate_sizes_dropdown();
+  activate_previews();
+  activate_size_grid();
+  activate_zoom();
+  activate_video_and_description_links();
+  activate_comment_controls();
 
-  $(".footer_button_send .button").click(function(event){
+
+    $(".footer_button_send .button").click(function(event){
       event.preventDefault();
       var form = $(this).closest("form");
       var email_field = form.find("#review_email");
@@ -609,5 +619,24 @@ function activate_video_and_description_links(){
     $(".trigger_description a").click(function(event){
         event.preventDefault();
         $(".single_product_description").slideToggle();
+    });
+}
+
+function activate_comment_controls(){
+    $('#comments_toggle').click(function(){
+        $('#comment_wrapper').toggle();
+        return false;
+    });
+
+    $('.submit_comment').click(function(){
+        if ( $('#comment_text_area textarea').val() != '' ){
+            $('#comment_loader').show();
+            $('#new_comment_form').submit();
+        }
+        return false;
+    });
+
+    $('.delete_comment').click(function(){
+        $('#comment_loader').show();
     });
 }

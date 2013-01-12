@@ -35,11 +35,12 @@ gem "riddle", "~> 1.5.3"
 gem 'heroku'
 
 gem 'devise'
-gem 'pry'
+# gem 'pry'
 
 group :development, :test do
   gem 'rspec-rails'#, :git => "git://github.com/rspec/rspec-rails.git"
-  gem 'pry'
+  #gem 'pry'
+  gem 'pry-rails'
 end
 group :test do
   gem "mocha"#, :git => "git://github.com/floehopper/mocha.git"

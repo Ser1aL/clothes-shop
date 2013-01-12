@@ -1,4 +1,5 @@
 = render :partial => 'shopping_cart_tip', :locals => { :item_count => @cart_line_count }
+- content_for(:no_index){ 'true' }
 %table#shopping_card_block
   %tr.table_header
     %td.table_header_mane Товар

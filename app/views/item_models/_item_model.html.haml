@@ -4,15 +4,15 @@
   - style = item_model.product.styles.select{ |s| s.color == params[:color] }.try(:first) || style
 .block.advanced_search
   .title_product
-    %a.title_product-a{:href => "/#single/#{product.id}/#{style.id}", :class => 'single_product_ajaxified_link'}
+    %a.title_product-a{:href => single_model_path(product, style), :class => 'single_product_ajaxified_link'}
       = product.product_name.truncate(55).html_safe
   .product_image
-    %a{:href => "/#single/#{product.id}/#{style.id}", :class => 'single_product_ajaxified_link'}
+    %a{:href => single_model_path(product, style), :class => 'single_product_ajaxified_link'}
       - if product.try(:product).try(:styles).try(:first).try(:not_zoomed_image_attachments).blank?
         = image_tag 'thumb/missing.png', :class => 'missing'
       - else
         = image_tag style.primary_image.image_url, :alt => product.product_name, :class => 'img_file'
-    %a{:href => "/#single/#{product.id}/#{style.id}", :class => 'single_product_ajaxified_link more_link'}
+    %a{:href => single_model_path(product, style), :class => 'single_product_ajaxified_link more_link'}
       = "Подробнее"
   .product_description_wrapper
     .product_description
@@ -52,7 +52,7 @@
       .presence_note_no
         = t('product_not_exists')
     .product_details_link
-      = link_to t('more'), "/#single/#{product.id}/#{style.id}", :class => 'more single_product_ajaxified_link'
+      = link_to t('more'), single_model_path(product, style), :class => 'more single_product_ajaxified_link'
       .image_arrow1
 - if item_model_counter % 2 == 1
   .delimiter

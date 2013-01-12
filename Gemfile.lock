@@ -192,6 +192,8 @@ GEM
       coderay (~> 1.0.5)
       method_source (~> 0.8)
       slop (~> 3.3.1)
+    pry-rails (0.2.2)
+      pry (>= 0.9.10)
     rack (1.4.1)
     rack-cache (1.2)
       rack (>= 0.4)
@@ -287,7 +289,7 @@ DEPENDENCIES
   nokogiri (= 1.5.0)
   paperclip!
   passenger
-  pry
+  pry-rails
   rails (= 3.2.8)
   rb-inotify
   riddle (~> 1.5.3)

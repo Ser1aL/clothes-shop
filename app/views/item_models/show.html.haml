@@ -1,0 +1,216 @@
+= javascript_include_tag "http://translate.google.com/translate_a/element.js?cb=googleSectionalElementInit&ug=section&hl=ru"
+
+- content_for(:canonical_url) { single_model_url(@product, @product.product.styles.first) }
+
+%span.path_link
+  %span.short_link
+    = t('chosen_brand')
+  %span.short_link
+    = link_to @product.brand.name.html_safe, "/#cat/#{@product.brand.id}///"
+  %span.short_link
+    = link_to @product.category.name, "/#cat/#{@product.brand.id}/#{@product.category.id}//"
+  - if @product.sub_category
+    %span.short_link
+      = link_to @product.sub_category.name, "/#cat/#{@product.brand.id}/#{@product.category.id}/#{@product.sub_category.id}/"
+  %span.short_link
+    = link_to @product.gender.name, "/#cat/#{@product.brand.id}/#{@product.category.id}/#{@product.sub_category.try(:id)}/#{@product.gender.id}"
+  %span.short_link.no_arrows
+    = @product.product_name.html_safe
+.separator_content
+
+.brand_description_wrapper.new_single_product
+  .title_product
+  .top_single_product_wrapper
+    .left_block
+      .product_description
+        = t('product_description.name')
+      .product_description1
+        = @product.product_name.truncate(25).html_safe
+      .delimiter
+      .product_description
+        = t('product_description.category')
+      .product_description1
+        = @product.category.name
+      .delimiter
+
+      - if @product.sub_category.try(:name)
+        .product_description
+          = t('product_description.sub_category')
+        .product_description1
+          = @product.sub_category.name
+        .delimiter
+
+      .product_description
+        = t('product_description.color')
+      .product_description1
+        = @style.color
+      .delimiter
+
+      .product_description
+        = t('product_description.gender')
+      .product_description1
+        = @product.gender.name
+      .delimiter
+
+      - if @style.is_shoes?
+        .product_description
+          = t('product_description.width')
+        .product_description1
+          = @style.stocks[0].width
+        .delimiter
+
+      .product_description
+        SKU #:
+      .product_description1
+        = @product.external_product_id
+      .delimiter
+
+      .separator_content
+      - if @product.product.styles.size > 1
+        .other_colors
+          .label
+            = t("product_description.other_colors")
+          .images
+            - @product.product.styles.each do |style|
+              - next if style == @style
+              .other_color_image
+                %a{:href => single_model_path(@product, style)}
+                  = image_tag style.swatch_url, :alt => @product.product_name
+            .delimiter
+
+    .mid_block
+      .brand_logo
+        = image_tag @product.brand.logo_url
+      .main_product_image
+        - if @style.try(:not_zoomed_image_attachments).blank?
+          = image_tag 'thumb/missing.png', :class => 'missing'
+        - else
+          %a.inner_zoom{:href => @style.primary_image.image_url, :rel => @style.primary_image.zoom_image, :title => 'zoom' }
+            = image_tag @style.primary_image.image_url, :alt => @product.product_name, :class => 'img_file'
+          .other_images
+            - @style.not_zoomed_image_attachments.each_with_index do |image_attachment, index|
+              %a.previews{:href => image_attachment.image_url, :rel => image_attachment.zoom_image, :title => 'zoom'}
+                - if index < 6
+                  = image_tag image_attachment.image_url, :alt => @product.product_name, :class => 'previews_img_file'
+    .right_block
+      - if @product.product && !@style.hidden?
+        .size
+          = t('product_description.size')
+          = select_tag :stock_id, options_for_select(@style.stocks.map{|s| [s.size, s.id]})
+        .buy_button
+          %a.button
+            .button_left
+            .button_mid.add_to_cart_link
+              = link_to t('add_to_cart'), add_path(@product.product, :style => @style, :stock_id => @style.stocks.first)
+            .button_right
+        .size_grid
+          = link_to t("size_grid"), '/images/size_grid.png', :class => 'size_grid'
+      - else
+        .buy_button
+          .button_idle
+            .button_left_idle
+            .button_mid_idle
+              = t('add_to_cart')
+            .button_right_idle
+      .delimiter
+  .delimiter
+- if @product.video_url
+  .separator_content
+  .trigger_video
+    = link_to t("show_video", :product => @product.product_name).html_safe, "#"
+  .video.invisible
+    #flv_player
+.separator_content
+.delimiter
+.trigger_description
+  = link_to t("show_description", :product => @product.product_name).html_safe, "#"
+.single_product_description.invisible
+  .item_model_description.goog-trans-section
+    = @product.description.html_safe
+    .goog-trans-control
+  #google_sectional_element
+.grey_area{:style => 'margin-top: 14px;'}
+  - if @product.product && !@style.hidden?
+    .presence_color
+    .presence_note
+      = t('product_exists')
+    - if @style.percent_off > 0
+      .price
+        = t('product_description.original_price')
+      %div
+        %a.sum-a{:style => 'font-size: 13px;'}
+          = number_to_currency(@style.original_price_extra(@exchange_rate, @markup), :unit => '')
+      .price
+        = @currency
+      .price
+        = t('product_description.price_off')
+      %div
+        %a.sum-a
+          = "#{@style.percent_off}%"
+      .price
+      .price
+        = t('product_description.discount_price')
+      %div
+        %a.sum-a
+          = number_to_currency(@style.discount_price_extra(@exchange_rate, @markup), :unit => '')
+      .price
+        = @currency
+    - else
+      .price
+        = t('product_description.original_price')
+      %div
+        %a.sum-a
+          = number_to_currency(@style.discount_price_extra(@exchange_rate, @markup), :unit => '')
+      .price
+        = @currency
+  - else
+    .presence_color_no
+    .presence_note_no
+      = t('product_not_exists')
+
+#comments
+  .tips
+    .tips_text
+      = t('comments.header_tip')
+  .filter_tips
+    %a.arrow_down{:href => "#"}
+    .filter_tips_text
+      %a#comments_toggle{:href => "#"}
+        = t('comments.tip_total')
+        = "( #{@product.comments.size} )"
+  .separator_content
+  #comment_wrapper
+    #comment_loader
+    = render :partial => 'comment', :collection => @product.comments
+    = form_tag new_comment_path, :remote => true, :id => 'new_comment_form' do
+      = hidden_field_tag :item_model_id, @product.id
+      #comment_text_area
+        .text_area_bg
+          .text_area_left_bg
+          .comment_text_area_style
+            = text_area_tag :comment_body
+          .text_area_right_bg
+      .footer_button_send
+        %a.submit_comment.button{:href => "#"}
+          .button_left
+          .button_mid
+            = t('submit')
+          .button_right
+.delimiter
+:javascript
+  if($("#flv_player").length > 0) {
+    jwplayer("flv_player").setup({
+      flashplayer: "/player.swf",
+      file: "#{@product.video_url}",
+      height: 270,
+      width: 420
+    });
+  }
+
+  function googleSectionalElementInit() {
+      new google.translate.SectionalElement({
+          sectionalNodeClassName: 'goog-trans-section',
+          controlNodeClassName: 'goog-trans-control',
+          background: '#f4fa58'
+      }, 'google_sectional_element');
+  }

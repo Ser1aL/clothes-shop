@@ -8,6 +8,10 @@
     %meta{:name => 'robots', :content => 'all'}
     %meta{:name => 'language', :content => 'ru'}
     %meta{:name => 'yandex-verification', :content => '61b4de07bad5f451'}
+    - if content_for?(:canonical_url)
+      %link{ :rel => "canonical", :href => yield(:canonical_url) }
+    - if content_for?(:no_index)
+      %meta{ :name => "robots", :content => "noindex, follow" }
     %title
       = t('meta_title')
     = stylesheet_link_tag :all
@@ -47,7 +51,7 @@
             = link_to 'Оплата', payments_path, :class => 'link_menu'
             = link_to 'Доставка', deliveries_path, :class => 'link_menu'
             %b
-              = link_to 'Сервис покупок в зарубежных интернет магазинах', "http://mydostavka.com/", :class => 'link_menu', :target => "_blank"
+              = link_to 'Сервис покупок в зарубежных интернет магазинах', "http://mydostavka.com/", :class => 'link_menu', :target => "_blank", :rel => 'nofollow'
             = link_to 'Контакты', contacts_path, :class => 'link_menu'
             - if !current_user
               %a.login_button.button{:href => "#"}
@@ -222,5 +226,5 @@
         #footer_end_wraper
           .coperait
             %p.link_menu © 2011 MyDostavka.com
-          %a{:href => "http://designcraft.com.ua"}
+          %a{:href => "http://designcraft.com.ua", :rel => 'nofollow'}
             %img#logo_dc{:src => "/images/designcraft_logo.png"}/
