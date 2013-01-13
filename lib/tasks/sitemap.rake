@@ -40,6 +40,8 @@ namespace :sitemap do
 
     product_pages = []
     Style.includes(:product => :item_model).each_with_index do |style, index|
+      next unless style.product
+      next unless style.product.item_model
       product_pages << single_model_url(style.product.item_model, style)
     end
 
