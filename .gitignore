@@ -5,3 +5,5 @@ tmp/
 config/initializers/mail_settings.rb
 public/system*
 .idea
+.sass-cache/
+public/assets/

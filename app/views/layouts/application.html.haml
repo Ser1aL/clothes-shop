@@ -14,9 +14,8 @@
       %meta{ :name => "robots", :content => "noindex, follow" }
     %title
       = t('meta_title')
-    = stylesheet_link_tag :all
-    = javascript_include_tag 'jquery.min', 'jquery-ui.min', 'jquery.simplemodal', 'jquery.log', 'rails', 'jwplayer', 'slides.min.jquery'
-    = javascript_include_tag 'jquery.history', 'url.parser', 'jquery.lightbox-0.5', 'jquery.jstree', 'popup.window', 'jquery.jqzoom-core', 'filter', 'application'
+    = stylesheet_link_tag 'application'
+    = javascript_include_tag 'application'
     = csrf_meta_tag
     = render :partial => '/layouts/partials/google_analytics'
     = render :partial => '/layouts/partials/yandex_analytics'
@@ -180,7 +179,7 @@
                 .footer_labe4
                   %p.text1
                     %a{:href =>"skype:udg2010?call"}
-                      = image_tag "/images/skype.png"
+                      = image_tag "/assets/skype.png"
                       %span
                         12:00-24:00
                       udg2010
@@ -227,4 +226,4 @@
           .coperait
             %p.link_menu © 2011 MyDostavka.com
           %a{:href => "http://designcraft.com.ua", :rel => 'nofollow'}
-            %img#logo_dc{:src => "/images/designcraft_logo.png"}/
+            %img#logo_dc{:src => "/assets/designcraft_logo.png"}/

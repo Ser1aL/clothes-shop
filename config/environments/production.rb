@@ -47,6 +47,21 @@ Watches::Application.configure do
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
 
+  # Compress JavaScripts and CSS
+  config.assets.compress = true
+
+  # Don't fallback to assets pipeline if a precompiled asset is missed
+  config.assets.compile = false
+
+  # Generate digests for assets URLs
+  config.assets.digest = true
+
+  # Defaults to Rails.root.join("public/assets")
+  # config.assets.manifest = YOUR_PATH
+
+  config.assets.js_compressor  = :uglifier
+  config.assets.css_compressor = :scss
+
   Paperclip::Attachment.default_options[:url] = "/system/:class/:attachment/:id_partition/:style/:basename.:extension"
   Paperclip::Attachment.default_options[:path] = ":rails_root/public/system/:class/:attachment/:id_partition/:style/:basename.:extension"
 
