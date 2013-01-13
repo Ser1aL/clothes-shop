@@ -116,7 +116,7 @@
         #brands
           = t('browse_brands_by_letter')
           - ('A'..'Z').to_a.each do |letter|
-            = link_to letter, brands_path(:letter => letter)
+            = link_to letter, letter_brands_path(letter)
             \|
           = link_to t('all_brands'), brands_path
         %div{:style => 'clear: both;'}

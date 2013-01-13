@@ -3,7 +3,9 @@ Watches::Application.routes.draw do
   get "users/show"
   get "users/update"
 
-  resources :brands, :only => %w(index show)
+  resources :brands, :only => %w(index show) do
+    get 'letter/:letter', :to => 'brands#index', :on => :collection, :as => 'letter'
+  end
   resources :categories, :only => %w(show)
 
   get "administrator", :to => 'administrator#orders'
@@ -44,14 +46,14 @@ Watches::Application.routes.draw do
   end
 
   resources :item_models
-  get 'i/:id/:style_id', :to => 'item_models#show', :as => 'single_model'
+  get 'product/:id/:style_id', :to => 'item_models#show', :as => 'single_model'
   
   #match 'reviews', :to => 'reviews#index', :as => 'reviews'
   resources :reviews, :only => %w(index create)
   match 'payments', :to => 'static#payments', :as => 'payments'
   match 'deliveries', :to => 'static#deliveries', :as => 'deliveries'
   match 'contacts', :to => 'static#contacts', :as => 'contacts'
-  match 'about_us', :to => 'static#about_us', :as => 'about_us'
+  match 'about-us', :to => 'static#about_us', :as => 'about_us'
 
   match 'search', :to => 'item_models#search', :as => 'search'
   match 'checkout', :to => 'shopping_cart#show', :as => 'checkout'
