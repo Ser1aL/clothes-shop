@@ -14,7 +14,7 @@
       .brand_block_content
         - group.each do |brand|
           %div
-            = link_to brand.name.html_safe, brand_path(brand)
+            = link_to brand.name.html_safe, brand_url(brand)
 - else
   - @brands.in_groups(3).each_with_index do |group, index|
     - if index % 3 == 0
@@ -25,4 +25,4 @@
         - group.each do |brand|
           %div
             - if brand
-              = link_to brand.name.html_safe, brand_path(brand)
+              = link_to brand.name.html_safe, brand_url(brand)

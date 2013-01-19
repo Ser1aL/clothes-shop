@@ -28,7 +28,7 @@
         .category_block
           .category_header
             .category_name
-              = link_to t(categories.first.top_category_name), category_path(top_level_category_id)
+              = link_to t(categories.first.top_category_name), category_url(top_level_category_id)
             .category_count
           .category_content
             - categories.each do |category|
