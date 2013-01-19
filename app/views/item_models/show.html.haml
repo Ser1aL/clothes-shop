@@ -1,5 +1,8 @@
 = javascript_include_tag "http://translate.google.com/translate_a/element.js?cb=googleSectionalElementInit&ug=section&hl=ru"
-
+- content_for :meta_title, t('meta.single_product_title', :product_name => @product.product_name)
+- content_for :meta_keywords, t('meta.single_product_keywords', :product_name => @product.product_name)
+- content_for :meta_description, t('meta.single_product_description', :product_name => @product.product_name)
+- content_for :seo_header, t('meta.single_product_seo_header', :product_name => @product.product_name)
 - content_for(:canonical_url) { single_model_url(@product, @product.product.styles.first) }
 
 %span.path_link

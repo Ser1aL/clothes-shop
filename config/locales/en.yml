@@ -109,10 +109,99 @@ en:
   new_order: 'Новый заказ оформлен'
   user_autocreation_successfull: 'Автоматическая регистрация'
   email_not_found: 'Такой email не найден в базе'
-  meta_keywords: 'часы, магазин, купить, одесса, наручные, механика, кварц, pierre cardin, ulysse nardin, bvlgari, patek, zenit, hublot, cartier, breitling, brequet'
-  meta_subject: 'Купить недорогие и качественные наручные часы в Одессе'
-  meta_description: 'Интернет магазин наручных элитных часов в Одессе'
-  meta_title: 'Интернет магазин брендовой одежды и обуви'
+
+  meta_title: 'Интернет магазин брендовой одежды, обуви, сумок и прочих аксессуаров в Украине | Shop-mydostavka.com'
+  meta_keywords: 'обувь, одежда, часы, сумки, очки, купить обувь, купить одежда, купить часы, купить сумки, купить очки'
+  meta_description: 'Интернет магазин Shop-mydostavka.com предлагает одежду, обувь и сумки известных брендов! Так же в ассортименте очки, часы и прочие аксессуары.'
+  default_seo_header: 'Интернет магазин брендовой одежды и обуви'
+
+  meta:
+    single_product_title: '%{product_name}: купить %{product_name}, описание, цена в Украине | Shop-mydostavka.com'
+    single_product_keywords: '%{product_name}, купить %{product_name}, %{product_name} цена'
+    single_product_description: 'Покупайте %{product_name} у нас - приятная цена, все размеры, различные цвета, доставка по Украине! %{product_name} в интернет магазине Shop-mydostavka.com.'
+    single_product_seo_header: '%{product_name}'
+
+    brand_letter_title: 'Каталог брендов на букву %{letter} представленные в нашем интернет магазине | Shop-mydostavka.com'
+    brand_letter_keywords: 'бренды на букву %{letter}, каталог брендов на букву %{letter}'
+    brand_letter_description: 'Каталог известных брендов одежды, обуви и аксессуаров на букву %{letter} в интернет магазине Shop-mydostavka.com.'
+    brand_letter_seo_header: 'Бренды на букву %{letter}'
+
+    single_brand_title: '%{brand}: информация о бренде %{brand}, история бренда | Shop-mydostavka.com'
+    single_brand_keywords: '%{brand}, информация о %{brand}, история %{brand}'
+    single_brand_description: 'Подробная информация о бренде %{brand}, история бренда %{brand} на страницах интернет магазина Shop-mydostavka.com'
+    single_brand_seo_header: '%{brand}'
+
+    about_us:
+      meta_title: 'Информация о магазине Shop-mydostavka.com'
+      meta_keywords: 'о нас, о магазине, информация о магазине'
+      meta_description: 'Информация о интернет-магазине Shop-mydostavka.com.'
+      seo_header: 'О магазине'
+
+    payments:
+      meta_title: 'Оплата товара: способы оплаты товаров в Украине | Shop-mydostavka.com'
+      meta_keywords: 'оплата, способы оплаты'
+      meta_description: 'Описание способов оплаты товаров магазина Shop-mydostavka.com в Украине.'
+      seo_header: 'Оплата товара'
+
+    deliveries:
+      meta_title: 'Доставка товара: службы и способы доставки товаров по Украине | Shop-mydostavka.com'
+      meta_keywords: 'доставка, службы доставки, способы доставки'
+      meta_description: 'Описание служб и способов доставки товаров магазина Shop-mydostavka.com по Украине.'
+      seo_header: 'Доставка товара'
+
+    contacts:
+      meta_title: 'Контакты: адрес, схема проезда, телефоны, обратная связь | Shop-mydostavka.com'
+      meta_keywords: 'контакты, адрес, схема проезда, телефоны, форма обратной связи'
+      meta_description: 'Контактная информация магазина Shop-mydostavka.com. Адрес магазина, схема проезда, обратная связь, телефоны, чат и Skype.'
+      seo_header: 'Контакты'
+
+    reviews:
+      meta_title: 'Отзывы: благодарности и отзывы посетителей магазина Shop-mydostavka.com'
+      meta_keywords: 'отзывы, благодарности, жалобы'
+      meta_description: 'Благодарности, жалобы и отзывы посетителей интернет магазина Shop-mydostavka.com.'
+      seo_header: 'Отзывы'
+
+
+
+    clothes:
+      meta_title: 'Одежда: брендовая одежда из США, купить модную и стильную одежду в Украине | Shop-mydostavka.com'
+      meta_keywords: 'одежда, купить одежду, модная одежда, брендовая одежда, стильная одежда, одежда в Украине'
+      meta_description: 'Предлагаем одежду известных брендов! В нашем каталоге большой ассортимент стильной одежды. Выбирайте и заказывайте у нас - Shop-mydostavka.com!'
+      seo_header: 'Каталог одежды'
+
+    bags:
+      meta_title: 'Сумки: брендовые сумки из США, купить модную и стильную сумочку в Украине | Shop-mydostavka.com'
+      meta_keywords: 'сумки, купить сумку, модная сумка, брендовые сумки, стильная сумка, сумки в Украине'
+      meta_description: 'Предлагаем сумки известных брендов! В нашем каталоге большой ассортимент стильных сумок. Выбирайте и заказывайте у нас - Shop-mydostavka.com!'
+      seo_header: 'Каталог сумок'
+
+    shoes:
+      meta_title: 'Обувь: брендовая обувь из США, купить модную и стильную обувь в Украине | Shop-mydostavka.com'
+      meta_keywords: 'обувь, купить обувь, модная обувь, брендовая обувь, стильная обувь, обувь в Украине'
+      meta_description: 'Предлагаем обувь известных брендов! В нашем каталоге большой ассортимент стильной обуви. Выбирайте и заказывайте у нас - Shop-mydostavka.com!'
+      seo_header: 'Каталог обуви'
+
+
+    accessories:
+      meta_title: 'Аксессуары: брендовые аксессуары из США, купить модные и стильные аксессуары в Украине | Shop-mydostavka.com'
+      meta_keywords: 'аксессуары, купить аксессуары, модные аксессуары, брендовые аксессуары, стильные аксессуары, аксессуары в Украине'
+      meta_description: 'Предлагаем аксессуары известных брендов! В нашем каталоге большой ассортимент стильных аксессуаров. Выбирайте и заказывайте у нас - Shop-mydostavka.com!'
+      seo_header: 'Каталог аксессуаров'
+
+    watches:
+      meta_title: 'Часы: брендовые часы из США, купить модные и стильные часы в Украине | Shop-mydostavka.com'
+      meta_keywords: 'часы, купить часы, модные часы, брендовые часы, стильные часы, часы в Украине'
+      meta_description: 'Предлагаем часы известных брендов! В нашем каталоге большой ассортимент стильных часов. Выбирайте и заказывайте у нас - Shop-mydostavka.com!'
+      seo_header: 'Каталог часов'
+
+    sunglasses:
+      meta_title: 'Очки: брендовые очки из США, купить модные и стильные очки в Украине | Shop-mydostavka.com'
+      meta_keywords: 'очки, купить очки, модные очки, брендовые очки, стильные очки, очки в Украине'
+      meta_description: 'Предлагаем очки известных брендов! В нашем каталоге большой ассортимент стильных очков. Выбирайте и заказывайте у нас - Shop-mydostavka.com!'
+      seo_header: 'Каталог очков'
+
+
+
   my_account: 'Личный кабинет'
   hide_user_edit_form: 'Спрятать'
   user_orders: 'Ваши заказы'

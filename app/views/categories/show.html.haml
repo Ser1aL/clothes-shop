@@ -1,4 +1,5 @@
 = render 'category_tip'
+= set_meta(@categories.first.top_category_name)
 - cache do
   .delimiter
   .categories_wrapper

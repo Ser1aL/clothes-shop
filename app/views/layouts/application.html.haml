@@ -2,9 +2,8 @@
 %html{:lang => "en"}
   %head
     %meta{:content => "text/html; charset=utf-8", "http-equiv" => "Content-Type"}/
-    %meta{:name => 'subject', :content => t('meta_subject')}
-    %meta{:name => 'description', :content => t('meta_description')}
-    %meta{:name => 'keywords', :content => t('meta_keywords')}
+    %meta{:name => 'description', :content => content_for?(:meta_description) ? yield(:meta_description) : t('meta_description')}
+    %meta{:name => 'keywords', :content => content_for?(:meta_keywords) ? yield(:meta_keywords) : t('meta_keywords')}
     %meta{:name => 'robots', :content => 'all'}
     %meta{:name => 'language', :content => 'ru'}
     %meta{:name => 'yandex-verification', :content => '61b4de07bad5f451'}
@@ -12,14 +11,14 @@
       %link{ :rel => "canonical", :href => yield(:canonical_url) }
     - if content_for?(:no_index)
       %meta{ :name => "robots", :content => "noindex, follow" }
-    %title
-      = t('meta_title')
+    %title= content_for?(:meta_title) ? yield(:meta_title) : t('meta_title')
     = stylesheet_link_tag 'application'
     = javascript_include_tag 'application'
     = csrf_meta_tag
     = render :partial => '/layouts/partials/google_analytics'
     = render :partial => '/layouts/partials/yandex_analytics'
   %body
+    %h1.seo_header.invisible= content_for?(:seo_header) ? yield(:seo_header) : t('default_seo_header')
     - if flash[:message_type]
       = render :partial => "/flash/#{flash[:message_type]}"
     #loader

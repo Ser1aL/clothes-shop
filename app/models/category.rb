@@ -16,4 +16,8 @@ class Category < ActiveRecord::Base
     TOP_CATEGORIES.find{ |_, top_category_id| top_category_id == self.top_category }.try(:[], 0)
   end
 
+  def to_param
+    "#{id}-blabla"
+  end
+
 end

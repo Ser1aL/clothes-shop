@@ -41,6 +41,7 @@ group :development, :test do
   gem 'rspec-rails'#, :git => "git://github.com/rspec/rspec-rails.git"
   #gem 'pry'
   gem 'pry-rails'
+  gem 'quiet_assets'
 end
 
 group :assets do
