@@ -10,7 +10,7 @@
   .delimiter
   .brand_text
     .logo
-      = image_tag @brand.logo_url
+      = image_tag @brand.logo_url, :alt => @brand.name, :title => @brand.name
     = @brand.description.html_safe
   .brand_image
     = image_tag @brand.image_attachments[0].image_url

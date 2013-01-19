@@ -111,6 +111,7 @@ class RawSearch
         AND stocks.style_id = styles.id
         #{conditions}
       GROUP BY item_models.id, styles.color
+      LIMIT 21
     SQL
 
     ActiveRecord::Base.connection.select_all(search_query).group_by{|r| r["color"]}.map do |color, group|

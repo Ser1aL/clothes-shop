@@ -9,9 +9,9 @@
   .product_image
     %a{:href => single_model_path(product, style), :class => 'single_product_ajaxified_link'}
       - if product.try(:product).try(:styles).try(:first).try(:not_zoomed_image_attachments).blank?
-        = image_tag 'thumb/missing.png', :class => 'missing'
+        = image_tag 'thumb/missing.png', :class => 'missing', :alt => product.product_name, :title => "#{item_model.product_name} - #{item_model.category.name}"
       - else
-        = image_tag style.primary_image.image_url, :alt => product.product_name, :class => 'img_file'
+        = image_tag style.primary_image.image_url, :alt => item_model.product_name, :title => "#{item_model.product_name} - #{item_model.category.name}", :class => 'img_file'
     %a{:href => single_model_path(product, style), :class => 'single_product_ajaxified_link more_link'}
       = "Подробнее"
   .product_description_wrapper
