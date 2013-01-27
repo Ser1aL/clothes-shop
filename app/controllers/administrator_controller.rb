@@ -127,6 +127,10 @@ class AdministratorController < ApplicationController
     Review.find(params[:review_id]).update_attribute(:verified, params[:verified])
   end
 
+  def six_pm
+    @count = ItemModel.where(:origin => '6pm').count
+  end
+
 private
 
   def check_admin

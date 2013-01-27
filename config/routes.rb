@@ -31,6 +31,7 @@ Watches::Application.routes.draw do
     post "set_category_mapping"
     get "reviews"
     post "verify_review"
+    get 'six_pm'
   end
 
   namespace :search do
