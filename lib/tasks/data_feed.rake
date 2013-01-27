@@ -78,7 +78,6 @@ namespace :data_feed do
       response = client.search(:limit => 1)
 
       total_count = response.totalResultCount.to_i
-      total_count = 10
       puts "found total #{total_count}"
 
       (total_count.to_f/search_opts[:limit].to_f).ceil.times do |index|
@@ -91,7 +90,7 @@ namespace :data_feed do
           items = response.results
           puts "found #{items.size}. Running loop. page=#{index+start_from_page.to_i}"
 
-          items[0..60].each do |item|
+          items.each do |item|
             begin
               puts "started item #{item.productId}"
 
