@@ -1,5 +1,9 @@
 module ApplicationHelper
 
+  def image_tag(source, options = {})
+    source ||= 'blank_image.jpg'
+    super(source, options)
+  end
 
   def build_advanced_searh_url(brand, category, sub_category, gender)
     #"/advanced_search/#b=#{brand.brand_id}
