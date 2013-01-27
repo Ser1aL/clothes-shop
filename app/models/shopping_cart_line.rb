@@ -1,6 +1,6 @@
 class ShoppingCartLine < ActiveRecord::Base
   belongs_to :product
-  belongs_to :shopping_cart
+  belongs_to :shopping_cart, :dependent => :destroy
   belongs_to :style
   belongs_to :stock
 

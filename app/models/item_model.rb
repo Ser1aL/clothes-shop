@@ -1,5 +1,5 @@
 class ItemModel < ActiveRecord::Base
-  has_one :product
+  has_one :product, :dependent => :destroy
   has_many :comments, :as => :association
 
   belongs_to :brand

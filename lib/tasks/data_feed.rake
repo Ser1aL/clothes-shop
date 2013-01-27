@@ -3,7 +3,7 @@ require 'cgi'
 
 namespace :data_feed do
 
-  key_list = %w(
+  zappos_key_list = %w(
     8bffaa3d5e1ccb6857544756293cf624f7d371d7
     3ae517aa832c98fc1d47c6d9d4669f05a5bda4cb
     1c256e0d9206018da4c6b574f4a7727369a821e6
@@ -20,6 +20,10 @@ namespace :data_feed do
     73d48a44f5aa34630603867d6f713214757581f
     36145a18b8611ac955474b3cace251fc724d779b
     9fb8ecbdd912c0207da2bac17de16eb631db70ae
+  )
+
+  six_pm_key_list = %w(
+    94342811fde7123e23978f827a654f5856cabcad
   )
   current_product_limit = 8000000
 
@@ -65,46 +69,60 @@ namespace :data_feed do
 
     #[ItemModel, Category, SubCategory, Brand, ImageAttachment, Gender].each &:destroy_all
     begin
-      key_index = 0 if key_list[key_index].blank?
-      puts "using key=#{key_list[key_index]}"
+      key_index = 0 if six_pm_key_list[key_index].blank?
+      puts "using key=#{six_pm_key_list[key_index]}"
 
-      client = Zappos::Client.new(key_list[key_index], { :base_url => 'api.zappos.com' })
+      client = Zappos::Client.new(six_pm_key_list[key_index], { :base_url => 'api.6pm.com' })
+
+      # 6pm req #1.1
       response = client.search(:limit => 1)
 
       total_count = response.totalResultCount.to_i
+      total_count = 10
       puts "found total #{total_count}"
 
       (total_count.to_f/search_opts[:limit].to_f).ceil.times do |index|
         begin
-          key_index = 0 if key_list[key_index].blank?
-          client = Zappos::Client.new(key_list[key_index], { :base_url => 'api.zappos.com' })
-          response = client.search( search_opts.merge!({ :page => index + start_from_page.to_i }) )
+          key_index = 0 if six_pm_key_list[key_index].blank?
+          client = Zappos::Client.new(six_pm_key_list[key_index], { :base_url => 'api.6pm.com' })
 
+          # 6pm req #2.1
+          response = client.search( search_opts.merge!({ :page => index + start_from_page.to_i }) )
           items = response.results
           puts "found #{items.size}. Running loop. page=#{index+start_from_page.to_i}"
 
-          items.each do |item|
+          items[0..60].each do |item|
             begin
               puts "started item #{item.productId}"
-              if ItemModel.find_by_external_product_id(item.productId)
-                # puts "item ##{item.productId} exists in db. Skipping"
-                next
+
+              # reload item if not 6pm
+              existing_item = ItemModel.find_by_external_product_id(item.productId)
+              if existing_item
+                if existing_item.origin == '6pm'
+                  next
+                else
+                  existing_item.destroy
+                end
               end
 
               ActiveRecord::Base.transaction do
                 # puts "started transaction"
 
+                # 6pm req #3.1
                 product = client.product( product_search_opts.merge!({:id => item.productId}) ).data.product.first
                 # puts "fetched product"
 
                 brand = Brand.find_by_external_brand_id(product.brandId)
                 # puts "fetched brand"
 
+                # 6pm req #3.2
                 image_feed = client.image( image_search_opts.merge!({:productId => item.productId})).data.images
                 # puts "fetched image"
 
                 unless brand
                   puts "creating brand: #{item.brandName} with id #{product.brandId}"
+
+                  # 6pm req #3.3
                   brand_feed = client.brand(brand_search_opts.merge!({:id => product.brandId})).try(:data).try(:brands).try(:first)
                   brand = Brand.create(
                     :name => item.brandName,
@@ -133,7 +151,8 @@ namespace :data_feed do
                   :gender => Gender.find_or_create_by_name(product.gender),
                   :description => description.root.to_s,
                   :weight => product.weight,
-                  :video_url => product.videoUrl
+                  :video_url => product.videoUrl,
+                  :origin => '6pm'
                 )
                 # puts "item model created in db"
 
@@ -278,8 +297,8 @@ namespace :data_feed do
     key_index = 0
     ItemModel.where(:facet_loaded => false).order(:external_product_id).each do |item_model|
       begin
-        key_index = 0 if key_list[key_index].blank?
-        client = Zappos::Client.new(key_list[key_index], { :base_url => 'api.zappos.com' })
+        key_index = 0 if zappos_key_list[key_index].blank?
+        client = Zappos::Client.new(zappos_key_list[key_index], { :base_url => 'api.zappos.com' })
         facets = client.product( facet_search_opts.merge!({:id => item_model.external_product_id}) ).data.product.first.attributeFacetFields
         ActiveRecord::Base.transaction do
           facets.each do |facet_key, facet_value|
@@ -307,8 +326,8 @@ namespace :data_feed do
       puts index
       next if style.swatch_url.present?
       begin
-        key_index = 0 if key_list[key_index].blank?
-        client = Zappos::Client.new(key_list[key_index], { :base_url => 'api.zappos.com' })
+        key_index = 0 if zappos_key_list[key_index].blank?
+        client = Zappos::Client.new(zappos_key_list[key_index], { :base_url => 'api.zappos.com' })
         image_feed = client.image( image_search_opts.merge!({ :productId => style.product.item_model.external_product_id, :styleId => style.external_style_id }))
         puts "im: #{style.product.item_model.external_product_id}, style: #{style.external_style_id}, resp: #{image_feed.response}"
         image_feed = image_feed.data

@@ -2,10 +2,10 @@ require "open-uri"
 
 class Style < ActiveRecord::Base
   belongs_to :product
-  has_many :image_attachments, :as => :association
-  has_many :stocks
-  has_many :shopping_cart_lines
-  has_many :order_lines
+  has_many :image_attachments, :as => :association, :dependent => :destroy
+  has_many :stocks, :dependent => :destroy
+  has_many :shopping_cart_lines, :dependent => :destroy
+  has_many :order_lines, :dependent => :destroy
 
   KEY_LIST = %w(
     682e77c7447636780d5679a9bf6aa95c512e906c

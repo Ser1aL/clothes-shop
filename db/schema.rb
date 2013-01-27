@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121216124315) do
+ActiveRecord::Schema.define(:version => 20130127224627) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "user_id"
@@ -176,6 +176,7 @@ ActiveRecord::Schema.define(:version => 20121216124315) do
     t.string   "txAttrFacet_Movement"
     t.string   "txAttrFacet_Treatments"
     t.boolean  "facet_loaded",                           :default => false
+    t.string   "origin"
   end
 
   add_index "item_models", ["brand_id"], :name => "index_item_models_on_brand_id"
