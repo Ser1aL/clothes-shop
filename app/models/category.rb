@@ -17,7 +17,7 @@ class Category < ActiveRecord::Base
   end
 
   def to_param
-    "#{id}-blabla"
+    "#{id}-*"
   end
 
 end

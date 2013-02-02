@@ -20,6 +20,8 @@ module Watches
 
     config.assets.precompile += ['admin.js']
 
+    config.exceptions_app = self.routes
+
     # Custom directories with classes and modules you want to be autoloadable.
     # config.autoload_paths += %W(#{config.root}/extras)
 

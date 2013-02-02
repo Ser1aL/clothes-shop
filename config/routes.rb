@@ -82,6 +82,8 @@ Watches::Application.routes.draw do
   post 'remove_cart_line/:cart_line_id', :to => 'shopping_cart#remove_cart_line', :as => 'remove_cart_line'
   get "item_models/:id", :to => "item_models#show"
 
+  match '/404', to: 'errors#not_found'
+  match '/500', to: 'errors#internal_server_error'
 
   match 'preload', :to => 'item_models#preload', :as => 'preload'
   root :to => 'item_models#index'

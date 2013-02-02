@@ -8,12 +8,11 @@ class ItemModelsController < ApplicationController
   end
 
   def show
-    @product = ItemModel.find(params[:id]) rescue nil
+    @product = ItemModel.find(params[:id])
     if @product
-      @style = @product.product.styles.find(params[:style_id]) rescue nil
+      @style = @product.product.styles.find(params[:style_id])
       update_prices @product, @style if @style
     end
-    redirect_to root_path unless @style && @product
   end
 
   def preload
