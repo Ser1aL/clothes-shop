@@ -1,3 +1,8 @@
+- content_for :meta_title, t('meta.sub_category_title', :sub_category => @category.name)
+- content_for :meta_keywords, t('meta.sub_category_keywords', :sub_category => @category.name)
+- content_for :meta_description, t('meta.sub_category_description', :sub_category => @category.name)
+- content_for :seo_header, t('meta.sub_category_header', :sub_category => @category.name)
+
 = bread_crumbs( [link_to(t(@category.top_category_name), category_url("#{@category.top_category}-#{@category.top_category_name}")), link_to(@category.name, category_sub_category_url("#{@category.top_category}-#{@category.top_category_name}", @category))  ])
 .separator_header
 
@@ -11,8 +16,11 @@
         %a.mcl_link_left{:href => "/advanced_search#cat=#{@sub_category.id}&g=#{counting[:id]}"}= gender_name
         %a.mcl_link_right{:href => "#"}= "(#{counting[:count]})"
 .category_logos_block
-  - @brands.each_with_index do |brand, index|
+  - counter = 0
+  - @brands.each do |brand|
+    - next if brand.logo_url.blank?
     %a.category_logos{:href => brand_path(brand)}
       = image_tag brand.logo_url
-    - if index % 2 == 0
+    - if counter % 2 == 0
       .cl_delimeter
+    - counter += 1

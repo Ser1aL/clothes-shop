@@ -132,6 +132,11 @@ ru:
     single_brand_description: 'Подробная информация о бренде %{brand}, история бренда %{brand} на страницах интернет магазина Shop-mydostavka.com'
     single_brand_seo_header: '%{brand}'
 
+    sub_category_title: "%{sub_category}: купить брендовые %{sub_category}, описание, цена в Украине | Shop-mydostavka.com"
+    sub_category_keywords: "%{sub_category}, купить %{sub_category}, %{sub_category} цены, брендовые %{sub_category}"
+    sub_category_description: "%{sub_category} известных брендов, широкий ассортимент и приятные цены только у нас! Купить %{sub_category} с доставкой по Украине - Shop-mydostavka.com."
+    sub_category_header: "%{sub_category}"
+
     about_us:
       meta_title: 'Информация о магазине Shop-mydostavka.com'
       meta_keywords: 'о нас, о магазине, информация о магазине'
