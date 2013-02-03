@@ -41,7 +41,9 @@
         - if brand
           %li.mcl_link
             = link_to brand.name.html_safe, brand_url(brand)
-    .delimeter_sitemap
+    - unless index % 3 == 2
+      .delimeter_sitemap
+
 
 .sitemap_line
   .sitemap_container

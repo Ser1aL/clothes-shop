@@ -22,9 +22,7 @@
             = link_to brand.name.html_safe, brand_url(brand)
     - unless index % 3 == 2
       .delimeter_sitemap
-
 - else
-
   - @brands.in_groups(3).each do |group|
     %ul.main_category
       %li.mc_lable
