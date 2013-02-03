@@ -125,6 +125,7 @@ ru:
     brand_letter_keywords: 'бренды на букву %{letter}, каталог брендов на букву %{letter}'
     brand_letter_description: 'Каталог известных брендов одежды, обуви и аксессуаров на букву %{letter} в интернет магазине Shop-mydostavka.com.'
     brand_letter_seo_header: 'Бренды на букву %{letter}'
+    brand_no_letter_seo_header: 'Все бренды'
 
     single_brand_title: '%{brand}: информация о бренде %{brand}, история бренда | Shop-mydostavka.com'
     single_brand_keywords: '%{brand}, информация о %{brand}, история %{brand}'

@@ -108,6 +108,8 @@
         #ajax_content
           = yield
         .delimiter
+      %h1.seo_header= content_for?(:seo_header) ? yield(:seo_header) : t('default_seo_header')
+      .delimiter
     .delimiter
     / Footer
     #footer
