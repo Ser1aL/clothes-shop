@@ -17,7 +17,7 @@
     = csrf_meta_tag
     = render :partial => '/layouts/partials/google_analytics'
     = render :partial => '/layouts/partials/yandex_analytics'
-  %body
+  %body{:itemscope => '', :itemtype => 'http://schema.org/WebPage'}
     %h1.seo_header.invisible= content_for?(:seo_header) ? yield(:seo_header) : t('default_seo_header')
     - if flash[:message_type]
       = render :partial => "/flash/#{flash[:message_type]}"

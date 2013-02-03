@@ -22,6 +22,6 @@ module ApplicationHelper
     links = raw( hint + raw(html_steps.join) )
 
     path_link = content_tag(:div, links, :class => 'path_link')
-    content_tag(:div, path_link, :id => 'brad_crams')
+    content_tag(:div, path_link, :id => 'brad_crams', :itemprop => 'breadcrumb')
   end
 end
