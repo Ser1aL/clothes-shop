@@ -17,7 +17,7 @@
         %a.mcl_link_right{:href => "#"}= "(#{counting[:count]})"
 .category_logos_block
   - counter = 0
-  - @brands.each do |brand|
+  - @brands.first(30).each do |brand|
     - next if brand.logo_url.blank?
     %a.category_logos{:href => brand_path(brand)}
       = image_tag brand.logo_url
