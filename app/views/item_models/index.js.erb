@@ -1,6 +1,5 @@
 <%
-  rendered_content = escape_javascript(render :partial => 'tips')
-  rendered_content += escape_javascript(render 'index', :banners => @banners, :countings => @countings)
+  rendered_content = escape_javascript(render 'index', :banners => @banners, :countings => @countings)
 %>
 
 $('#ajax_content').html("<%= rendered_content %>");

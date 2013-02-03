@@ -32,11 +32,6 @@
     / Header
     #conteiner_wraper
       #selection_top_wrapper
-        #items_popup_windows
-          = render :partial => '/layouts/partials/brands'
-          = render :partial => '/layouts/partials/categories'
-          = render :partial => '/layouts/partials/sub_categories'
-          = render :partial => '/layouts/partials/genders'
       - if !current_user
         = render :partial => '/layouts/partials/registration_form'
         = render :partial => '/layouts/partials/login_form'
@@ -81,25 +76,10 @@
           .separator_header
         #navigation
           .navigation_buttons
-            %a#brand.button{:href => "#"}
-              .button_left
-              .button_mid Бренды
-              .button_right
-          .navigation_buttons
-            %a#category.button{:href => "#"}
-              .button_left_idle
-              .button_mid_idle Категории
-              .button_right_idle
-          .navigation_buttons
-            %a#sub_category.button{:href => "#"}
-              .button_left_idle
-              .button_mid_idle Подкатегории
-              .button_right_idle
-          .navigation_buttons
-            %a#gender.button{:href => "#"}
-              .button_left_idle
-              .button_mid_idle Тип
-              .button_right_idle
+            %a.button{:href => root_path}
+            .button_left
+            .button_mid Посмотреть все категории
+            .button_right
           #navigation_search
             = form_tag search_path, :method => 'post', :id => 'search_form', :remote => true do
               %a#search_button.button{:href => "#"}
@@ -112,18 +92,20 @@
                 .input_right_bg
         %div{:style => 'clear: both;'}
         #brands
-          = t('browse_brands_by_letter')
-          - ('A'..'Z').to_a.each do |letter|
-            = link_to letter, letter_brands_path(letter)
-            \|
-          = link_to t('all_brands'), brands_path
+          %span.lable_brands= t('browse_brands_by_letter')
+          %span.brands_word
+            - ('A'..'Z').to_a.each do |letter|
+              = link_to letter, letter_brands_path(letter)
+              = "|" unless letter == 'Z'
         %div{:style => 'clear: both;'}
-        #categories.path_link
-          -#= t('category_list')
-          -#= Category.all.map{|category| link_to category.name, category_path(category)}.join(' | ').html_safe
-          .short_link{:style => "float: right"}
-            = link_to "Расширенный поиск", advanced_search_path
-        %div{:style => 'clear: both;'}
+        #catalog_button
+          = link_to "Одежда", category_url("1-odezhda"), :class => "catalog_button_style"
+          = link_to "Обувь", category_url("2-obuv"), :class => "catalog_button_style"
+          = link_to "Сумки", category_url("6-sumki"), :class => "catalog_button_style"
+          = link_to "Аксессуары", category_url("3-aksessuari"), :class => "catalog_button_style"
+          = link_to "Очки", category_url("5-ochki"), :class => "catalog_button_style"
+          = link_to "Часы", category_url("4-chasi"), :class => "catalog_button_style"
+        .separator_header
       #content_wraper
         #ajax_content
           = yield
@@ -148,42 +130,52 @@
               = link_to 'Отзывы', reviews_path, :class => 'link_menu'
               = link_to 'О нас', about_us_path, :class => 'link_menu'
             .footer_blok_content{ :itemscope => '', :itemtype => "http://schema.org/Person" }
+              %p.title_text Горячая линия
+              %p.footer_help_text По этим контактам Вы можете связатся с нами
               .footer_separator
-              .footer_label_input{:style => "padding-top: 0; height: 84px;"}
-                .footer_labe2{:style=>"margin-top: 0;"}
-                  %p.text1{:style=>"text-align: right; padding-right: 7px;"}
-                    Украина:
-                    %br
-                    Молдова:
-                    %br
-                    Казахстан:
-                    %br
-                    Россия:
-                    %br
-                    США:
-                  %p.text1
-                    %span{ :itemprop => "telephone"}= "+38(098)023-93-07"
-                    %br
-                    %span{ :itemprop => "telephone"}= "+37 360-690-698"
-                    %br
-                    %span{ :itemprop => "telephone"}= "+7172 777-17-07"
-                    %br
-                    %span{ :itemprop => "telephone"}= "+7 929 777-17-07"
-                    %br
-                    %span{ :itemprop => "telephone"}= "+1 55 122-699-21"
-              .footer_separator
+              .footer_label_input
+                .footer_labe2
+                  %p.text1 Украина:
+                  %br/
+                  %p.text1 Молдова:
+                  %br/
+                  %p.text1 Казахстан:
                 .footer_labe3
                   %p.text1
-                    E-mail:
-                    %span{ :itemprop => "email" }= "shop.mydostavka@gmail.com"
-                  %a{:href => "#"}
-                .footer_labe4
+                    %b
+                      %span{ :itemprop => "telephone"}= "+38(098)023-93-07"
+                  %br/
                   %p.text1
-                    %a{:href =>"skype:udg2010?call"}
-                      = image_tag "/assets/skype.png"
-                      %span
-                        12:00-24:00
-                      udg2010
+                    %b
+                      %span{ :itemprop => "telephone"}= "+37 360-690-698"
+                  %br/
+                  %p.text1
+                    %b
+                      %span{ :itemprop => "telephone"}= "+7172 777-17-07"
+                .footer_labe2
+                  %p.text1 Россия:
+                  %br/
+                  %p.text1 США:
+                .footer_labe3
+                  %p.text1
+                    %b
+                      %span{ :itemprop => "telephone"}= "+7 929 777-17-07"
+                  %br/
+                  %p.text1
+                    %b
+                      %span{ :itemprop => "telephone"}= "+1 55 122-699-21"
+                .email_skype_style
+                  .footer_labe2
+                    %p.text1 E-mail:
+                  .footer_labe4
+                    %a.text1{:href => "mailto:shop.mydostavka@gmail.com", :itemprop => "email" }
+                      %b shop.mydostavka@gmail.com
+                  .footer_labe2
+                    %p.text1 Skype:
+                  .footer_labe4
+                    %a.text1{:href => "skype:udg2010?call"}
+                      %b udg2010
+                    %span С 12:00 до 24:00
           .footer_h_sep
           .footer_blok_content
             = form_for Review.new do |f|

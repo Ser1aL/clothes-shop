@@ -1,42 +1,30 @@
 - left_banner = banners.where(:side => "left").first
 - right_banner = banners.where(:side => "right").first
-- cache do
-  .delimiter
-  .categories_wrapper
-    .banners
-      .left_side
-        %div
-          %a{ :href => left_banner.url }
-            = image_tag left_banner.image_url
-      #slides.index_page
-        .slides_container
-          - banners.where(:side => nil).each do |banner|
-            %div
-              %a{:href => banner.url}
-                = image_tag banner.image_url
-      .right_side
-        %div
-          %a{ :href => right_banner.url }
-            = image_tag right_banner.image_url
-    .categories_panel
-      - blocks_showed = 0
-      - %w(1 2 6 3 5 4).each do |top_level_category_id|
-        - next if @categories[top_level_category_id.to_i].blank?
-        - categories = @categories[top_level_category_id.to_i].sort_by{ |category| category.name }
-        - if blocks_showed % 3 == 0
-          .delimiter
-        .category_block
-          .category_header
-            .category_name
-              = link_to t(categories.first.top_category_name), category_url("#{top_level_category_id}-#{categories.first.top_category_name}")
-            .category_count
-          .category_content
-            - categories.each do |category|
-              - next if @countings[category.id].blank?
-              %div
-                .sub_category_name
-                  = link_to category.name, "/advanced_search#cat=#{category.id}"
-                .sub_category_count
-                  = "(#{@countings[category.id].sum(&:value)})"
-              .delimiter
-        - blocks_showed += 1
+.brows_category
+  .brows_lable
+    .bl_style Обзор по категориям
+    .bl_image
+  - %w(1 2 6 3 5 4).each do |top_level_category_id|
+    - next if @categories[top_level_category_id.to_i].blank?
+    - categories = @categories[top_level_category_id.to_i].sort_by{ |category| category.name }
+    %ul.main_category
+      %li.mc_lable
+        = link_to t(categories.first.top_category_name), category_url("#{top_level_category_id}-#{categories.first.top_category_name}")
+      - categories.each do |category|
+        %li.mcl_link
+          = link_to category.name, "/advanced_search#cat=#{category.id}"
+
+.advertisement_block
+  .ab_main_banner
+    #slides.index_page
+      .slides_container
+        - banners.where(:side => nil).each do |banner|
+          %div
+            %a{:href => banner.url}
+              = image_tag banner.image_url
+  .adsb_content
+    .adsbc_left
+      = image_tag left_banner.image_url
+    .adsbc_middle
+    .adsbc_right
+      = image_tag right_banner.image_url

@@ -1,2 +1,39 @@
 - set_meta('payments')
-= StaticPage.find_by_name('payments').text.html_safe
+#content_wraper
+  .deliveries_block_title
+    Информация об оплате
+    %br/
+    %span Эти реквизиты помогут вам легко оплатить свой заказ
+  .deliveries_block_container
+    .deliveries_block
+      .deliveries_title Украина:
+      %ul.deliveries_description
+        %li Реквизиты:
+        %li
+          %span.phone_namber № 6762 4620 3981 8098
+        %li
+          %span.phone_namber_usa ( Приватбанк )
+    .footer_h_sep
+    .deliveries_block
+      .deliveries_title Молдова:
+      %ul.deliveries_description
+        %li Реквизиты:
+        %li
+          %span.phone_namber № 4779 1807 8297 0603
+        %li
+          %span.phone_namber_usa ( VICTORIA BANK виза карта )
+  .deliveries_block_container
+    .deliveries_block
+      .deliveries_title США:
+      %ul.deliveries_description
+        %li Реквизиты
+        %li
+          %span.phone_namber_usa Tradeukrainemarket LLC
+        %li
+          %span.phone_namber_usa счет JP Morgan Chase Bank. N.A.(501)
+        %li
+          %span.phone_namber_usa номер банка - 102001017
+        %li
+          %span.phone_namber_usa номер счета - 869662882
+        %li
+          %span.phone_namber_usa SWIFT - CHASUS 33

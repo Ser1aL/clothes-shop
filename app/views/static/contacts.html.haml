@@ -1,2 +1,45 @@
 - set_meta('contacts')
-= StaticPage.find_by_name('contacts').text.html_safe
+#content_wraper
+  .deliveries_block_container
+    .deliveries_block
+      .contact_image
+        = image_tag "contact_image.png"
+    .footer_h_sep
+    .deliveries_block
+      .footer_labe2
+        %p.text1 Украина:
+        %br/
+        %p.text1 Молдова:
+        %br/
+        %p.text1 Казахстан:
+        %br/
+        %p.text1 Россия:
+        %br/
+        %p.text1 США:
+      .footer_labe3
+        %p.text1
+          %b +38 (098) 023-93-07
+        %br/
+        %p.text1
+          %b +37 (360) 690-698
+        %br/
+        %p.text1
+          %b +7 (172) 777-17-07
+        %br/
+        %p.text1
+          %b +7 (929) 777-17-07
+        %br/
+        %p.text1
+          %b +1 (55) 122-699-21
+      .email_skype_style
+        .footer_labe2
+          %p.text1 E-mail:
+        .footer_labe4
+          %a.text1{:href => "mailto@shop.mydostavka@gmail.com"}
+            %b shop.mydostavka@gmail.com
+        .footer_labe2
+          %p.text1 Skype:
+        .footer_labe4
+          %a.text1{:href => "#"}
+            %b udg2010
+          %span С 12:00 до 24:00

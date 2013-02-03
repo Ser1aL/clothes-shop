@@ -1,28 +1,48 @@
-= render 'brand_tip'
 - content_for :meta_title, t('meta.single_brand_title', :brand => @brand.name)
 - content_for :meta_keywords, t('meta.single_brand_keywords', :brand => @brand.name)
 - content_for :meta_description, t('meta.single_brand_description', :brand => @brand.name)
 - content_for :seo_header, t('meta.single_brand_seo_header', :brand => @brand.name)
 
-.brand_description_wrapper
-  .brand_description_name
-    = @brand.name.html_safe
-  .delimiter
-  .brand_text
-    .logo
-      = image_tag @brand.logo_url, :alt => @brand.name, :title => @brand.name
+-#.brand_description_wrapper
+-#  .brand_description_name
+-#    = @brand.name.html_safe
+-#  .delimiter
+-#  .brand_text
+-#    .logo
+-#      = image_tag @brand.logo_url, :alt => @brand.name, :title => @brand.name
+-#    = @brand.description.html_safe
+-#  .brand_image
+-#    = image_tag @brand.image_attachments[0].image_url
+-#  .delimiter
+-#  .jstree
+-#    %ul
+-#      - @category_tree[:root].each do |category_name, root_child|
+-#        %li.jstree-open
+-#          %a{:href => "/advanced_search/#b=#{@brand.id}&cat=#{root_child[:id]}"}
+-#            = "#{category_name}(#{root_child[:count]})"
+-#          %ul
+-#            - root_child[:tree].delete_if{ |child| child[:count].to_i <= 0 }.each do |child|
+-#              %li
+-#                %a{:href => "/advanced_search/#b=#{@brand.id}&cat=#{root_child[:id]}&sub=#{child[:id]}"}
+-#                  = "#{child[:name]}(#{child[:count]})"
+
+
+.brows_category
+  .brows_lable
+    .bl_style= @brand.name.html_safe
+    .bl_image
+  - @category_tree[:root].each do |category_name, root_child|
+    %ul.main_category
+      %li.mc_lable
+        %a{:href => "/advanced_search/#b=#{@brand.id}&cat=#{root_child[:id]}"}= category_name
+      - root_child[:tree].delete_if{ |child| child[:count].to_i <= 0 }.each do |child|
+        %li.mcl_link
+          %a{:href => "/advanced_search/#b=#{@brand.id}&cat=#{root_child[:id]}&sub=#{child[:id]}"}= child[:name]
+.advertisement_block
+  .ab_main_brands_logo
+    = image_tag @brand.logo_url, :alt => @brand.name, :title => @brand.name
+  .brands_image_container
+    .ab_main_brands_banner
+      = image_tag @brand.image_attachments[0].image_url
+  .brands_description
     = @brand.description.html_safe
-  .brand_image
-    = image_tag @brand.image_attachments[0].image_url
-  .delimiter
-  .jstree
-    %ul
-      - @category_tree[:root].each do |category_name, root_child|
-        %li.jstree-open
-          %a{:href => "/advanced_search/#b=#{@brand.id}&cat=#{root_child[:id]}"}
-            = "#{category_name}(#{root_child[:count]})"
-          %ul
-            - root_child[:tree].delete_if{ |child| child[:count].to_i <= 0 }.each do |child|
-              %li
-                %a{:href => "/advanced_search/#b=#{@brand.id}&cat=#{root_child[:id]}&sub=#{child[:id]}"}
-                  = "#{child[:name]}(#{child[:count]})"
