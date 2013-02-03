@@ -15,8 +15,8 @@ gem 'paperclip', :git => 'git://github.com/thoughtbot/paperclip.git', :branch =>
 gem 'timeliness', :git => 'git://github.com/adzap/timeliness.git', :branch => 'master', :tag => "v0.3.4"
 gem 'validates_timeliness', :git => 'git://github.com/adzap/validates_timeliness.git', :branch => 'master', :tag => "v3.0.6"
 # gem 'enum_column'#, :git => 'git://github.com/electronick/enum_column.git'
-gem 'rb-inotify'
-gem 'libnotify'
+#gem 'rb-inotify'
+#gem 'libnotify'
 gem 'nokogiri', '1.5.0', :require => 'nokogiri'
 gem 'zappos', '0.4.1', :git => 'git://github.com/makenai/zappos.git'
 gem 'passenger'
@@ -32,8 +32,8 @@ gem 'childprocess', :git => "git://github.com/jarib/childprocess.git", :tag => '
 gem 'thinking-sphinx', '2.0.10'
 gem "riddle", "~> 1.5.3"
 
-gem 'heroku'
-
+#gem 'heroku'
+gem 'russian'
 gem 'devise'
 # gem 'pry'
 

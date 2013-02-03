@@ -22,6 +22,8 @@ module Watches
 
     config.exceptions_app = self.routes
 
+    config.i18n.default_locale = :ru
+
     # Custom directories with classes and modules you want to be autoloadable.
     # config.autoload_paths += %W(#{config.root}/extras)
 

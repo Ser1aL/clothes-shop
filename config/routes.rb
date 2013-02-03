@@ -6,7 +6,9 @@ Watches::Application.routes.draw do
   resources :brands, :only => %w(index show) do
     get 'letter/:letter', :to => 'brands#index', :on => :collection, :as => 'letter'
   end
-  resources :categories, :only => %w(show)
+  resources :categories, :only => %w(show) do
+    resources :sub_categories, :only => %w(show)
+  end
 
   get "administrator", :to => 'administrator#orders'
   namespace :administrator do

@@ -2,9 +2,10 @@
 - style = item_model.product.styles.sort_by(&:discount_price).first
 - if params[:color].present?
   - style = item_model.product.styles.select{ |s| s.color == params[:color] }.try(:first) || style
+
 .block.advanced_search{:itemscope => '', :item_type => "http://schema.org/Product"}
   .title_product
-    %a.title_product-a{:href => single_model_path(product, style), :class => 'single_product_ajaxified_link'}
+    %a.single_product_ajaxified_link.title_product-a{:href => single_model_path(product, style)}
       %span{:itemprop => "name"}= product.product_name.truncate(55).html_safe
   .product_image
     %a{:href => single_model_path(product, style), :class => 'single_product_ajaxified_link'}
@@ -12,31 +13,14 @@
         = image_tag 'thumb/missing.png', :class => 'missing', :alt => product.product_name, :title => "#{item_model.product_name} - #{item_model.category.name}"
       - else
         = image_tag style.primary_image.image_url, :alt => item_model.product_name, :title => "#{item_model.product_name} - #{item_model.category.name}", :class => 'img_file', :itemprop => "image"
-    %a{:href => single_model_path(product, style), :class => 'single_product_ajaxified_link more_link'}
-      = "Подробнее"
   .product_description_wrapper
-    .product_description
-      = t('product_description.brand')
-    .product_description1{:style => 'font-weight: bold'}
-      = product.brand.name.html_safe
-    .delimiter
-    .product_description
-      = t('product_description.category')
-    .product_description1
-      = product.category.name
-    .delimiter
-    - if product.sub_category.try(:name)
-      .product_description
-        = t('product_description.sub_category')
-      .product_description1
-        = product.sub_category.name
-      .delimiter
-    .product_description
-      = t('product_description.gender')
-    .product_description1
-      = product.gender.name
-    .delimiter
-  .delimiter
+    .product_description= t('product_description.brand')
+    = link_to product.brand.name.html_safe, brand_path(product.brand), :class => "product_description1"
+    .product_description= t('product_description.category')
+    %a.product_description1{ :href => ''}= product.category.name
+    .product_description= t('product_description.gender')
+    %a.product_description1{:href => ""}= product.gender.name
+
   .grey_area{ :itemprop => "offers", :itemscope => '', :itemtype => "http://schema.org/Offer"}
     - if product.product && !style.hidden?
       .presence_color
@@ -54,5 +38,5 @@
     .product_details_link
       = link_to t('more'), single_model_path(product, style), :class => 'more single_product_ajaxified_link', :itemprop => "url"
       .image_arrow1
-- if item_model_counter % 2 == 1
-  .delimiter
+- if item_model_counter % 2 == 0
+  .cpb_delimeter

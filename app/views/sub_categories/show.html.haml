@@ -1,0 +1,15 @@
+.brows_category
+  .brows_lable
+    .bl_style Пол
+    .bl_image
+  %ul.main_category
+    - @gender_map.each do |gender_name, counting|
+      %li.mcl_link
+        %a.mcl_link_left{:href => "/advanced_search#cat=#{@sub_category.id}&g=#{counting[:id]}"}= gender_name
+        %a.mcl_link_right{:href => "#"}= "(#{counting[:count]})"
+.category_logos_block
+  - @brands.each_with_index do |brand, index|
+    %a.category_logos{:href => brand_path(brand)}
+      = image_tag brand.logo_url
+    - if index % 2 == 0
+      .cl_delimeter

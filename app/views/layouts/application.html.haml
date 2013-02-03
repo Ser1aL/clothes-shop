@@ -99,12 +99,10 @@
               = "|" unless letter == 'Z'
         %div{:style => 'clear: both;'}
         #catalog_button
-          = link_to "Одежда", category_url("1-odezhda"), :class => "catalog_button_style"
-          = link_to "Обувь", category_url("2-obuv"), :class => "catalog_button_style"
-          = link_to "Сумки", category_url("6-sumki"), :class => "catalog_button_style"
-          = link_to "Аксессуары", category_url("3-aksessuari"), :class => "catalog_button_style"
-          = link_to "Очки", category_url("5-ochki"), :class => "catalog_button_style"
-          = link_to "Часы", category_url("4-chasi"), :class => "catalog_button_style"
+          - hash_map = { "1-odezhda" => "Одежда", "2-obuv" => "Обувь", "6-sumki" => "Сумки", "3-aksessuari" => "Аксессуары", "5-ochki" => "Очки", "4-chasi" => "Часы"}
+          - hash_map.each do |name, translation|
+            - addition = name == params[:id] ? "catalog_button_style_active" : ''
+            = link_to translation, category_url(name), :class => "catalog_button_style #{addition}"
         .separator_header
       #content_wraper
         #ajax_content

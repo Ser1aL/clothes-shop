@@ -1,29 +1,18 @@
-= render 'category_tip'
 = set_meta(@categories.first.top_category_name)
-- cache do
-  .delimiter
-  .categories_wrapper
-    - cache do
-      .banners
-        #slides
-          .slides_container
-            - @banners.each do |banner|
-              %div
-                %a{:href => banner.url}
-                  = image_tag banner.image_url
+.brows_category
+  .brows_lable
+    .bl_style= t(@categories.first.top_category_name)
+    .bl_image
+  %ul.main_category
+    - @categories.each do |category|
+      %li.mcl_link
+        = link_to category.name, category_sub_category_url("#{category.top_category}-#{category.top_category_name}", category)
+.advertisement_block
+  .ab_main_banner
+    #slides
+      .slides_container
+        - @banners.each do |banner|
+          %div
+            %a{:href => banner.url}
+              = image_tag banner.image_url
 
-      .categories_panel
-        .delimiter
-        .category_block
-          .category_header
-            .category_name
-              = link_to t(@categories.first.top_category_name), category_path(params[:id])
-            .category_count
-          .category_content
-            - @categories.each do |category|
-              %div
-                .sub_category_name
-                  = link_to "#{category.name}", "/advanced_search#cat=#{category.id}"
-                .sub_category_count
-                  = "(#{@countings[category.id].sum(&:value)})"
-              .delimiter
