@@ -10,31 +10,7 @@ Watches::Application.routes.draw do
     resources :sub_categories, :only => %w(show)
   end
 
-  get "administrator", :to => 'administrator#orders'
-  namespace :administrator do
-    get "orders"
-    get "login"
-    post "do_login"
-    get "static_pages"
-    post "change_static_page"
-    get "exchange_rates"
-    post "change_exchange_rate"
-    get "category_translates"
-    post "category_translate"
-    get "brand_translates"
-    post "brand_translate"
-    get "brand_favorites"
-    post "set_brand_favorite"
-    get "category_favorites"
-    post "set_category_favorite"
-    get "sub_category_favorites"
-    post "set_sub_category_favorite"
-    get "category_mapping"
-    post "set_category_mapping"
-    get "reviews"
-    post "verify_review"
-    get 'six_pm'
-  end
+  resources :sitemaps, :only => %w(index)
 
   namespace :search do
     get "index"
@@ -47,6 +23,7 @@ Watches::Application.routes.draw do
     get "preload_colors"
     get "preload_facet_list"
   end
+
 
   resources :item_models
   get 'product/:id/:style_id', :to => 'item_models#show', :as => 'single_model'
@@ -83,6 +60,32 @@ Watches::Application.routes.draw do
   post 'change_quantity/:cart_line_id', :to => 'shopping_cart#change_quantity', :as => 'change_quantity'
   post 'remove_cart_line/:cart_line_id', :to => 'shopping_cart#remove_cart_line', :as => 'remove_cart_line'
   get "item_models/:id", :to => "item_models#show"
+
+  get "administrator", :to => 'administrator#orders'
+  namespace :administrator do
+    get "orders"
+    get "login"
+    post "do_login"
+    get "static_pages"
+    post "change_static_page"
+    get "exchange_rates"
+    post "change_exchange_rate"
+    get "category_translates"
+    post "category_translate"
+    get "brand_translates"
+    post "brand_translate"
+    get "brand_favorites"
+    post "set_brand_favorite"
+    get "category_favorites"
+    post "set_category_favorite"
+    get "sub_category_favorites"
+    post "set_sub_category_favorite"
+    get "category_mapping"
+    post "set_category_mapping"
+    get "reviews"
+    post "verify_review"
+    get 'six_pm'
+  end
 
   match '/404', to: 'errors#not_found'
   match '/500', to: 'errors#internal_server_error'

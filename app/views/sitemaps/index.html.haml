@@ -1,0 +1,64 @@
+.deliveries_block_title
+  Карта сайта
+  %br/
+  %span Полный обзор по нашему сайту.
+
+.sitemap_line
+  - @categories.select{|k, _| ![1,2,3].include? k }.each do |top_level_category_id, categories|
+    .sitemap_container
+      .brows_lable
+        .bl_style= t(categories.first.top_category_name)
+        .bl_image
+      %ul.main_category
+        - categories.each do |category|
+          %li.mcl_link
+            %a.mcl_link_left{:href => category_sub_category_path("#{top_level_category_id}-#{categories.first.top_category_name}", category) }= category.name
+            %a.mcl_link_right{:href => "#"}
+    .delimeter_sitemap
+
+.sitemap_line
+  - @categories.select{|k, _| [1,2,3].include? k }.each do |top_level_category_id, categories|
+    .sitemap_container
+      .brows_lable
+        .bl_style= t(categories.first.top_category_name)
+        .bl_image
+      %ul.main_category
+        - categories.each do |category|
+          %li.mcl_link
+            %a.mcl_link_left{:href => category_sub_category_path("#{top_level_category_id}-#{categories.first.top_category_name}", category) }= category.name
+            %a.mcl_link_right{:href => "#"}
+    .delimeter_sitemap
+
+
+  .sitemap_brows_lable
+    .sitemap_bl_style Бренды
+    .bl_image
+  - @brands.each_with_index do |(letter, group), index|
+    %ul.main_category
+      %li.mc_lable
+        %a{:href => letter_brands_path(letter.upcase)}= "#{letter.upcase}-#{letter.downcase}"
+      - group.each do |brand|
+        - if brand
+          %li.mcl_link
+            = link_to brand.name.html_safe, brand_url(brand)
+    .delimeter_sitemap
+
+.sitemap_line
+  .sitemap_container
+    .brows_lable
+      .bl_style Другие страницы
+      .bl_image
+    %ul.main_category
+      %li.mcl_link
+        %a.mcl_link_left{:href => deliveries_path} Доставка
+        %a.mcl_link_right{:href => "#"}
+      %li.mcl_link
+        %a.mcl_link_left{:href => payments_path} Оплата
+        %a.mcl_link_right{:href => "#"}
+      %li.mcl_link
+        %a.mcl_link_left{:href => about_us_path} О нас
+        %a.mcl_link_right{:href => "#"}
+      %li.mcl_link
+        %a.mcl_link_left{:href => contacts_path} Контакты
+        %a.mcl_link_right{:href => "#"}
+  .delimeter_sitemap

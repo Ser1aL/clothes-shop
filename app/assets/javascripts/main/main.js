@@ -313,7 +313,8 @@ function activate_zoom(){
         hideEffect: 'fadeout'
     };
 
-    $('.inner_zoom').hover(function(){
+    $('.inner_zoom').click(function(event){
+        event.preventDefault();
         if( typeof($(this).attr("rel")) != 'undefined' ) $(this).jqzoom(inner_zoom_options);
     });
 }

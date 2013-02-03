@@ -76,10 +76,10 @@
           .separator_header
         #navigation
           .navigation_buttons
-            %a.button{:href => root_path}
-            .button_left
-            .button_mid Посмотреть все категории
-            .button_right
+            %a.button{:href => sitemaps_path}
+              .button_left
+              .button_mid Посмотреть все категории
+              .button_right
           #navigation_search
             = form_tag search_path, :method => 'post', :id => 'search_form', :remote => true do
               %a#search_button.button{:href => "#"}
@@ -115,7 +115,8 @@
       #footer_conteiner_wraper
         #footer_content_wraper
           .footer_blok_content
-            %p.title_text Карта сайта
+            %p.title_text
+              = link_to "Карта сайта", sitemaps_path
             %p.footer_help_text Знакомство с магазином
             .footer_separator
             .sitemap_link

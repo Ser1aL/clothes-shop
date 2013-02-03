@@ -4,25 +4,27 @@
 - content_for :meta_description, t('meta.brand_letter_description', :letter => params[:letter])
 - content_for :seo_header, t('meta.brand_letter_seo_header', :letter => params[:letter])
 
+.sitemap_line
+  .sitemap_brows_lable
+    .sitemap_bl_style Бренды
+    .bl_image
 - if params[:category_id].blank? && params[:letter].blank?
   - @brands.each_with_index do |(letter, group), index|
-    - if index % 3 == 0
-      .delimiter
-    .brand_block
-      .brand_block_header
-        = "#{letter.upcase}-#{letter.downcase}"
-      .brand_block_content
-        - group.each do |brand|
-          %div
+    %ul.main_category
+      %li.mc_lable
+        %a{:href => letter_brands_path(letter.upcase)}= "#{letter.upcase}-#{letter.downcase}"
+      - group.each do |brand|
+        - if brand
+          %li.mcl_link
             = link_to brand.name.html_safe, brand_url(brand)
+    .delimeter_sitemap
+
 - else
-  - @brands.in_groups(3).each_with_index do |group, index|
-    - if index % 3 == 0
-      .delimiter
-    .brand_block
-      .brand_block_header
-      .brand_block_content
-        - group.each do |brand|
-          %div
-            - if brand
-              = link_to brand.name.html_safe, brand_url(brand)
+
+  - @brands.in_groups(3).each do |group|
+    %ul.main_category
+      %li.mc_lable
+      - group.each do |brand|
+        - if brand
+          %li.mcl_link
+            = link_to brand.name.html_safe, brand_url(brand)

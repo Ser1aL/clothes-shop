@@ -281,12 +281,16 @@ namespace :data_feed do
       end
 
       # for index page load 2 more banners
-      if page_name_6pm.blank?
+      #if page_name_6pm.blank?
+      begin
         first_banner = nokogiri_page.css(".imageFarm")[0].css("a img")[0].attribute("src").value
         second_banner = nokogiri_page.css(".imageFarm")[0].css("a img")[2].attribute("src").value
         Banner.create(:category_id => top_level_categories[category_name], :image_url => "#{root_page}#{first_banner}", :side => "left")
         Banner.create(:category_id => top_level_categories[category_name], :image_url => "#{root_page}#{second_banner}", :side => "right")
+      rescue
+        next
       end
+      #end
     end
 
   end
