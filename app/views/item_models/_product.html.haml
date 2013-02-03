@@ -1,13 +1,13 @@
-.block
+.block{:itemscope => '', :item_type => "http://schema.org/Product"}
   .title_product
     %a.title_product-a{:href => single_model_path(product, product.product.styles.first), :class => 'single_product_ajaxified_link'}
-      = product.product_name.truncate(55).html_safe
+      %span{:itemprop => "name"}= product.product_name.truncate(55).html_safe
   .product_image
     %a{:href => single_model_path(product, product.product.styles.first), :class => 'single_product_ajaxified_link'}
       - if product.try(:product).try(:styles).try(:first).try(:not_zoomed_image_attachments).blank?
         = image_tag 'thumb/missing.png', :class => 'missing', :alt => product.product_name, :title => "#{product.product_name} - #{product.category.name}"
       - else
-        = image_tag product.product.styles.first.primary_image.image_url, :class => 'img_file', :alt => product.product_name, :title => "#{product.product_name} - #{product.category.name}"
+        = image_tag product.product.styles.first.primary_image.image_url, :class => 'img_file', :alt => product.product_name, :title => "#{product.product_name} - #{product.category.name}", :itemprop => "image"
     %a{:href => single_model_path(product, product.product.styles.first), :class => 'single_product_ajaxified_link more_link'}
       = "Подробнее"
   .product_description_wrapper
@@ -33,7 +33,7 @@
       = product.gender.name
     .delimiter
   .delimiter
-  .grey_area
+  .grey_area{ :itemprop => "offers", :itemscope => '', :itemtype => "http://schema.org/Offer"}
     - if product.product && product.product.styles.map(&:hidden?).include?(false)
       .presence_color
       .presence_note
@@ -42,7 +42,7 @@
         = t('product_description.price')
       %div
         %a.sum-a{:href => "#"}
-          = number_to_currency(product.product.styles.first.discount_price_extra(@exchange_rate, @markup), :unit => '')
+          %span{ :itemprop => "price" }= number_to_currency(product.product.styles.first.discount_price_extra(@exchange_rate, @markup), :unit => '')
       .price
         = @currency
     - else
@@ -50,7 +50,7 @@
       .presence_note_no
         = t('product_not_exists')
     .product_details_link
-      = link_to t('more'), single_model_path(product, product.product.styles.first), :class => 'more single_product_ajaxified_link'
+      = link_to t('more'), single_model_path(product, product.product.styles.first), :class => 'more single_product_ajaxified_link', :itemprop => "url"
       .image_arrow1
 - if product_counter % 2 == 0
   .delimeter

@@ -147,7 +147,7 @@
             .sitemap_link{:style => "width: 100px;"}
               = link_to 'Отзывы', reviews_path, :class => 'link_menu'
               = link_to 'О нас', about_us_path, :class => 'link_menu'
-            .footer_blok_content
+            .footer_blok_content{ :itemscope => '', :itemtype => "http://schema.org/Person" }
               .footer_separator
               .footer_label_input{:style => "padding-top: 0; height: 84px;"}
                 .footer_labe2{:style=>"margin-top: 0;"}
@@ -162,18 +162,20 @@
                     %br
                     США:
                   %p.text1
-                    +38(098)023-93-07
+                    %span{ :itemprop => "telephone"}= "+38(098)023-93-07"
                     %br
-                    +37 360-690-698
+                    %span{ :itemprop => "telephone"}= "+37 360-690-698"
                     %br
-                    +7172 777-17-07
+                    %span{ :itemprop => "telephone"}= "+7172 777-17-07"
                     %br
-                    +7 929 777-17-07
+                    %span{ :itemprop => "telephone"}= "+7 929 777-17-07"
                     %br
-                    +1 55 122-699-21
+                    %span{ :itemprop => "telephone"}= "+1 55 122-699-21"
               .footer_separator
                 .footer_labe3
-                  %p.text1 E-mail: shop.mydostavka@gmail.com
+                  %p.text1
+                    E-mail:
+                    %span{ :itemprop => "email" }= "shop.mydostavka@gmail.com"
                   %a{:href => "#"}
                 .footer_labe4
                   %p.text1

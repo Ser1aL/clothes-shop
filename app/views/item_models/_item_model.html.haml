@@ -2,16 +2,16 @@
 - style = item_model.product.styles.sort_by(&:discount_price).first
 - if params[:color].present?
   - style = item_model.product.styles.select{ |s| s.color == params[:color] }.try(:first) || style
-.block.advanced_search
+.block.advanced_search{:itemscope => '', :item_type => "http://schema.org/Product"}
   .title_product
     %a.title_product-a{:href => single_model_path(product, style), :class => 'single_product_ajaxified_link'}
-      = product.product_name.truncate(55).html_safe
+      %span{:itemprop => "name"}= product.product_name.truncate(55).html_safe
   .product_image
     %a{:href => single_model_path(product, style), :class => 'single_product_ajaxified_link'}
       - if product.try(:product).try(:styles).try(:first).try(:not_zoomed_image_attachments).blank?
         = image_tag 'thumb/missing.png', :class => 'missing', :alt => product.product_name, :title => "#{item_model.product_name} - #{item_model.category.name}"
       - else
-        = image_tag style.primary_image.image_url, :alt => item_model.product_name, :title => "#{item_model.product_name} - #{item_model.category.name}", :class => 'img_file'
+        = image_tag style.primary_image.image_url, :alt => item_model.product_name, :title => "#{item_model.product_name} - #{item_model.category.name}", :class => 'img_file', :itemprop => "image"
     %a{:href => single_model_path(product, style), :class => 'single_product_ajaxified_link more_link'}
       = "Подробнее"
   .product_description_wrapper
@@ -37,14 +37,14 @@
       = product.gender.name
     .delimiter
   .delimiter
-  .grey_area
+  .grey_area{ :itemprop => "offers", :itemscope => '', :itemtype => "http://schema.org/Offer"}
     - if product.product && !style.hidden?
       .presence_color
       .price
         = t('product_description.price')
       %div
         %a.sum-a{:href => "#"}
-          = number_to_currency(style.discount_price_extra(@exchange_rate, @markup), :unit => '')
+          %span{ :itemprop => "price" }= number_to_currency(style.discount_price_extra(@exchange_rate, @markup), :unit => '')
       .price
         = @currency
     - else
@@ -52,7 +52,7 @@
       .presence_note_no
         = t('product_not_exists')
     .product_details_link
-      = link_to t('more'), single_model_path(product, style), :class => 'more single_product_ajaxified_link'
+      = link_to t('more'), single_model_path(product, style), :class => 'more single_product_ajaxified_link', :itemprop => "url"
       .image_arrow1
 - if item_model_counter % 2 == 1
   .delimiter
