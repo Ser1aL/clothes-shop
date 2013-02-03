@@ -1,6 +1,6 @@
 class SubCategoriesController < ApplicationController
   def show
-    @sub_category = Category.includes(:item_models => [:gender, :brand]).find(params[:id])
+    @category = @sub_category = Category.includes(:item_models => [:gender, :brand]).find(params[:id])
     @gender_map = {}
     @brands = []
     @sub_category.item_models.each do |item|

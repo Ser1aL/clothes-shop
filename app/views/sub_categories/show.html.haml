@@ -1,3 +1,6 @@
+= bread_crumbs( [link_to(t(@category.top_category_name), category_url("#{@category.top_category}-#{@category.top_category_name}")), link_to(@category.name, category_sub_category_url("#{@category.top_category}-#{@category.top_category_name}", @category))  ])
+.separator_header
+
 .brows_category
   .brows_lable
     .bl_style Пол

@@ -14,4 +14,14 @@ module ApplicationHelper
     url += "g=#{gender}" if gender
     url
   end
+
+  def bread_crumbs(steps)
+    html_steps = []
+    steps.each{ |url| html_steps << content_tag(:span, url, :class => 'short_link') }
+    hint = content_tag(:span, (t('chosen_brand') + ': '), :class => 'short_link')
+    links = raw( hint + raw(html_steps.join) )
+
+    path_link = content_tag(:div, links, :class => 'path_link')
+    content_tag(:div, path_link, :id => 'brad_crams')
+  end
 end
