@@ -21,6 +21,8 @@ class Brand < ActiveRecord::Base
           :tree => []
       }
       countings.each do |counting|
+        next if tree[:root][countings.first.category_name][:tree].map{|node| node[:id]}.include?(counting.sub_category_id)
+
         tree[:root][countings.first.category_name][:tree] << {
             :id => counting.sub_category_id,
             :name => counting.sub_category_name,

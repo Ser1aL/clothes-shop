@@ -5,7 +5,7 @@
 - content_for :seo_header, t('meta.single_product_seo_header', :product_name => @product.product_name)
 - content_for(:canonical_url) { single_model_url(@product, @product.product.styles.first) }
 
-%span.path_link
+%span.path_link{ :itemprop => 'breadcrumb'}
   %span.short_link
     = t('chosen_brand')
   %span.short_link
