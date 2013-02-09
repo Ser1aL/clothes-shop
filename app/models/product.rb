@@ -1,5 +1,5 @@
 class Product < ActiveRecord::Base
-  has_many :order_lines, :dependent => :destroy
+  has_many :order_lines
   belongs_to :item_model, :dependent => :destroy
   has_many :styles, :dependent => :destroy
 
