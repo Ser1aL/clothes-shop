@@ -15,7 +15,7 @@
         = shopping_cart_line.product.item_model.brand.name
     .shopping_card_content_product_description
       = shopping_cart_line.product.item_model.full_description
-      = shopping_cart_line.stock.size
+      = shopping_cart_line.stock_size
   %td.shopping_card_content_quantity
     .quantity_input#quantity
       = form_tag change_quantity_path(shopping_cart_line), {:remote => true} do

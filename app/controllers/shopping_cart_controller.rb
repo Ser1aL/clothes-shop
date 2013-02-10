@@ -24,13 +24,13 @@ class ShoppingCartController < ApplicationController
           :quantity => 1,
           :price => @style.discount_price_extra(@exchange_rate, @markup),
           :style => @style,
-          :stock => @stock,
+          :stock_size => @stock.size,
           :currency => @currency
         )
         session[:shopping_cart_id] = @shopping_cart.id
       else
         @shopping_cart = ShoppingCart.find(session[:shopping_cart_id])
-        if @shopping_cart_line = @shopping_cart.shopping_cart_lines.find_by_product_id_and_style_id_and_stock_id(params[:product_id], params[:style], params[:stock_id])
+        if @shopping_cart_line = @shopping_cart.shopping_cart_lines.find_by_product_id_and_style_id_and_stock_size(params[:product_id], params[:style], @stock.size)
           @shopping_cart_line.increment!(:quantity)
         else
           @shopping_cart.shopping_cart_lines.create(
@@ -38,7 +38,7 @@ class ShoppingCartController < ApplicationController
             :quantity => 1,
             :price => @style.discount_price_extra(@exchange_rate, @markup),
             :style => @style,
-            :stock => @stock,
+            :stock_size => @stock.size,
             :currency => @currency
           )
         end
@@ -135,7 +135,8 @@ class ShoppingCartController < ApplicationController
           :product => sc_line.product,
           :quantity => sc_line.quantity,
           :style => sc_line.style,
-          :currency => @currency
+          :currency => @currency,
+          :stock_size => sc_line.stock_size
         )
       end
       if @order.new_record?

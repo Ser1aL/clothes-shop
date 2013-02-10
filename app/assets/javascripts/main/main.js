@@ -187,12 +187,9 @@ function activate_navigation_button(button_name){
 }
 
 function activate_sizes_dropdown(){
-    $("#stock_select select").change(function(){
-        var stock_id = $(this).find("option:selected").val();
-        var link_to_cart = $(".add_to_cart_link a").last();
-        var current_url = $.url(link_to_cart.attr("href")); //, link_to_cart.attr("href") + "&stock_id=" + stock_id);
-        var result_url = current_url.attr().path + '?' + 'style=' + current_url.data.param.query.style + '&stock_id=' + stock_id;
-        link_to_cart.attr('href', result_url);
+    $(".add_to_cart_link").click(function(event){
+        event.preventDefault();
+        $("#add_to_cart_form").submit();
     });
 }
 

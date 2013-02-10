@@ -37,6 +37,8 @@
         %td
           Количество
         %td
+          Размер
+        %td
           SKU#
         %td
           Цена
@@ -54,6 +56,8 @@
             = image_tag order_line.style.not_zoomed_image_attachments[0].image_url
           %td
             = order_line.quantity
+          %td
+            = order_line.stock_size
           %td
             = order_line.product.item_model.external_product_id
           %td
