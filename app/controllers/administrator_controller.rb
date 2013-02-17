@@ -23,7 +23,7 @@ class AdministratorController < ApplicationController
   end
 
   def set_order_status
-    Order.find(params[:order_id]).update_attributes(:status => params[:status].to_sym)
+    Order.find(params[:order_id]).update_attributes!(:status => params[:status].to_sym)
     redirect_to :back
   end
 
