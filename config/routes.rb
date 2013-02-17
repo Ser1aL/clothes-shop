@@ -62,7 +62,7 @@ Watches::Application.routes.draw do
   get "item_models/:id", :to => "item_models#show"
 
   get "administrator", :to => 'administrator#orders'
-  post 'administrator/set_order_status/:order_id', :to => 'administrator#set_order_status', :as => :set_order_status
+  post 'administrator/set_order_status/:order_id', :to => 'administrator#set_order_status', :as => :administrator_set_order_status
   namespace :administrator do
     get "orders"
     get "login"
