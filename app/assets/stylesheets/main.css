@@ -139,6 +139,7 @@ textarea {
 	width: 960px;
 	margin: 0 auto;
 	min-height: 500px;
+    position: relative;
 }
 
 #logo {
@@ -3738,6 +3739,9 @@ a.previews .previews_img_file{
     float: right;
     font-weight: normal;
     margin-right: 10px;
+    position: absolute;
+    bottom: 1px;
+    right: 26px;
 }
 
 .shipping_adres .input_style, .reg_form .input_style{
