@@ -14,18 +14,13 @@
   = form_tag administrator_orders_path(:mark_reviewed => 1), :method => :get do
     %table.orders
       %tr
-        %td
-          = 'Номер заказа'
-        %td
-          = 'Адрес доставки'
-        %td
-          = 'E-mail заказчика'
-        %td
-          = 'Номер телефона'
-        %td
-          = 'Дата создания заказа'
-        %td
-          = 'Сумма по заказу'
+        %td= 'Номер заказа'
+        %td= 'Адрес доставки'
+        %td= 'E-mail заказчика'
+        %td= 'Номер телефона'
+        %td= 'Статус'
+        %td= 'Дата создания заказа'
+        %td= 'Сумма по заказу'
         %td
       = render :partial => 'order', :collection => @orders
     = submit_tag 'Отметить выбранные заказы просмотренными'

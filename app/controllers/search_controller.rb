@@ -3,9 +3,9 @@ class SearchController < ApplicationController
   layout 'application', :only => :index
 
   def index
-    @category_countings =  CategoryCounting.order(:category_name).group_by(&:category_id)
-    @brand_countings =  CategoryCounting.group(:brand_id).select("sum(value) as value, brand_name, brand_id")
-    @gender_countings =  CategoryCounting.group(:gender_id).select("sum(value) as value, gender_name, gender_id")
+    @category_countings =  CategoryCounting.order(:category_name).group_by(&:category_id).sort_by{|_, countings| countings.sum(&:value) }.reverse.first(15)
+    @brand_countings =  CategoryCounting.group(:brand_id).select("sum(value) as value, brand_name, brand_id").limit(15)
+    @gender_countings =  CategoryCounting.group(:gender_id).select("sum(value) as value, gender_name, gender_id").limit(15)
     @item_models = ItemModel.get_items
   end
 

@@ -3156,6 +3156,13 @@ a.previews .previews_img_file{
     margin-top: 11px;
 }
 
+.price_filter{
+    width: 220px;
+    margin-left: 10px;
+    height: 28px;
+    margin-top: 10px;
+}
+
 .item_models{
     float: right;
     width: 727px;

@@ -149,8 +149,10 @@ class ShoppingCartController < ApplicationController
         @order.user.update_attribute(:city, params[:city]) if !@order.user.city
         @order.user.update_attribute(:country, params[:country]) if !@order.user.country
         @order.user.update_attribute(:phone_number, params[:phone_number])
-        Usermail.order_details(@order).deliver
-        Usermail.staff_notification(@order).deliver
+        unless Rails.env.development?
+          Usermail.order_details(@order).deliver
+          Usermail.staff_notification(@order).deliver
+        end
         session[:shopping_cart_id] = nil
         flash[:message_type] = 'order_submitted_successfully'
         flash[:order_id] = @order.id

@@ -22,6 +22,11 @@ class AdministratorController < ApplicationController
 
   end
 
+  def set_order_status
+    Order.find(params[:order_id]).update_attributes(:status => params[:status].to_sym)
+    redirect_to :back
+  end
+
   def static_pages
     @static_pages = StaticPage.all
     @current_page = StaticPage.find(params[:page_id]) if params[:page_id]

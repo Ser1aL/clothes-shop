@@ -11,7 +11,7 @@ class Order < ActiveRecord::Base
   has_many :order_lines
 
   validates_presence_of :order_time, :status, :address, :city, :country
-  validates_inclusion_of :status, :in => [:submitted, :paid, :sent]
+  validates_inclusion_of :status, :in => [:submitted, :paid, :sent, :delivered]
   validates_datetime :order_time
 
   #validates_associated :order_lines

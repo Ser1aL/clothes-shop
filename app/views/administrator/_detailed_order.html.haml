@@ -1,3 +1,4 @@
+- order_statuses = [:submitted, :paid, :sent, :delivered].map{ |status| [t(status), status] }
 #detailed_order
   %div
     Номер заказа:
@@ -24,6 +25,12 @@
     Дата:
     %span
       = order.created_at.to_formatted_s(:long)
+  %div
+    Статус заказа:
+    = form_tag administrator_set_order_status_path(order) do
+      = select_tag :status, options_for_select(order_statuses, order.status)
+      = submit_tag 'Изменить статус'
+
   %div
     Заказано:
     %table

@@ -8,6 +8,8 @@
   %td
     = order.user.phone_number
   %td
+    = t(order.status)
+  %td
     = order.created_at.to_formatted_s(:long)
   %td
     = order.total
