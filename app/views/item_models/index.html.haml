@@ -10,9 +10,12 @@
     %ul.main_category
       %li.mc_lable
         = link_to t(categories.first.top_category_name), category_url("#{top_level_category_id}-#{categories.first.top_category_name}")
-      - categories.each do |category|
-        %li.mcl_link
+      - categories.each_with_index do |category, index|
+        %li.mcl_link{ class: index > 4 ? 'hidden_link' : '' }
           = link_to category.name, category_sub_category_url("#{top_level_category_id}-#{categories.first.top_category_name}", category)
+      - if categories.size > 5
+        %li.mcl_link_sm
+          %a.mcl_show_more{:href => "#"} Показать все
 
 .advertisement_block
   .ab_main_banner

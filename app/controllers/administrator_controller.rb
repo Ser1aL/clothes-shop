@@ -11,11 +11,11 @@ class AdministratorController < ApplicationController
 
     @orders = begin
       if params[:show_reviewed]
-        Order.where(:reviewed => true)
+        Order.where(:reviewed => true).order('id desc')
       elsif params[:show_unreviewed]
-        Order.where(:reviewed => false)
+        Order.where(:reviewed => false).order('id desc')
       else
-        Order.order(:reviewed).all
+        Order.order(:reviewed).order('id desc').all
       end
     end
     @order = Order.find(params[:order_id]) if params[:order_id]
