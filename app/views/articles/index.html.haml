@@ -1,0 +1,11 @@
+.articles
+  - @articles.each do |article|
+    .article_title= article.title
+    .article_short_description
+      = article.short_description
+      .delimiter
+      .more_link= link_to t('more'), article_url(article)
+      .delimiter
+
+.articles_pagination= paginate(@articles, :window => 6)
+

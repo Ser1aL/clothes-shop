@@ -1,0 +1,7 @@
+.edit_article_form
+  = form_tag administrator_update_article_path do
+    = hidden_field_tag :article_id, @article.id
+    = text_field_tag :title, @article.title, style: 'border: 1px rgb(189, 189, 189) solid; margin: 20px 10px 10px 10px; width: 770px;', placeholder: 'Название'
+    = text_area_tag :short_description, @article.short_description, style: 'border: 1px rgb(189, 189, 189) solid; margin: 20px 10px; width: 770px;', placeholder: 'Краткое описание'
+    = text_area_tag :description, @article.description, :class => 'tiny_mce'
+    = submit_tag t("save")

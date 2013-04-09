@@ -1,0 +1,15 @@
+- @articles.each do |article|
+  .article{ :style => 'padding: 5px 0 5px 10px'}
+    = link_to article.title, administrator_edit_article_path(article)
+.articles
+  = paginate(@articles, :window => 5)
+
+.delimiter{ :style => 'border-top: 1px #424242 solid'}
+
+%h4= 'Создать статью'
+.new_article_form{ style: 'padding-bottom: 100px;'}
+  = form_tag administrator_create_article_path do
+    = text_field_tag :title, nil, style: 'border: 1px rgb(189, 189, 189) solid; margin: 20px 10px 10px 10px; width: 770px;', placeholder: 'Название'
+    = text_area_tag :short_description, nil, style: 'border: 1px rgb(189, 189, 189) solid; margin: 20px 10px; width: 770px;', placeholder: 'Краткое описание'
+    = text_area_tag :description, nil, :class => 'tiny_mce'
+    = submit_tag 'Создать статью'

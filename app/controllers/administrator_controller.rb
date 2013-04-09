@@ -1,6 +1,7 @@
 class AdministratorController < ApplicationController
 
   before_filter :check_admin
+  layout 'administrator'
 
   def orders
     unless params[:order_ids].blank?
@@ -134,6 +135,32 @@ class AdministratorController < ApplicationController
 
   def six_pm
     @count = ItemModel.where(:origin => '6pm').count
+  end
+
+  def articles
+    @articles = Article.order('id desc').page(params[:page]).per(10)
+  end
+
+  def create_article
+    Article.create(
+        :title => params[:title],
+        :description => params[:description],
+        :short_description => params[:short_description]
+    )
+    redirect_to :back
+  end
+
+  def edit_article
+    @article = Article.find(params[:id])
+  end
+
+  def update_article
+    Article.find(params[:article_id]).update_attributes(
+        :title => params[:title],
+        :description => params[:description],
+        :short_description => params[:short_description]
+    )
+    redirect_to :back
   end
 
 private

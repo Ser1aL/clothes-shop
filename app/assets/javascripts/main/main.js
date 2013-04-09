@@ -362,8 +362,10 @@ function activate_comment_controls(){
 
 
 function prepare_paginated_links(page_type){
+    // skip articles pager
+    if($(".articles").length > 0) return;
     if(page_type != 'cat' && page_type != 'search') {
-        var page = ''
+        var page = '';
         $.each($(".pager a"), function(index, url) {
             page = $.url(url.href).data.param.query.page;
             if(page == undefined) page = '1';
