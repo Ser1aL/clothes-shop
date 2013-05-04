@@ -39,7 +39,7 @@ namespace :sitemap do
     sitemaps << 'sitemap_non_product.xml'
 
     product_pages = []
-    Style.includes(:product => :item_model).where('style.hidden = 0').each_with_index do |style, index|
+    Style.includes(:product => :item_model).where('styles.hidden = 0').each_with_index do |style, index|
       next unless style.product
       next unless style.product.item_model
       product_pages << single_model_url(style.product.item_model, style)

@@ -56,7 +56,6 @@ gem 'jquery-rails'
 gem 'tinymce-rails'
 
 group :test do
-  gem "mocha"#, :git => "git://github.com/floehopper/mocha.git"
   gem 'factory_girl_rails'#, :git => "git://github.com/thoughtbot/factory_girl_rails.git"
   gem 'capybara'#, :git => "git://github.com/jnicklas/capybara.git"
   gem 'guard', :git => "git://github.com/guard/guard.git", :tag => 'v0.6.2'
