@@ -23,4 +23,4 @@
     .ab_main_brands_banner
       = image_tag @brand.image_attachments[0].try(:image_url)
   .brands_description
-    = @brand.description.html_safe
+    = @brand.description.try(:html_safe)
