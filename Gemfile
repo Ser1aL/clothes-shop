@@ -1,6 +1,6 @@
 source :gemcutter#'http://rubygems.org'
 
-gem 'rails', '3.2.8'
+gem 'rails', '3.2.11'
 
 #gem 'rails', :git => 'git://github.com/rails/rails.git'
 
