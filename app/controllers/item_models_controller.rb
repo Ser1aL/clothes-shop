@@ -40,19 +40,31 @@ class ItemModelsController < ApplicationController
   end
 
   def update_prices(item_model, style)
+    exists_at_6pm, exists_at_zappos = true, true
     begin
-      if style.update_6pm_prices(item_model)
-        style.update_attribute(:hidden, false) and return
-      end
-    rescue
+      exists_at_6pm = false unless style.update_6pm_prices(item_model)
+    rescue => e
+      Rails.logger.debug '---------GOT 6pm EXCEPTION---------------'
+      Rails.logger.debug e.inspect
+      Rails.logger.debug e.message
+      Rails.logger.debug '------------------------'
     end
     begin
       if style.update_zappos_prices(item_model)
-        style.update_attribute(:hidden, false)
       else
-        style.update_attribute(:hidden, true)
+        exists_at_zappos = false
       end
-    rescue
+    rescue => e
+      Rails.logger.debug '---------GOT zappos EXCEPTION---------------'
+      Rails.logger.debug e.inspect
+      Rails.logger.debug e.message
+      Rails.logger.debug '------------------------'
+    end
+
+    if exists_at_6pm || exists_at_zappos
+      style.update_attribute(:hidden, false)
+    else
+      style.update_attribute(:hidden, true)
     end
   end
 
