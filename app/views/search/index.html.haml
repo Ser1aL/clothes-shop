@@ -1,83 +1,85 @@
-.tips
-  .selected_filters
-    .hint
-      Выбранные фильтры:
-    - %w(brand_id_filter gender_id_filter category_id_filter sub_category_id_filter price_range_filter size_filter color_filter).each do |filter|
-      %div{:class => "selected_filter #{filter}"}
-        %span.hint
-        %span.content
-        %span.remove X
-    .delimiter
-.separator_content
-.delimiter
-.search_wrapper.advanced_search_wrapper
-  .brows_category
-    .categories
-      .brows_lable
-        .bl_style= t("categories")
-        .bl_image
-      .content
-        %ul.main_category
-          - @category_countings.each do |category_id, count_group|
-            %li.mcl_link
-              %a.mcl_link_left{ :href => "#cat=#{category_id}", :id => "category_id_#{category_id}" }= count_group.first[:category_name]
-              %a.mcl_link_right{ :href => "#cat=#{category_id}", :id => "category_id_#{category_id}" }= "(#{count_group.sum(&:value)})"
-    .genders
-      .brows_lable
-        .bl_style= t("genders")
-        .bl_image
-      .content
-        %ul.main_category
-          - @gender_countings.each do |counting|
-            %li.mcl_link
-              %a.mcl_link_left{ :href => "#g=#{counting.gender_id}", :id => "gender_id_#{counting.gender_id}" }= counting.gender_name
-              %a.mcl_link_left{ :href => "#g=#{counting.gender_id}", :id => "gender_id_#{counting.gender_id}" }= counting.value
+-# DISABLED
 
-    .brands
-      .brows_lable
-        .bl_style= t("brands")
-        .bl_image
-      .content
-        %ul.main_category
-          - @brand_countings.each do |counting|
-            %li.mcl_link
-              %a.mcl_link_left{ :href => "#b=#{counting.brand_id}", :id => "brand_id_#{counting.brand_id}" }= counting.brand_name
-              %a.mcl_link_left{ :href => "#b=#{counting.brand_id}", :id => "brand_id_#{counting.brand_id}" }= counting.value
-    .price_filter_container
-      .brows_lable
-        .bl_style= t("prices")
-        .bl_image
-      .content
-        %ul.main_category
-          #max_price.invisible= (1000*@exchange_rate).to_i
-          #currency.invisible= @currency
-          %span#price_range_label
-            = "0 #@currency - #{1000*@exchange_rate.to_i} #@currency"
-          .price_filter
-            #price_slider
-            = link_to "eggs", "", :id => "price_filter", :class => "invisible"
-
-    .sub_categories
-      .brows_lable
-        .bl_style= t("sub_categories")
-        .bl_image
-      .content
-        %ul.main_category
-
-    .colors
-      .brows_lable
-        .bl_style= t("colors")
-        .bl_image
-      .content
-        %ul.main_category.colors
-
-    .sizes
-      .brows_lable
-        .bl_style= t("sizes")
-        .bl_image
-      .content
-        %ul.main_category
-
-  .category_product_block.item_models
-    = render @item_models
-    -#= paginate(@item_models, :window => 6)
+-#.tips
+-#  .selected_filters
+-#    .hint
+-#      Выбранные фильтры:
+-#    - %w(brand_id_filter gender_id_filter category_id_filter sub_category_id_filter price_range_filter size_filter color_filter).each do |filter|
+-#      %div{:class => "selected_filter #{filter}"}
+-#        %span.hint
+-#        %span.content
+-#        %span.remove X
+-#    .delimiter
+-#.separator_content
+-#.delimiter
+-#.search_wrapper.advanced_search_wrapper
+-#  .brows_category
+-#    .categories
+-#      .brows_lable
+-#        .bl_style= t("categories")
+-#        .bl_image
+-#      .content
+-#        %ul.main_category
+-#          - @category_countings.each do |category_id, count_group|
+-#            %li.mcl_link
+-#              %a.mcl_link_left{ :href => "#cat=#{category_id}", :id => "category_id_#{category_id}" }= count_group.first[:category_name]
+-#              %a.mcl_link_right{ :href => "#cat=#{category_id}", :id => "category_id_#{category_id}" }= "(#{count_group.sum(&:value)})"
+-#    .genders
+-#      .brows_lable
+-#        .bl_style= t("genders")
+-#        .bl_image
+-#      .content
+-#        %ul.main_category
+-#          - @gender_countings.each do |counting|
+-#            %li.mcl_link
+-#              %a.mcl_link_left{ :href => "#g=#{counting.gender_id}", :id => "gender_id_#{counting.gender_id}" }= counting.gender_name
+-#              %a.mcl_link_left{ :href => "#g=#{counting.gender_id}", :id => "gender_id_#{counting.gender_id}" }= counting.value
+-#
+-#    .brands
+-#      .brows_lable
+-#        .bl_style= t("brands")
+-#        .bl_image
+-#      .content
+-#        %ul.main_category
+-#          - @brand_countings.each do |counting|
+-#            %li.mcl_link
+-#              %a.mcl_link_left{ :href => "#b=#{counting.brand_id}", :id => "brand_id_#{counting.brand_id}" }= counting.brand_name
+-#              %a.mcl_link_left{ :href => "#b=#{counting.brand_id}", :id => "brand_id_#{counting.brand_id}" }= counting.value
+-#    .price_filter_container
+-#      .brows_lable
+-#        .bl_style= t("prices")
+-#        .bl_image
+-#      .content
+-#        %ul.main_category
+-#          #max_price.invisible= (1000*@exchange_rate).to_i
+-#          #currency.invisible= @currency
+-#          %span#price_range_label
+-#            = "0 #@currency - #{1000*@exchange_rate.to_i} #@currency"
+-#          .price_filter
+-#            #price_slider
+-#            = link_to "eggs", "", :id => "price_filter", :class => "invisible"
+-#
+-#    .sub_categories
+-#      .brows_lable
+-#        .bl_style= t("sub_categories")
+-#        .bl_image
+-#      .content
+-#        %ul.main_category
+-#
+-#    .colors
+-#      .brows_lable
+-#        .bl_style= t("colors")
+-#        .bl_image
+-#      .content
+-#        %ul.main_category.colors
+-#
+-#    .sizes
+-#      .brows_lable
+-#        .bl_style= t("sizes")
+-#        .bl_image
+-#      .content
+-#        %ul.main_category
+-#
+-#  .category_product_block.item_models
+-#    = render @item_models
+-#    -#= paginate(@item_models, :window => 6)

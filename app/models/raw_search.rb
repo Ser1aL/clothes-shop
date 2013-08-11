@@ -117,6 +117,7 @@ class RawSearch
       WHERE products.item_model_id = item_models.id
         AND styles.product_id = products.id
         AND stocks.style_id = styles.id
+        AND styles.swatch_url IS NOT NULL
         #{conditions}
       GROUP BY item_models.id, styles.color
       LIMIT 21

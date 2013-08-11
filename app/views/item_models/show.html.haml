@@ -9,17 +9,14 @@
   %span.short_link
     = t('chosen_brand')
   %span.short_link
-    = link_to @product.brand.name.html_safe, "/advanced_search/#b=#{@product.brand.id}"
+    = link_to t(@product.category.top_category_name), category_url(@product.category)
   %span.short_link
-    = link_to @product.category.name, "/advanced_search/#b=#{@product.brand.id}&cat=#{@product.category.id}"
+    = link_to @product.brand.name.html_safe, brand_path(@product.brand)
+  %span.short_link
+    = link_to @product.category.name, category_sub_category_with_brand_url(@product.category.top_category, @product.category, @product.brand)
   - if @product.sub_category
     %span.short_link
-      = link_to @product.sub_category.name, "/advanced_search/#b=#{@product.brand.id}&cat=#{@product.category.id}&sub=#{@product.sub_category.id}"
-  %span.short_link
-    - if @product.sub_category
-      = link_to @product.gender.name, "/advanced_search/#b=#{@product.brand.id}&cat=#{@product.category.id}&sub=#{@product.sub_category.id}&g=#{@product.gender.id}"
-    - else
-      = link_to @product.gender.name, "/advanced_search/#b=#{@product.brand.id}&cat=#{@product.category.id}&g=#{@product.gender.id}"
+      = link_to @product.sub_category.name, category_sub_category_with_sub_url(@product.category.top_category, @product.category, @product.sub_category)
 
 
   %span.short_link.no_arrows

@@ -1,22 +1,22 @@
 $(function(){
-  $.history.init(function(url){
-    var url_parser = $.url(document.location);
-    //Forcing redirect if location hash exists and page is not an Advanced Search
-    if (url_parser.segment(1) != '' && url_parser.segment(1) != 'advanced_search'){
-      if (url_parser.fsegment(1) != ''){
-          document.location = 'http://' + document.location.host + '/#' + url_parser.fsegment().join('/');
-      }
-      return false;
-    }
-    if(url_parser.segment(1) != 'advanced_search'){
-        load_categorized_or_single_page(url_parser);
-    }
-    else{
-        load_search_page(parse_search_parameters(url_parser));
-    }
-
-  },
-  { unescape: "/" });
+//  $.history.init(function(url){
+//    var url_parser = $.url(document.location);
+//    //Forcing redirect if location hash exists and page is not an Advanced Search
+//    if (url_parser.segment(1) != '' && url_parser.segment(1) != 'advanced_search'){
+//      if (url_parser.fsegment(1) != ''){
+//          document.location = 'http://' + document.location.host + '/#' + url_parser.fsegment().join('/');
+//      }
+//      return false;
+//    }
+//    if(url_parser.segment(1) != 'advanced_search'){
+//        load_categorized_or_single_page(url_parser);
+//    }
+//    else{
+//        load_search_page(parse_search_parameters(url_parser));
+//    }
+//
+//  },
+//  { unescape: "/" });
 
   $('.cart_quantity').blur(function(){
     $(this).parent().submit();

@@ -17,7 +17,6 @@
       - root_child[:tree].delete_if{ |child| child[:count].to_i <= 0 }.each do |child|
         %li.mcl_link
           = link_to child[:name], category_sub_category_with_brand_and_sub_path(top_cat_name, root_child[:category], @brand, child[:sub_category] )
-          -#%a{:href => "/advanced_search/#b=#{@brand.id}&cat=#{root_child[:id]}&sub=#{child[:id]}"}= child[:name]
 .advertisement_block
   .ab_main_brands_logo
     = image_tag @brand.logo_url, :alt => @brand.name, :title => @brand.name

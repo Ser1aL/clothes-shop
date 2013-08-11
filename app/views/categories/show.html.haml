@@ -83,7 +83,7 @@
         .content
           %ul.main_category
             %table.size-table
-              - @size_counts.in_groups_of(7).each do |count_values|
+              - @size_counts.in_groups_of(5).each do |count_values|
                 %tr
                   - count_values.each do |count_value|
                     - if count_value.present?
