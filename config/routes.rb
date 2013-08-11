@@ -8,9 +8,11 @@ Watches::Application.routes.draw do
   resources :brands, :only => %w(index show) do
     get 'letter/:letter', :to => 'brands#index', :on => :collection, :as => 'letter'
   end
-  resources :categories, :only => %w(show) do
-    resources :sub_categories, :only => %w(show)
-  end
+
+  get 'categories/:top_level_cat_id', to: 'categories#show', as: 'category'
+  get 'categories/:top_level_cat_id/sub_categories/:category', to: 'categories#show', as: 'category_sub_category'
+  get 'categories/:top_level_cat_id/sub_categories/:category/brand/:brand', to: 'categories#show', as: 'category_sub_category_with_brand'
+  get 'categories/:top_level_cat_id/sub_categories/:category/brand/:brand/sub_category/:sub_category', to: 'categories#show', as: 'category_sub_category_with_brand_and_sub'
 
   resources :sitemaps, :only => %w(index)
 

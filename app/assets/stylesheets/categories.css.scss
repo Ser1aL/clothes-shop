@@ -1,0 +1,28 @@
+.brows_category{
+  width: 245px;
+  overflow: hidden;
+  float: left;
+  margin-right: 65px;
+}
+
+.category-page {
+  .brows_category {
+    min-height: 800px;
+  }
+  .pager {
+    height: 28px;
+    float: right;
+    margin: 40px 0;
+    width: 46%;
+  }
+
+  .category_logos_block {
+    width: auto;
+  }
+
+  .brand-pager {
+    .pager {
+      width: 66%;
+    }
+  }
+}

@@ -17,9 +17,9 @@
     .product_description= t('product_description.brand')
     = link_to product.brand.name.html_safe, brand_path(product.brand), :class => "product_description1"
     .product_description= t('product_description.category')
-    %a.product_description1{ :href => ''}= product.category.name
+    %a.product_description1{ :href => '#'}= product.category.name
     .product_description= t('product_description.gender')
-    %a.product_description1{:href => ""}= product.gender.name
+    %a.product_description1{:href => "#"}= product.gender.name
 
   .grey_area{ :itemprop => "offers", :itemscope => '', :itemtype => "http://schema.org/Offer"}
     - if product.product && !style.hidden?
@@ -36,7 +36,7 @@
       .presence_note_no
         = t('product_not_exists')
     .product_details_link
-      = link_to t('more'), single_model_path(product, style), :class => 'more single_product_ajaxified_link', :itemprop => "url"
+      = link_to t('more'), single_model_path(product, style), :class => 'more', :itemprop => "url"
       .image_arrow1
 - if item_model_counter % 2 == 0
   .cpb_delimeter

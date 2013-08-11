@@ -1,30 +1,104 @@
-= set_meta(@categories.first.top_category_name)
-- left_banner = @banners.where(:side => "left").first
-- right_banner = @banners.where(:side => "right").first
-= bread_crumbs([link_to(t(@categories.first.top_category_name), request.fullpath)])
+- if @category_id.present?
+  - content_for :meta_title, t('meta.sub_category_title', :sub_category => @categories.first.name)
+  - content_for :meta_keywords, t('meta.sub_category_keywords', :sub_category => @categories.first.name)
+  - content_for :meta_description, t('meta.sub_category_description', :sub_category => @categories.first.name)
+  - content_for :seo_header, t('meta.sub_category_header', :sub_category => @categories.first.name)
+- else
+  = set_meta(@categories.first.try(:top_category_name))
+- steps = [link_to(t(@categories.first.top_category_name), category_url(@categories.first.top_category))]
+
+- if @category_id.present?
+  - steps << link_to(@categories.first.name, category_sub_category_url(@categories.first.top_category, @categories.first))
+-  if @category_id.present? && params[:brand].present?
+  - steps << link_to(@item_models.first.brand.name, category_sub_category_with_brand_url(@categories.first.top_category, @categories.first))
+- if @category_id.present? && params[:brand].present? && params[:sub_category]
+  - steps << link_to(@item_models.first.sub_category.name, category_sub_category_with_brand_and_sub_url(@categories.first.top_category, @categories.first, ))
+
+= bread_crumbs(steps)
+-#= bread_crumbs( [, link_to(@categories.first.name, category_sub_category_url("#{@categories.first.top_category}-#{@categories.first.top_category_name}", @categories.first))  ])
 .separator_header
 
-.brows_category
-  .brows_lable
-    .bl_style= t(@categories.first.top_category_name)
-    .bl_image
-  %ul.main_category
-    - @categories.each do |category|
-      %li.mcl_link
-        = link_to category.name, category_sub_category_url("#{category.top_category}-#{category.top_category_name}", category)
-.advertisement_block
-  .ab_main_banner
-    #slides
-      .slides_container
-        - @banners.where(:side => nil).each do |banner|
-          %div
-            %a{:href => banner.url}
-              = image_tag banner.image_url
+.category-page.search_wrapper.advanced_search_wrapper
+  .brows_category
+    .brows_lable
+      .bl_style= t(@categories.first.try(:top_category_name))
+      .bl_image
+    %ul.main_category
+      - @categories.each do |category|
+        %li.mcl_link
+          = link_to category.name, category_sub_category_url("#{category.top_category}-#{category.try(:top_category_name)}", category)
 
-  .adsb_content
-    .adsbc_left
-      = image_tag 'kkbngnwegjknjn.png'
-    .adsbc_middle
-      = image_tag 'jeififwejifweijw.png'
-    .adsbc_right
-      = image_tag 'vniwjeiwuef.png'
+    .genders
+      .brows_lable
+        .bl_style= t("genders")
+        .bl_image
+      .content
+        %ul.main_category
+          - @gender_countings.each do |counting|
+            %li.mcl_link
+              %a.mcl_link_left{ :href => "#g=#{counting.type_name}" }= counting.type_name
+              %a.mcl_link_right{ :href => "#g=#{counting.type_name}" }= counting.counting
+
+    .brands
+      .brows_lable
+        .bl_style= t("brands")
+        .bl_image
+      .content
+        %ul.main_category
+          - @brand_countings.each do |counting|
+            %li.mcl_link
+              %a.mcl_link_left{ :href => "" }= counting.type_name
+              %a.mcl_link_right{ :href => "" }= counting.counting
+    .price_filter_container
+      .brows_lable
+        .bl_style= t("prices")
+        .bl_image
+      .content
+        %ul.main_category
+          #max_price.invisible= (1000*@exchange_rate).to_i
+          #currency.invisible= @currency
+          %span#price_range_label
+            = "0 #@currency - #{1000*@exchange_rate.to_i} #@currency"
+          .price_filter
+            #price_slider
+            = link_to "eggs", "", :id => "price_filter", :class => "invisible"
+
+    .sub_categories
+      .brows_lable
+        .bl_style= t("sub_categories")
+        .bl_image
+      .content
+        %ul.main_category
+          - @sub_categories_countings.each do |counting|
+            %li.mcl_link
+              %a.mcl_link_left{ :href => "" }= counting.type_name
+              %a.mcl_link_right{ :href => "" }= counting.counting
+
+
+    .colors
+      .brows_lable
+        .bl_style= t("colors")
+        .bl_image
+      .content
+        %ul.main_category.colors
+
+    .sizes
+      .brows_lable
+        .bl_style= t("sizes")
+        .bl_image
+      .content
+        %ul.main_category
+
+  = render @item_models, locals: { params: params }
+  = paginate @item_models, :window => 6
+  .delimiter
+  .separator_header
+  %h4= t 'brands_in_category'
+  .category_logos_block
+    - @brands.in_groups_of(3).each do |brand_group|
+      - brand_group.each do |brand|
+        - next if brand.blank? || brand.logo_url.blank?
+        %a.category_logos{:href => brand_path(brand)}
+          = image_tag brand.logo_url, alt: brand.name, title: brand.name
+        .cl_delimeter
+  .brand-pager= paginate @brands, :window => 6, param_name: 'brand_page'

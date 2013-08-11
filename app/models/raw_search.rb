@@ -3,12 +3,13 @@ class RawSearch
   def self.get_counts(params, type, exchange_rate, markup)
 
     conditions = ["styles.hidden = 0"]
-    conditions << "item_models.brand_id = '#{params[:brand_id]}'" if params[:brand_id]
-    conditions << "item_models.gender_id = '#{params[:gender_id]}'" if params[:gender_id]
-    conditions << "item_models.sub_category_id = '#{params[:sub_category_id]}'" if params[:sub_category_id]
-    conditions << "item_models.category_id = '#{params[:category_id]}'" if params[:category_id]
+    conditions << "item_models.brand_id = '#{params[:brand]}'" if params[:brand]
+    conditions << "item_models.gender_id = '#{params[:gender]}'" if params[:gender]
+    conditions << "item_models.sub_category_id = '#{params[:sub_category]}'" if params[:sub_category]
+    conditions << "item_models.category_id = '#{params[:category]}'" if params[:category]
     conditions << "styles.color = '#{params[:color]}'" if params[:color]
     conditions << "stocks.size = '#{params[:size].gsub(/\\/, '\&\&').gsub(/'/, "''")}'" if params[:size]
+    conditions << "categories.top_category = '#{params[:top_level_cat_id]}'" if params[:top_level_cat_id]
     if params[:price_range].present?
       min_price, max_price = params[:price_range].split("-")
       min_price = (min_price.to_i - min_price.to_i * markup / 100 ) / exchange_rate
@@ -36,13 +37,15 @@ class RawSearch
       ORDER BY type_name
     SQL
 
+    Rails.logger.debug '---STARTING RawSearch#get_counts SQL'
+
     ActiveRecord::Base.connection.select_all(search_query).group_by{|r| r["#{type.to_s}_id"]}.map do |type_id, group|
       next if group.first["type_name"].blank?
-      {
-        :count => group.size,
+      Hashie::Mash.new({
+        :counting => group.size,
         :type_name => group.first["type_name"],
         "#{type.to_s}_id".to_sym => type_id
-      }.merge!(params)
+      }.merge!(params))
     end.compact.sort_by{|r| r[:type_name].first.capitalize + r[:type_name].try(:[], 1).try(:capitalize).to_s}
   end
 
@@ -93,6 +96,7 @@ class RawSearch
     conditions << "item_models.category_id = '#{params[:category_id]}'" if params[:category_id]
     conditions << "styles.color = '#{params[:color]}'" if params[:color]
     conditions << "stocks.size = '#{params[:size].gsub(/\\/, '\&\&').gsub(/'/, "''")}'" if params[:size]
+
     if params[:price_range].present?
       min_price, max_price = params[:price_range].split("-")
       min_price = (min_price.to_i - min_price.to_i * markup / 100 ) / exchange_rate

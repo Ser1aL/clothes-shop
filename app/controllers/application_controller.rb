@@ -1,19 +1,8 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
 
-  before_filter :prepare_counts, :prepare_cart, :set_exchange_rate
+  before_filter :prepare_cart, :set_exchange_rate
   private
-
-  def prepare_counts
-    if !request.xhr? and params[:controller] != 'administrator'
-      %w(brand category sub_category gender).each do |type|
-        counting = CategoryCounting.joins(type.to_sym).group("#{type}_id").select("sum(value) as value, #{type}_id, #{type}_name")
-        counting = counting.where("#{type.pluralize}.favorite = 1") unless type == 'gender'
-        instance_variable_set("@#{type}_counts", counting)
-        instance_variable_set("@#{type}_total_counts", counting.sum(&:value))
-      end
-    end
-  end
 
   def prepare_cart
     if params[:controller] != 'administrator'

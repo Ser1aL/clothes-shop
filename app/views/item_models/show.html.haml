@@ -147,7 +147,7 @@
   #comment_wrapper
     #comment_loader
     = render :partial => 'comment', :collection => @product.comments
-    = form_tag new_comment_path, :remote => true, :id => 'new_comment_form' do
+    = form_tag new_comment_path, :id => 'new_comment_form' do
       = hidden_field_tag :item_model_id, @product.id
       #comment_text_area
         .text_area_bg

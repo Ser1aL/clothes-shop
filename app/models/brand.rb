@@ -16,7 +16,7 @@ class Brand < ActiveRecord::Base
 
     CategoryCounting.where(:brand_id => self.id).group_by(&:category_id).each do |category_id, countings|
       tree[:root][countings.first.category_name] = {
-          :id => category_id,
+          :category => Category.find(category_id),
           :count => countings.map(&:value).sum,
           :tree => []
       }
@@ -24,7 +24,7 @@ class Brand < ActiveRecord::Base
         next if tree[:root][countings.first.category_name][:tree].map{|node| node[:id]}.include?(counting.sub_category_id)
 
         tree[:root][countings.first.category_name][:tree] << {
-            :id => counting.sub_category_id,
+            :sub_category => SubCategory.find(counting.sub_category_id),
             :name => counting.sub_category_name,
             :count => counting.value
         } if counting.sub_category_name.present?

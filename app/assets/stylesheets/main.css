@@ -3260,13 +3260,6 @@ a.previews .previews_img_file{
     overflow: hidden;
 }
 
-.brows_category{
-    width: 245px;
-    overflow: hidden;
-    float: left;
-    margin-right: 65px;
-}
-
 .brows_lable{
     width: 243px;
     color: #ffffff;

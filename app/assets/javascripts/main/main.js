@@ -171,7 +171,7 @@ $(function(){
   activate_comment_controls();
 
 
-    $(".footer_button_send .button").click(function(event){
+    $(".footer_button_send.footer .button").click(function(event){
       event.preventDefault();
       var form = $(this).closest("form");
       var email_field = form.find("#review_email");
@@ -188,9 +188,10 @@ $(function(){
           alert(name_field.data().errorMessage);
       }
       else{
+          console.log('me');
           $(this).closest("form").submit();
       }
-  });
+    });
 
 
 });
@@ -362,8 +363,8 @@ function activate_comment_controls(){
 
 
 function prepare_paginated_links(page_type){
-    // skip articles pager
-    if($(".articles").length > 0) return;
+    // skip articles pager and categories page
+    if($(".articles").length > 0 || $('.category-page').length > 0) return;
     if(page_type != 'cat' && page_type != 'search') {
         var page = '';
         $.each($(".pager a"), function(index, url) {

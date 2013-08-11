@@ -72,6 +72,7 @@ ru:
   show_description: '%{product} описание'
   add_to_cart: 'Добавить в корзину'
   email_when_available: 'Сообщить когда появится'
+  brands_in_category: "Бренды в разделе:"
   comments:
     header_tip: 'Отзывы по данной модели'
     tip_total: 'Всего отзывов: '
