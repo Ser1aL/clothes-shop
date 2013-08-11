@@ -33,11 +33,23 @@ class CategoriesController < ApplicationController
       @color_counts = RawSearch.get_color_counts(params, @exchange_rate, @markup)
     end
 
-    @brands = Brand.joins(:item_models => [:category]).
+    @male_brands = Brand.joins(:item_models => [:category]).
         where('categories.id in (?)', @categories.map(&:id)).
         where("brands.logo_url IS NOT NULL AND brands.logo_url != ''").
-        group('brands.id').
-        page(params[:brand_page]).per(30)
+        where("item_models.gender_id IN(2,3)").
+        group('brands.id').limit(30)
+
+    @female_brands = Brand.joins(:item_models => [:category]).
+        where('categories.id in (?)', @categories.map(&:id)).
+        where("brands.logo_url IS NOT NULL AND brands.logo_url != ''").
+        where("item_models.gender_id IN(1,5)").
+        group('brands.id').limit(30)
+
+    @kids_brands = Brand.joins(:item_models => [:category]).
+        where('categories.id in (?)', @categories.map(&:id)).
+        where("brands.logo_url IS NOT NULL AND brands.logo_url != ''").
+        where("item_models.gender_id IN(6,7)").
+        group('brands.id').limit(30)
 
   end
 

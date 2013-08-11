@@ -93,13 +93,38 @@
   = render @item_models, locals: { params: params }
   = paginate @item_models, :window => 6
   .delimiter
-  .separator_header
-  %h4= t 'brands_in_category'
-  .category_logos_block
-    - @brands.in_groups_of(3).each do |brand_group|
-      - brand_group.each do |brand|
-        - next if brand.blank? || brand.logo_url.blank?
-        %a.category_logos{:href => brand_path(brand)}
-          = image_tag brand.logo_url, alt: brand.name, title: brand.name
-        .cl_delimeter
-  .brand-pager= paginate @brands, :window => 6, param_name: 'brand_page'
+
+  - if @male_brands.present?
+    .separator_header
+    %h4= t 'brands_in_male'
+    .category_logos_block
+      - @male_brands.in_groups_of(3).each do |brand_group|
+        - brand_group.each do |brand|
+          - next if brand.blank? || brand.logo_url.blank?
+          %a.category_logos{:href => brand_path(brand)}
+            = image_tag brand.logo_url, alt: brand.name, title: brand.name
+          .cl_delimeter
+
+  .delimiter
+  - if @female_brands.present?
+    .separator_header
+    %h4= t 'brands_in_female'
+    .category_logos_block
+      - @female_brands.in_groups_of(3).each do |brand_group|
+        - brand_group.each do |brand|
+          - next if brand.blank? || brand.logo_url.blank?
+          %a.category_logos{:href => brand_path(brand)}
+            = image_tag brand.logo_url, alt: brand.name, title: brand.name
+          .cl_delimeter
+
+  .delimiter
+  - if @kids_brands.present?
+    .separator_header
+    %h4= t 'brands_in_kids'
+    .category_logos_block
+      - @kids_brands.in_groups_of(3).each do |brand_group|
+        - brand_group.each do |brand|
+          - next if brand.blank? || brand.logo_url.blank?
+          %a.category_logos{:href => brand_path(brand)}
+            = image_tag brand.logo_url, alt: brand.name, title: brand.name
+          .cl_delimeter
