@@ -36,58 +36,48 @@
         %ul.main_category
           - @gender_countings.each do |counting|
             %li.mcl_link
-              %a.mcl_link_left{ :href => "#g=#{counting.type_name}" }= counting.type_name
-              %a.mcl_link_right{ :href => "#g=#{counting.type_name}" }= counting.counting
+              %a.mcl_link_left{ :href => "" }= counting.try(:type_name) rescue counting.try(:gender_name)
+              %a.mcl_link_right{ :href => "" }= counting.try(:counting) rescue counting.try(:value)
 
-    .brands
-      .brows_lable
-        .bl_style= t("brands")
-        .bl_image
-      .content
-        %ul.main_category
-          - @brand_countings.each do |counting|
-            %li.mcl_link
-              %a.mcl_link_left{ :href => "" }= counting.type_name
-              %a.mcl_link_right{ :href => "" }= counting.counting
-    .price_filter_container
-      .brows_lable
-        .bl_style= t("prices")
-        .bl_image
-      .content
-        %ul.main_category
-          #max_price.invisible= (1000*@exchange_rate).to_i
-          #currency.invisible= @currency
-          %span#price_range_label
-            = "0 #@currency - #{1000*@exchange_rate.to_i} #@currency"
-          .price_filter
-            #price_slider
-            = link_to "eggs", "", :id => "price_filter", :class => "invisible"
+    - unless @running_root_request
+      .sub_categories
+        .brows_lable
+          .bl_style= t("sub_categories")
+          .bl_image
+        .content
+          %ul.main_category
+            - @sub_categories_countings.each do |counting|
+              %li.mcl_link
+                %a.mcl_link_left{ :href => "" }= counting.try(:type_name) rescue counting.try(:sub_category_name)
+                %a.mcl_link_right{ :href => "" }= counting.try(:counting) rescue counting.try(:value)
 
-    .sub_categories
-      .brows_lable
-        .bl_style= t("sub_categories")
-        .bl_image
-      .content
-        %ul.main_category
-          - @sub_categories_countings.each do |counting|
-            %li.mcl_link
-              %a.mcl_link_left{ :href => "" }= counting.type_name
-              %a.mcl_link_right{ :href => "" }= counting.counting
+      .price_filter_container
+        .brows_lable
+          .bl_style= t("prices")
+          .bl_image
+        .content
+          %ul.main_category
+            #max_price.invisible= (1000*@exchange_rate).to_i
+            #currency.invisible= @currency
+            %span#price_range_label
+              = "0 #@currency - #{1000*@exchange_rate.to_i} #@currency"
+            .price_filter
+              #price_slider
+              = link_to "eggs", "", :id => "price_filter", :class => "invisible"
 
+      .colors
+        .brows_lable
+          .bl_style= t("colors")
+          .bl_image
+        .content
+          %ul.main_category.colors
 
-    .colors
-      .brows_lable
-        .bl_style= t("colors")
-        .bl_image
-      .content
-        %ul.main_category.colors
-
-    .sizes
-      .brows_lable
-        .bl_style= t("sizes")
-        .bl_image
-      .content
-        %ul.main_category
+      .sizes
+        .brows_lable
+          .bl_style= t("sizes")
+          .bl_image
+        .content
+          %ul.main_category
 
   = render @item_models, locals: { params: params }
   = paginate @item_models, :window => 6
