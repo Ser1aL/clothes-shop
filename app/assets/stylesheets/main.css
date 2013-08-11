@@ -3299,7 +3299,7 @@ a.previews .previews_img_file{
 }
 
 .main_category.colors{
-    padding-left: 20px;
+    padding-left: 9px;
 }
 
 .main_category.colors .image_div{
@@ -3902,4 +3902,18 @@ a.previews .previews_img_file{
 
 .trigger_tab{
     cursor: pointer;
+}
+
+.size-table {
+    padding-left: 4px;
+}
+
+.size-table td{
+    border: 1px #ddd solid;
+    padding: 4px;
+    text-align: center;
+    line-height: 15px;
+    background-color: #efefef;
+    overflow: hidden;
+    width: 32px;
 }

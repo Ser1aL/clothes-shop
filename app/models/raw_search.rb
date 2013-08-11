@@ -2,6 +2,11 @@ class RawSearch
 
   def self.get_counts(params, type, exchange_rate, markup)
 
+
+    [:brand, :gender, :sub_category, :category, :top_level_cat_id].each do |param|
+      params[param] = $1 if params[param] =~ /(\d*)-(.*)/
+    end
+
     conditions = ["styles.hidden = 0"]
     conditions << "item_models.brand_id = '#{params[:brand]}'" if params[:brand]
     conditions << "item_models.gender_id = '#{params[:gender]}'" if params[:gender]
@@ -37,8 +42,6 @@ class RawSearch
       ORDER BY type_name
     SQL
 
-    Rails.logger.debug '---STARTING RawSearch#get_counts SQL'
-
     ActiveRecord::Base.connection.select_all(search_query).group_by{|r| r["#{type.to_s}_id"]}.map do |type_id, group|
       next if group.first["type_name"].blank?
       Hashie::Mash.new({
@@ -52,10 +55,10 @@ class RawSearch
   def self.get_size_counts(params, exchange_rate, markup)
 
     conditions = ["styles.hidden = 0"]
-    conditions << "item_models.brand_id = '#{params[:brand_id]}'" if params[:brand_id]
-    conditions << "item_models.gender_id = '#{params[:gender_id]}'" if params[:gender_id]
-    conditions << "item_models.sub_category_id = '#{params[:sub_category_id]}'" if params[:sub_category_id]
-    conditions << "item_models.category_id = '#{params[:category_id]}'" if params[:category_id]
+    conditions << "item_models.brand_id = '#{params[:brand]}'" if params[:brand]
+    conditions << "item_models.gender_id = '#{params[:gender]}'" if params[:gender]
+    conditions << "item_models.sub_category_id = '#{params[:sub_category]}'" if params[:sub_category]
+    conditions << "item_models.category_id = '#{params[:category]}'" if params[:category]
     conditions << "styles.color = '#{params[:color]}'" if params[:color]
     conditions << "stocks.size = '#{params[:size].gsub(/\\/, '\&\&').gsub(/'/, "''")}'" if params[:size]
     if params[:price_range].present?
@@ -76,24 +79,25 @@ class RawSearch
         AND stocks.style_id = styles.id
         #{conditions}
       GROUP BY stocks.size
+      LIMIT 30
     SQL
 
     ActiveRecord::Base.connection.select_all(search_query).map{|size|
-      {
+      Hashie::Mash.new({
         :count => 0,
         :type_name => size["size"],
-        :size => size["size"]
-      }.merge!(params)
+        :size_value => size["size"]
+      }.merge!(params))
     }.sort_by{|r| r[:type_name].first.capitalize}
   end
 
   def self.get_color_counts(params, exchange_rate, markup)
 
     conditions = ["styles.hidden = 0"]
-    conditions << "item_models.brand_id = '#{params[:brand_id]}'" if params[:brand_id]
-    conditions << "item_models.gender_id = '#{params[:gender_id]}'" if params[:gender_id]
-    conditions << "item_models.sub_category_id = '#{params[:sub_category_id]}'" if params[:sub_category_id]
-    conditions << "item_models.category_id = '#{params[:category_id]}'" if params[:category_id]
+    conditions << "item_models.brand_id = '#{params[:brand]}'" if params[:brand]
+    conditions << "item_models.gender_id = '#{params[:gender]}'" if params[:gender]
+    conditions << "item_models.sub_category_id = '#{params[:sub_category]}'" if params[:sub_category]
+    conditions << "item_models.category_id = '#{params[:category]}'" if params[:category]
     conditions << "styles.color = '#{params[:color]}'" if params[:color]
     conditions << "stocks.size = '#{params[:size].gsub(/\\/, '\&\&').gsub(/'/, "''")}'" if params[:size]
 
@@ -119,12 +123,12 @@ class RawSearch
     SQL
 
     ActiveRecord::Base.connection.select_all(search_query).group_by{|r| r["color"]}.map do |color, group|
-      {
+      Hashie::Mash.new({
         :count => group.size,
         :type_name => color,
         :swatch_url => group.first['swatch_url'],
         :color => color
-      }.merge!(params)
+      }).merge!(params)
     end.sort_by{|r| r[:type_name].first.capitalize}
   end
 

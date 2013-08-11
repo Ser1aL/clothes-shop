@@ -9,13 +9,12 @@
 
 - if @category_id.present?
   - steps << link_to(@categories.first.name, category_sub_category_url(@categories.first.top_category, @categories.first))
--  if @category_id.present? && params[:brand].present?
+-  if params[:brand].present?
   - steps << link_to(@item_models.first.brand.name, category_sub_category_with_brand_url(@categories.first.top_category, @categories.first))
-- if @category_id.present? && params[:brand].present? && params[:sub_category]
-  - steps << link_to(@item_models.first.sub_category.name, category_sub_category_with_brand_and_sub_url(@categories.first.top_category, @categories.first, ))
+- if params[:sub_category].present?
+  - steps << link_to(@item_models.first.sub_category.name, category_sub_category_with_sub_url(@categories.first.top_category, @categories.first, @item_models.first.sub_category))
 
 = bread_crumbs(steps)
--#= bread_crumbs( [, link_to(@categories.first.name, category_sub_category_url("#{@categories.first.top_category}-#{@categories.first.top_category_name}", @categories.first))  ])
 .separator_header
 
 .category-page.search_wrapper.advanced_search_wrapper
@@ -26,7 +25,7 @@
     %ul.main_category
       - @categories.each do |category|
         %li.mcl_link
-          = link_to category.name, category_sub_category_url("#{category.top_category}-#{category.try(:top_category_name)}", category)
+          = link_to category.name, "#{@current_request_uri}&category=#{category.to_param}"
 
     .genders
       .brows_lable
@@ -34,10 +33,10 @@
         .bl_image
       .content
         %ul.main_category
-          - @gender_countings.each do |counting|
+          - @gender_counts.each do |count_value|
             %li.mcl_link
-              %a.mcl_link_left{ :href => "" }= counting.try(:type_name) rescue counting.try(:gender_name)
-              %a.mcl_link_right{ :href => "" }= counting.try(:counting) rescue counting.try(:value)
+              %a.mcl_link_left{ :href => "#{@current_request_uri}&gender=#{count_value.gender_id}" }= count_value.try(:type_name) rescue count_value.try(:gender_name)
+              %a.mcl_link_right{ :href => "#{@current_request_uri}&gender=#{count_value.gender_id}" }= count_value.try(:count_value) rescue count_value.try(:value)
 
     - unless @running_root_request
       .sub_categories
@@ -46,12 +45,12 @@
           .bl_image
         .content
           %ul.main_category
-            - @sub_categories_countings.each do |counting|
+            - @sub_categories_counts.each do |count_value|
               %li.mcl_link
-                %a.mcl_link_left{ :href => "" }= counting.try(:type_name) rescue counting.try(:sub_category_name)
-                %a.mcl_link_right{ :href => "" }= counting.try(:counting) rescue counting.try(:value)
+                %a.mcl_link_left{ :href => "#{@current_request_uri}&sub_category=#{count_value.sub_category_id}" }= count_value.try(:type_name) rescue count_value.try(:sub_category_name)
+                %a.mcl_link_right{ :href => "#{@current_request_uri}&sub_category=#{count_value.sub_category_id}" }= count_value.try(:count_value) rescue count_value.try(:value)
 
-      .price_filter_container
+      .price_filter_container{ data: { current_uri: @current_request_uri }}
         .brows_lable
           .bl_style= t("prices")
           .bl_image
@@ -59,9 +58,11 @@
           %ul.main_category
             #max_price.invisible= (1000*@exchange_rate).to_i
             #currency.invisible= @currency
+            - min_price = params[:price_range].try(:split, '-').try(:first).to_i
+            - max_price = params[:price_range].try(:split, '-').try(:last) || (1000*@exchange_rate).to_i
             %span#price_range_label
-              = "0 #@currency - #{1000*@exchange_rate.to_i} #@currency"
-            .price_filter
+              = "#{min_price} #@currency - #{max_price} #@currency"
+            .price_filter{ data: { current_min: min_price, current_max: max_price } }
               #price_slider
               = link_to "eggs", "", :id => "price_filter", :class => "invisible"
 
@@ -71,13 +72,23 @@
           .bl_image
         .content
           %ul.main_category.colors
-
+            - @color_counts.each do |count_value|
+              .image_div
+                = link_to "#{@current_request_uri}&color=#{count_value.type_name}" do
+                  %img{ src: count_value.swatch_url}
       .sizes
         .brows_lable
           .bl_style= t("sizes")
           .bl_image
         .content
           %ul.main_category
+            %table.size-table
+              - @size_counts.in_groups_of(7).each do |count_values|
+                %tr
+                  - count_values.each do |count_value|
+                    - if count_value.present?
+                      %td
+                        %a{ :href => "#{@current_request_uri}&size=#{count_value.size_value}" }= count_value.size_value
 
   = render @item_models, locals: { params: params }
   = paginate @item_models, :window => 6

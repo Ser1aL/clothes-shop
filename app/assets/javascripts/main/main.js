@@ -132,20 +132,6 @@ $(function(){
 
   activate_selection_popups();
   if($('#flash_message').length > 0) $('#flash_message').modal();
-  $(".jstree")
-    .bind("loaded.jstree", function () {
-      $(".jstree li a").click(function(){
-          window.location = $(this).attr("href");
-      });
-    })
-    .jstree({
-        "themes" : {
-           "theme" : "default",
-            "icons" : false,
-            "url" : '/assets/jstree.style.css'
-        }
-    });
-    init_slider();
 
   $(".ajaxified_translation").click(function(){
     $(this).val("Сохраняем");
@@ -188,7 +174,6 @@ $(function(){
           alert(name_field.data().errorMessage);
       }
       else{
-          console.log('me');
           $(this).closest("form").submit();
       }
     });
@@ -227,33 +212,24 @@ function activate_size_grid(){
 
 function activate_price_filter(){
     var max_price = $("#max_price").html();
+    var selected_min_price = $('.price_filter').data('current_min');
+    var selected_max_price = $('.price_filter').data('current_max');
+
     var currency = $("#currency").html();
-    $('#price_filter').val('0-' + max_price);
+    $('#price_filter').val(selected_min_price + '-' + selected_max_price);
     $("#price_slider").slider({
         range:true,
         min: 0,
         max: max_price,
-        values:[0, max_price],
+        values:[selected_min_price, selected_max_price],
         step: 5,
         slide: function( event, ui ) {
             $("#price_range_label").html(ui.values[ 0 ] + ' ' + currency + ' - ' + ui.values[ 1 ] + ' ' + currency);
         },
         stop: function(event, ui){
-            var current_price_range = $.url(location.href).data.param.fragment.price_range;
-            var current_hash = location.hash;
-            var new_hash = '';
             var price_range = ui.values[0] + '-' + ui.values[1];
-            if(current_hash == ''){
-                new_hash = 'price_range=' + price_range;
-            }
-            else if(typeof(current_price_range) == 'undefined' || current_price_range == ''){
-                new_hash = current_hash + '&price_range=' + price_range;
-            }
-            else{
-                new_hash = current_hash.replace(/price_range=(\d+)-(\d+)/, 'price_range=' + price_range);
-            }
-            console.log(new_hash);
-            $.history.load(new_hash);
+            var current_uri = $('.price_filter_container').data('current_uri');
+            location.href = current_uri.replace(/\&price_range=\d+\-\d+/, '') + '&price_range=' + price_range;
         }
     });
 }
