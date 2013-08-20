@@ -10,4 +10,8 @@ class Gender < ActiveRecord::Base
     display_name.blank? ? super : display_name
   end
 
+  def to_param
+    "#{id}-#{name.parameterize}"
+  end
+
 end

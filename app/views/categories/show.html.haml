@@ -7,15 +7,15 @@
   = set_meta(@categories.first.try(:top_category_name))
 - steps = [link_to(t(@categories.first.top_category_name), category_url(@categories.first.top_category))]
 
-- if @category_id.present?
-  - steps << link_to(@categories.first.name, category_sub_category_url(@categories.first.top_category, @categories.first))
--  if params[:brand].present?
-  - steps << link_to(@item_models.first.brand.name, category_sub_category_with_brand_url(@categories.first.top_category, @categories.first))
-- if params[:sub_category].present?
-  - steps << link_to(@item_models.first.sub_category.name, category_sub_category_with_sub_url(@categories.first.top_category, @categories.first, @item_models.first.sub_category))
-
+- if @category_id.present? && @categories.present?
+  - steps << link_to(@categories.first.name, build_uri(top_level_cat_id: @categories.first.top_category, category: @categories.first.to_param))
+-  if params[:brand].present? && @item_models.present?
+  - steps << link_to(@item_models.first.brand.name, build_uri(top_level_cat_id: @categories.first.top_category, category: @categories.first.to_param))
+- if params[:sub_category].present? && @item_models.present?
+  - steps << link_to(@item_models.first.sub_category.name, build_uri(top_level_cat_id: @categories.first.top_category, category: @categories.first.to_param, sub_category: @item_models.first.sub_category.to_param))
 = bread_crumbs(steps)
 .separator_header
+
 
 .category-page.search_wrapper.advanced_search_wrapper
   .brows_category
@@ -25,7 +25,7 @@
     %ul.main_category
       - @categories.each do |category|
         %li.mcl_link
-          = link_to category.name, "#{@current_request_uri}&category=#{category.to_param}"
+          = link_to category.name, build_uri(request.filtered_parameters.merge({ category: category.to_param }))
 
     .genders
       .brows_lable
@@ -35,8 +35,10 @@
         %ul.main_category
           - @gender_counts.each do |count_value|
             %li.mcl_link
-              %a.mcl_link_left{ :href => "#{@current_request_uri}&gender=#{count_value.gender_id}" }= count_value.try(:type_name) rescue count_value.try(:gender_name)
-              %a.mcl_link_right{ :href => "#{@current_request_uri}&gender=#{count_value.gender_id}" }= count_value.try(:count_value) rescue count_value.try(:value)
+              - gender_name = count_value.try(:type_name) rescue count_value.try(:gender_name)
+              - gender_value = count_value.try(:count_value) rescue count_value.try(:value)
+              %a.mcl_link_left{ :href => build_uri(request.filtered_parameters.merge({ gender: "#{count_value.gender_id}-#{gender_name}".parameterize })) }= gender_name
+              %a.mcl_link_right{ :href => build_uri(request.filtered_parameters.merge({ gender: "#{count_value.gender_id}-#{gender_name}".parameterize })) }= gender_value
 
     - unless @running_root_request
       .sub_categories
@@ -47,10 +49,10 @@
           %ul.main_category
             - @sub_categories_counts.each do |count_value|
               %li.mcl_link
-                %a.mcl_link_left{ :href => "#{@current_request_uri}&sub_category=#{count_value.sub_category_id}" }= count_value.try(:type_name) rescue count_value.try(:sub_category_name)
-                %a.mcl_link_right{ :href => "#{@current_request_uri}&sub_category=#{count_value.sub_category_id}" }= count_value.try(:count_value) rescue count_value.try(:value)
+                %a.mcl_link_left{ :href => build_uri(request.filtered_parameters.merge({ sub_category: count_value.sub_category_id })) }= count_value.try(:type_name) rescue count_value.try(:sub_category_name)
+                %a.mcl_link_right{ :href => build_uri(request.filtered_parameters.merge({ sub_category: count_value.sub_category_id })) }= count_value.try(:count_value) rescue count_value.try(:value)
 
-      .price_filter_container{ data: { current_uri: @current_request_uri }}
+      .price_filter_container{ data: { current_uri: build_uri(request.filtered_parameters) }}
         .brows_lable
           .bl_style= t("prices")
           .bl_image
@@ -74,7 +76,7 @@
           %ul.main_category.colors
             - @color_counts.each do |count_value|
               .image_div
-                = link_to "#{@current_request_uri}&color=#{count_value.type_name}" do
+                = link_to build_uri(request.filtered_parameters.merge({ color: count_value.type_name })) do
                   %img{ src: count_value.swatch_url}
       .sizes
         .brows_lable
@@ -88,7 +90,7 @@
                   - count_values.each do |count_value|
                     - if count_value.present?
                       %td
-                        %a{ :href => "#{@current_request_uri}&size=#{count_value.size_value}" }= count_value.size_value
+                        %a{ :href => build_uri(request.filtered_parameters.merge({ size: count_value.size_value })) }= count_value.size_value
 
   = render @item_models, locals: { params: params }
   = paginate @item_models, :window => 6
@@ -101,7 +103,7 @@
       - @male_brands.in_groups_of(3).each do |brand_group|
         - brand_group.each do |brand|
           - next if brand.blank? || brand.logo_url.blank?
-          %a.category_logos{:href => brand_path(brand)}
+          %a.category_logos{ :href => build_uri( request.filtered_parameters.merge({:brand => brand.to_param}) ) }
             = image_tag brand.logo_url, alt: brand.name, title: brand.name
           .cl_delimeter
 
@@ -113,7 +115,7 @@
       - @female_brands.in_groups_of(3).each do |brand_group|
         - brand_group.each do |brand|
           - next if brand.blank? || brand.logo_url.blank?
-          %a.category_logos{:href => brand_path(brand)}
+          %a.category_logos{ :href => build_uri( request.filtered_parameters.merge({:brand => brand.to_param}) ) }
             = image_tag brand.logo_url, alt: brand.name, title: brand.name
           .cl_delimeter
 
@@ -125,6 +127,6 @@
       - @kids_brands.in_groups_of(3).each do |brand_group|
         - brand_group.each do |brand|
           - next if brand.blank? || brand.logo_url.blank?
-          %a.category_logos{:href => brand_path(brand)}
+          %a.category_logos{ :href => build_uri( request.filtered_parameters.merge({:brand => brand.to_param}) ) }
             = image_tag brand.logo_url, alt: brand.name, title: brand.name
           .cl_delimeter

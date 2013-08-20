@@ -10,8 +10,12 @@ Watches::Application.routes.draw do
   end
 
   get 'categories/:top_level_cat_id', to: 'categories#show', as: 'category'
+  get 'categories/:top_level_cat_id/:brand', to: 'categories#show', as: 'category_brand'
+  get 'categories/:top_level_cat_id/gender/:gender', to: 'categories#show', as: 'category_gender'
+  get 'categories/:top_level_cat_id/gender/:gender/sub_categories/:category', to: 'categories#show', as: 'category_gender_sub_category'
+  get 'categories/:top_level_cat_id/gender/:gender/brand/:brand', to: 'categories#show', as: 'category_gender_brand'
   get 'categories/:top_level_cat_id/sub_categories/:category', to: 'categories#show', as: 'category_sub_category'
-  get 'categories/:top_level_cat_id/sub_categories/:category/brand/:brand', to: 'categories#show', as: 'category_sub_category_with_brand'
+  get 'categories/:top_level_cat_id/sub_categories/:category/:brand', to: 'categories#show', as: 'category_sub_category_with_brand'
   get 'categories/:top_level_cat_id/sub_categories/:category/brand/:brand/sub_category/:sub_category', to: 'categories#show', as: 'category_sub_category_with_brand_and_sub'
   get 'categories/:top_level_cat_id/sub_categories/:category/sub_category/:sub_category', to: 'categories#show', as: 'category_sub_category_with_sub'
 
@@ -97,8 +101,8 @@ Watches::Application.routes.draw do
     post 'update_article'
   end
 
-  match '/404', to: 'errors#not_found'
-  match '/500', to: 'errors#internal_server_error'
+  #match '/404', to: 'errors#not_found'
+  #match '/500', to: 'errors#internal_server_error'
 
   match 'preload', :to => 'item_models#preload', :as => 'preload'
   root :to => 'item_models#index'

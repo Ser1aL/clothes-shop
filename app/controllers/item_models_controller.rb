@@ -9,7 +9,6 @@ class ItemModelsController < ApplicationController
     @product = ItemModel.find(params[:id])
     if @product
       @style = @product.product.styles.find(params[:style_id])
-      update_prices @product, @style if @style
     end
   end
 
