@@ -2,9 +2,30 @@ require 'addressable/uri'
 
 class CategoriesController < ApplicationController
 
-  before_filter :filter_heavy_requests, :prepare_raw_request_uri, only: %w(show)
+  caches_action :show, :layout => false, :cache_path => Proc.new { |c| c.params }, :expires_in => 1.hour
 
   def show
+    # filter heavy requests
+    if params[:category].blank? && params[:sub_category].blank? && params[:gender].blank?
+      @running_root_request = true
+      if params[:price_range].present? || params[:color].present? || params[:size].present?
+        redirect_to category_path(params[:top_level_cat_id]) and return
+      end
+    end
+
+    # prepare request uri
+    base_uri = category_url(params[:top_level_cat_id])
+    uri_params = { :filter => 'y' }
+
+    [:category, :sub_category, :gender, :price_range, :color, :size].each do |param|
+      uri_params[param] = params[param] if params[param].present?
+    end
+    uri = Addressable::URI.new
+    uri.query_values = uri_params
+    @current_request_uri = base_uri + '?' + uri.query
+
+    # ---
+
     top_level_category_id = params[:id] || params[:top_level_cat_id]
     @category_id = params[:category]
 
@@ -53,27 +74,8 @@ class CategoriesController < ApplicationController
 
   end
 
-  private
-
-  def filter_heavy_requests
-    if params[:category].blank? && params[:sub_category].blank? && params[:gender].blank?
-      @running_root_request = true
-      if params[:price_range].present? || params[:color].present? || params[:size].present?
-        redirect_to category_path(params[:top_level_cat_id])
-      end
-    end
-  end
-
   def prepare_raw_request_uri
-    base_uri = category_url(params[:top_level_cat_id])
-    uri_params = { :filter => 'y' }
 
-    [:category, :sub_category, :gender, :price_range, :color, :size].each do |param|
-      uri_params[param] = params[param] if params[param].present?
-    end
-    uri = Addressable::URI.new
-    uri.query_values = uri_params
-    @current_request_uri = base_uri + '?' + uri.query
   end
 
 end
