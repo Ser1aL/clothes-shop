@@ -73,20 +73,22 @@ namespace :data_feed do
       puts "using key=#{six_pm_key_list[key_index]}"
 
       client = Zappos::Client.new(six_pm_key_list[key_index], { :base_url => 'api.6pm.com' })
-
+      request_counter = 0
       # 6pm req #1.1
       response = client.search(:limit => 1)
-
+      request_counter += 1
       total_count = response.totalResultCount.to_i
       puts "found total #{total_count}"
 
       (total_count.to_f/search_opts[:limit].to_f).ceil.times do |index|
+        next if request_counter >= 5000
         begin
           key_index = 0 if six_pm_key_list[key_index].blank?
           client = Zappos::Client.new(six_pm_key_list[key_index], { :base_url => 'api.6pm.com' })
 
           # 6pm req #2.1
           response = client.search( search_opts.merge!({ :page => index + start_from_page.to_i }) )
+          request_counter += 1
           items = response.results
           puts "found #{items.size}. Running loop. page=#{index+start_from_page.to_i}"
 
@@ -109,6 +111,7 @@ namespace :data_feed do
 
                 # 6pm req #3.1
                 product = client.product( product_search_opts.merge!({:id => item.productId}) ).data.product.first
+                request_counter += 1
                 # puts "fetched product"
 
                 brand = Brand.find_by_external_brand_id(product.brandId)
@@ -116,6 +119,8 @@ namespace :data_feed do
 
                 # 6pm req #3.2
                 image_feed = client.image( image_search_opts.merge!({:productId => item.productId})).data.images
+                request_counter += 1
+
                 # puts "fetched image"
 
                 unless brand
@@ -123,6 +128,7 @@ namespace :data_feed do
 
                   # 6pm req #3.3
                   brand_feed = client.brand(brand_search_opts.merge!({:id => product.brandId})).try(:data).try(:brands).try(:first)
+                  request_counter += 1
                   brand = Brand.create(
                     :name => item.brandName,
                     :description => brand_feed.try(:aboutText),
@@ -226,7 +232,7 @@ namespace :data_feed do
   task :update_prices => :environment do
     output_file = File.open("log/price_update_output.txt", "w")
     key_index = 0
-    Style.where(:hidden => false).order("created_at DESC").limit(20000).each_with_index do |style, index|
+    Style.where(:hidden => false).order("created_at DESC").limit(4000).each_with_index do |style, index|
       output_file.puts "Style: #{style.inspect}"
       sleep 5 if index % 50 == 0
       begin
