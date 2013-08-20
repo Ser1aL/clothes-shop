@@ -16,6 +16,36 @@ class ShoppingCartController < ApplicationController
     @style = @product.styles.find(params[:style])
     @stock = @style.stocks.find(params[:stock_id])
 
+    # update product availability
+    exists_at_6pm, exists_at_zappos = true, true
+    begin
+      exists_at_6pm = false unless @style.update_6pm_prices(@product.item_model)
+    rescue => e
+      Rails.logger.debug '---------GOT 6pm EXCEPTION---------------'
+      Rails.logger.debug e.inspect
+      Rails.logger.debug e.message
+      Rails.logger.debug '------------------------'
+    end
+    begin
+      if @style.update_zappos_prices(@product.item_model)
+      else
+        exists_at_zappos = false
+      end
+    rescue => e
+      Rails.logger.debug '---------GOT zappos EXCEPTION---------------'
+      Rails.logger.debug e.inspect
+      Rails.logger.debug e.message
+      Rails.logger.debug '------------------------'
+    end
+
+    if exists_at_6pm || exists_at_zappos
+      @style.update_attribute(:hidden, false)
+    else
+      @style.update_attribute(:hidden, true)
+      flash[:message_type] = 'product_does_not_exist'
+      redirect_to :back and return
+    end
+
     if @product && @style && @stock
       if session[:shopping_cart_id].nil?
         @shopping_cart = ShoppingCart.create!(:user_id => nil, :status => :open)
