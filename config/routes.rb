@@ -9,15 +9,15 @@ Watches::Application.routes.draw do
     get 'letter/:letter', :to => 'brands#index', :on => :collection, :as => 'letter'
   end
 
-  get 'categories/:top_level_cat_id', to: 'categories#show', as: 'category'
-  get 'categories/:top_level_cat_id/:brand', to: 'categories#show', as: 'category_brand'
-  get 'categories/:top_level_cat_id/gender/:gender', to: 'categories#show', as: 'category_gender'
-  get 'categories/:top_level_cat_id/gender/:gender/sub_categories/:category', to: 'categories#show', as: 'category_gender_sub_category'
-  get 'categories/:top_level_cat_id/gender/:gender/brand/:brand', to: 'categories#show', as: 'category_gender_brand'
-  get 'categories/:top_level_cat_id/sub_categories/:category', to: 'categories#show', as: 'category_sub_category'
-  get 'categories/:top_level_cat_id/sub_categories/:category/:brand', to: 'categories#show', as: 'category_sub_category_with_brand'
-  get 'categories/:top_level_cat_id/sub_categories/:category/brand/:brand/sub_category/:sub_category', to: 'categories#show', as: 'category_sub_category_with_brand_and_sub'
-  get 'categories/:top_level_cat_id/sub_categories/:category/sub_category/:sub_category', to: 'categories#show', as: 'category_sub_category_with_sub'
+  get 'c/:top_level_cat_id', to: 'categories#show', as: 'category'
+  get 'c/:top_level_cat_id/:brand', to: 'categories#show', as: 'category_brand'
+  get 'c/:top_level_cat_id/g/:gender', to: 'categories#show', as: 'category_gender'
+  get 'c/:top_level_cat_id/g/:gender/sub/:category', to: 'categories#show', as: 'category_gender_sub_category'
+  get 'c/:top_level_cat_id/g/:gender/b/:brand', to: 'categories#show', as: 'category_gender_brand'
+  get 'c/:top_level_cat_id/s/:category', to: 'categories#show', as: 'category_sub_category'
+  get 'c/:top_level_cat_id/s/:category/:brand', to: 'categories#show', as: 'category_sub_category_with_brand'
+  get 'c/:top_level_cat_id/s/:category/b/:brand/sub/:sub_category', to: 'categories#show', as: 'category_sub_category_with_brand_and_sub'
+  get 'c/:top_level_cat_id/s/:category/sub/:sub_category', to: 'categories#show', as: 'category_sub_category_with_sub'
 
   resources :sitemaps, :only => %w(index)
 
