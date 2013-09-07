@@ -274,11 +274,12 @@ namespace :data_feed do
       Style.where(:hidden => false).order("created_at DESC").limit(100).offset(100*cycle).each_with_index do |style, index|
         sleep 5 if index % 10 == 0
         begin
-          output_file.puts "Requesting 6pm. Color id: #{style.external_color_id}"
+          output_file.puts "Requesting 6pm. Item Model: #{style.product.item_model.external_product_id}, Color id: #{style.external_color_id}"
           if style.update_6pm_prices(style.product.item_model)
             style.update_attribute(:hidden, false) and next
           end
-        rescue
+        rescue => e
+          output_file.puts "Exception updating HTML 6pm: #{e.message}"
         end
         begin
           output_file.puts "Requesting zappos. Color id: #{style.external_color_id}"
@@ -288,8 +289,8 @@ namespace :data_feed do
             hidden_styles_count += 1
             style.update_attribute(:hidden, true)
           end
-        rescue
-          key_index += 1 and next
+        rescue => e
+          output_file.puts "Exception updating API 6pm/zappos: #{e.message}"
         end
       end
       output_file.puts "Styles made hidden this cycle: #{hidden_styles_count}"
