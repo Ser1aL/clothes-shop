@@ -73,7 +73,7 @@ class RawSearch
 
     search_query = <<-SQL
       SELECT stocks.size
-      FROM item_models, products, styles, stocks force index(`custom_size_style_id`)
+      FROM item_models, products, styles, stocks
       WHERE products.item_model_id = item_models.id
         AND styles.product_id = products.id
         AND stocks.style_id = styles.id
