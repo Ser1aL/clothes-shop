@@ -14,9 +14,9 @@
     = link_to @product.brand.name.html_safe, brand_path(@product.brand)
   -#%span.short_link
   -#  = link_to @product.category.name, category_sub_category_with_brand_url(@product.category.top_category, @product.category, @product.brand)
-  - if @product.sub_category
-    %span.short_link
-      = link_to @product.sub_category.name, category_sub_category_with_sub_url(@product.category.top_category, @product.category, @product.sub_category)
+  -#- if @product.sub_category
+  -#  %span.short_link
+  -#    = link_to @product.sub_category.name, category_sub_category_with_sub_url(@product.category.top_category, @product.category, @product.sub_category)
 
 
   %span.short_link.no_arrows
