@@ -265,6 +265,38 @@ namespace :data_feed do
     #end
   end
 
+  desc 'update styles'
+  task :update_styles => :environment do
+    output_file = File.open("log/update_styles.txt", "a+")
+    10000.times do |cycle|
+      hidden_styles_count = 0
+      output_file.puts "updating #{cycle*100}-#{(cycle+1)*100} styles"
+      Style.where(:hidden => false).order("created_at DESC").limit(100).offset(100*cycle).each_with_index do |style, index|
+        sleep 5 if index % 10 == 0
+        begin
+          output_file.puts "Requesting 6pm. Color id: #{style.external_color_id}"
+          if style.update_6pm_prices(style.product.item_model)
+            style.update_attribute(:hidden, false) and next
+          end
+        rescue
+        end
+        begin
+          output_file.puts "Requesting zappos. Color id: #{style.external_color_id}"
+          if style.update_zappos_prices(style.product.item_model, key_index)
+            style.update_attribute(:hidden, false)
+          else
+            hidden_styles_count += 1
+            style.update_attribute(:hidden, true)
+          end
+        rescue
+          key_index += 1 and next
+        end
+      end
+      output_file.puts "Styles made hidden this cycle: #{hidden_styles_count}"
+    end
+  end
+
+
   desc "load banners"
   task :load_banners => :environment do
     root_page = "http://6pm.com"
