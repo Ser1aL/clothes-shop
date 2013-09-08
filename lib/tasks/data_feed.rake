@@ -230,29 +230,29 @@ namespace :data_feed do
 
   desc "updates item model prices"
   task :update_prices => :environment do
-    output_file = File.open("log/price_update_output.txt", "w")
-    key_index = 0
-    Style.where(:hidden => false).order("created_at DESC").limit(4000).each_with_index do |style, index|
-      output_file.puts "Style: #{style.inspect}"
-      sleep 5 if index % 50 == 0
-      begin
-        output_file.puts "Requesting 6pm. Color id: #{style.external_color_id}"
-        if style.update_6pm_prices(style.product.item_model)
-          style.update_attribute(:hidden, false) and next
-        end
-      rescue
-      end
-      begin
-        output_file.puts "Requesting zappos. Color id: #{style.external_color_id}"
-        if style.update_zappos_prices(style.product.item_model, key_index)
-          style.update_attribute(:hidden, false)
-        else
-          style.update_attribute(:hidden, true)
-        end
-      rescue
-        key_index += 1 and next
-      end
-    end
+    #output_file = File.open("log/price_update_output.txt", "w")
+    #key_index = 0
+    #Style.where(:hidden => false).order("created_at DESC").limit(4000).each_with_index do |style, index|
+    #  output_file.puts "Style: #{style.inspect}"
+    #  sleep 5 if index % 50 == 0
+    #  begin
+    #    output_file.puts "Requesting 6pm. Color id: #{style.external_color_id}"
+    #    if style.update_6pm_prices(style.product.item_model)
+    #      style.update_attribute(:hidden, false) and next
+    #    end
+    #  rescue
+    #  end
+    #  begin
+    #    output_file.puts "Requesting zappos. Color id: #{style.external_color_id}"
+    #    if style.update_zappos_prices(style.product.item_model, key_index)
+    #      style.update_attribute(:hidden, false)
+    #    else
+    #      style.update_attribute(:hidden, true)
+    #    end
+    #  rescue
+    #    key_index += 1 and next
+    #  end
+    #end
     # Remove hidden
     #Style.where(:hidden => true).each do |style|
     #  output_file.puts "Removing style: #{style.inspect}"
@@ -274,13 +274,26 @@ namespace :data_feed do
       Style.where(:hidden => false).order("created_at DESC").limit(100).offset(100*cycle).each_with_index do |style, index|
         sleep 5 if index % 10 == 0
         begin
-          output_file.puts "[##{index}] Requesting 6pm. Item Model: #{style.product.item_model.external_product_id}, Color id: #{style.external_color_id}"
+          output_file.puts "[##{index}] Requesting 6pm. Item Model: ##{style.product.item_model.external_product_id}, Color id: ##{style.external_color_id}"
           if style.update_6pm_prices(style.product.item_model)
             style.update_attribute(:hidden, false) and next
           end
         rescue => e
           output_file.puts "[##{index}] Exception updating HTML 6pm: #{e.message}"
         end
+
+        begin
+          output_file.puts "[##{index}] Requesting zappos. Item Model: ##{style.product.item_model.external_product_id}, Color id: ##{style.external_color_id}"
+          if style.update_zappos_prices(style.product.item_model)
+            style.update_attribute(:hidden, false)
+          else
+            hidden_styles_count += 1
+            style.update_attribute(:hidden, true)
+          end
+        rescue => e
+          output_file.puts "[##{index}] Exception updating API zappos: #{e.message}"
+        end
+
       end
       output_file.puts "[Cycle done] Styles made hidden this cycle: #{hidden_styles_count}"
     end
@@ -325,50 +338,50 @@ namespace :data_feed do
 
   desc "loads facets"
   task :load_facets => :environment do
-    key_index = 0
-    ItemModel.where(:facet_loaded => false).order(:external_product_id).each do |item_model|
-      begin
-        key_index = 0 if zappos_key_list[key_index].blank?
-        client = Zappos::Client.new(zappos_key_list[key_index], { :base_url => 'api.zappos.com' })
-        facets = client.product( facet_search_opts.merge!({:id => item_model.external_product_id}) ).data.product.first.attributeFacetFields
-        ActiveRecord::Base.transaction do
-          facets.each do |facet_key, facet_value|
-            begin
-              item_model.update_attribute(facet_key, facet_value)
-            rescue => error
-              File.open('missing_facets.txt', 'a+'){|f| f.puts error}
-            end
-          end
-          item_model.update_attribute(:facet_loaded, true)
-        end
-        puts "Item Model id:#{item_model.external_product_id} updated"
-      rescue
-        key_index += 1
-      end
-    end
+    #key_index = 0
+    #ItemModel.where(:facet_loaded => false).order(:external_product_id).each do |item_model|
+    #  begin
+    #    key_index = 0 if zappos_key_list[key_index].blank?
+    #    client = Zappos::Client.new(zappos_key_list[key_index], { :base_url => 'api.zappos.com' })
+    #    facets = client.product( facet_search_opts.merge!({:id => item_model.external_product_id}) ).data.product.first.attributeFacetFields
+    #    ActiveRecord::Base.transaction do
+    #      facets.each do |facet_key, facet_value|
+    #        begin
+    #          item_model.update_attribute(facet_key, facet_value)
+    #        rescue => error
+    #          File.open('missing_facets.txt', 'a+'){|f| f.puts error}
+    #        end
+    #      end
+    #      item_model.update_attribute(:facet_loaded, true)
+    #    end
+    #    puts "Item Model id:#{item_model.external_product_id} updated"
+    #  rescue
+    #    key_index += 1
+    #  end
+    #end
   end
 
   desc "load swatch images for existing styles"
   task :load_swatches => :environment do
-    styles = Style.where(:swatch_url => nil, :hidden => false).order("id desc")
-    key_index = 0
-    image_search_opts = { :recipe => "SWATCH" }
-    styles.each_with_index do |style, index|
-      puts index
-      next if style.swatch_url.present?
-      begin
-        key_index = 0 if zappos_key_list[key_index].blank?
-        client = Zappos::Client.new(zappos_key_list[key_index], { :base_url => 'api.zappos.com' })
-        image_feed = client.image( image_search_opts.merge!({ :productId => style.product.item_model.external_product_id, :styleId => style.external_style_id }))
-        puts "im: #{style.product.item_model.external_product_id}, style: #{style.external_style_id}, resp: #{image_feed.response}"
-        image_feed = image_feed.data
-        style.update_attribute(:swatch_url, image_feed[style.external_style_id].first.filename)
-        sleep 0.3
-      rescue => e
-        key_index += 1
-        puts "error in request: #{e.inspect}"
-        next
-      end
-    end
+    #styles = Style.where(:swatch_url => nil, :hidden => false).order("id desc")
+    #key_index = 0
+    #image_search_opts = { :recipe => "SWATCH" }
+    #styles.each_with_index do |style, index|
+    #  puts index
+    #  next if style.swatch_url.present?
+    #  begin
+    #    key_index = 0 if zappos_key_list[key_index].blank?
+    #    client = Zappos::Client.new(zappos_key_list[key_index], { :base_url => 'api.zappos.com' })
+    #    image_feed = client.image( image_search_opts.merge!({ :productId => style.product.item_model.external_product_id, :styleId => style.external_style_id }))
+    #    puts "im: #{style.product.item_model.external_product_id}, style: #{style.external_style_id}, resp: #{image_feed.response}"
+    #    image_feed = image_feed.data
+    #    style.update_attribute(:swatch_url, image_feed[style.external_style_id].first.filename)
+    #    sleep 0.3
+    #  rescue => e
+    #    key_index += 1
+    #    puts "error in request: #{e.inspect}"
+    #    next
+    #  end
+    #end
   end
 end
