@@ -270,20 +270,20 @@ namespace :data_feed do
     output_file = File.open("log/update_styles.txt", "a+")
     10000.times do |cycle|
       hidden_styles_count = 0
-      output_file.puts "[Cycle start] Updating #{cycle*100}-#{(cycle+1)*100} styles"
+      output_file.puts "[#{Time.now.to_s(:db)} - Cycle start] Updating #{cycle*100}-#{(cycle+1)*100} styles"
       Style.where(:hidden => false).order("created_at DESC").limit(100).offset(100*cycle).each_with_index do |style, index|
         sleep 5 if index % 10 == 0
         begin
-          output_file.puts "[##{index}] Requesting 6pm. Item Model: ##{style.product.item_model.external_product_id}, Color id: ##{style.external_color_id}"
+          output_file.puts "[#{Time.now.to_s(:db)} - ##{index}] Requesting 6pm. Item Model: ##{style.product.item_model.external_product_id}, Color id: ##{style.external_color_id}"
           if style.update_6pm_prices(style.product.item_model)
             style.update_attribute(:hidden, false) and next
           end
         rescue => e
-          output_file.puts "[##{index}] Exception updating HTML 6pm: #{e.message}"
+          output_file.puts "[#{Time.now.to_s(:db)} - ##{index}] Exception updating HTML 6pm: #{e.message}"
         end
 
         begin
-          output_file.puts "[##{index}] Requesting zappos. Item Model: ##{style.product.item_model.external_product_id}, Color id: ##{style.external_color_id}"
+          output_file.puts "[#{Time.now.to_s(:db)} - ##{index}] Requesting zappos. Item Model: ##{style.product.item_model.external_product_id}, Color id: ##{style.external_color_id}"
           if style.update_zappos_prices(style.product.item_model)
             style.update_attribute(:hidden, false)
           else
@@ -291,11 +291,11 @@ namespace :data_feed do
             style.update_attribute(:hidden, true)
           end
         rescue => e
-          output_file.puts "[##{index}] Exception updating API zappos: #{e.message}"
+          output_file.puts "[#{Time.now.to_s(:db)} - ##{index}] Exception updating API zappos: #{e.message}"
         end
 
       end
-      output_file.puts "[Cycle done] Styles made hidden this cycle: #{hidden_styles_count}"
+      output_file.puts "[#{Time.now.to_s(:db)} - Cycle done] Styles made hidden this cycle: #{hidden_styles_count}"
     end
   end
 
