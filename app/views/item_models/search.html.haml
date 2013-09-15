@@ -1,0 +1,8 @@
+= render 'search_tip'
+= content_for(:no_index){ 'true' }
+- if @products.size > 0
+  = render :partial => 'product', :collection => @products
+  = paginate(@products, :window => 6)
+- else
+  = render 'products_not_found'
+
