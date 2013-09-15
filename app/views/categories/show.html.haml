@@ -93,7 +93,8 @@
                         %a{ :href => build_uri(request.filtered_parameters.merge({ size: count_value.size_value })) }= count_value.size_value
 
   = render @item_models, locals: { params: params }
-  = paginate @item_models, :window => 6
+  - unless @running_root_request
+    = paginate @item_models, :window => 6
   .delimiter
 
   - if @male_brands.present?

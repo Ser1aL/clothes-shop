@@ -13,19 +13,6 @@ class CategoriesController < ApplicationController
       end
     end
 
-    # prepare request uri
-    base_uri = category_url(params[:top_level_cat_id])
-    uri_params = { :filter => 'y' }
-
-    [:category, :sub_category, :gender, :price_range, :color, :size].each do |param|
-      uri_params[param] = params[param] if params[param].present?
-    end
-    uri = Addressable::URI.new
-    uri.query_values = uri_params
-    @current_request_uri = base_uri + '?' + uri.query
-
-    # ---
-
     top_level_category_id = params[:id] || params[:top_level_cat_id]
     @category_id = params[:category]
 
