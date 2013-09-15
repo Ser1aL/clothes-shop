@@ -61,7 +61,7 @@ class ItemModel < ActiveRecord::Base
     end
 
     #joins(:product => :styles).group('item_models.id').where(conditions.join(' AND ')).order("MIN(styles.discount_price) ASC").page(params[:page]).per(6)
-    select('distinct item_models.*').joins( [{:product => :styles}, :category]).where(conditions.join(' AND ')).page(params[:page]).per(6)
+    joins( [{:product => :styles}, :category]).group('item_models.id').where(conditions.join(' AND ')).page(params[:page]).per(6)
   end
 
   def self.get_items_extended(params, exchange_rate, markup)
