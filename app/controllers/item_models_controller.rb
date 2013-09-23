@@ -7,9 +7,9 @@ class ItemModelsController < ApplicationController
 
   def show
     @product = ItemModel.find(params[:id])
-    if @product
-      @style = @product.product.styles.find(params[:style_id])
-    end
+    @style = @product.product.styles.find(params[:style_id])
+    familiars_total_count = @product.category.item_models.count
+    @familiars = ItemModel.where('id != ? and category_id = ?', @product.id, @product.category.id).limit(3).offset(rand(familiars_total_count - 3))
   end
 
   def preload

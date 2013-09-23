@@ -2,7 +2,7 @@ module ApplicationHelper
 
   def image_tag(source, options = {})
     source = 'blank_image.jpg' if source.blank?
-    super(source, options)
+    super(source, options.merge!({ rel: 'nofollow' }))
   end
 
   def bread_crumbs(steps)

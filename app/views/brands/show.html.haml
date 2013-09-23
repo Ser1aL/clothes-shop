@@ -19,9 +19,9 @@
           = link_to child[:name], category_sub_category_with_brand_and_sub_path(top_cat_name, root_child[:category], @brand, child[:sub_category] )
 .advertisement_block
   .ab_main_brands_logo
-    = image_tag @brand.logo_url, :alt => @brand.name, :title => @brand.name
+    = image_tag @brand.logo_url, :alt => @brand.name, :title => @brand.name, rel: 'nofollow'
   .brands_image_container
     .ab_main_brands_banner
-      = image_tag @brand.image_attachments[0].try(:image_url)
+      = image_tag @brand.image_attachments[0].try(:image_url), rel: 'nofollow', :alt => @brand.name, :title => @brand.name
   .brands_description
     = @brand.description.try(:html_safe)

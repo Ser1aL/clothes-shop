@@ -7,7 +7,7 @@
       - if product.try(:product).try(:styles).try(:first).try(:not_zoomed_image_attachments).blank?
         = image_tag 'thumb/missing.png', :class => 'missing', :alt => product.product_name, :title => "#{product.product_name} - #{product.category.name}"
       - else
-        = image_tag product.product.styles.first.primary_image.image_url, :class => 'img_file', :alt => product.product_name, :title => "#{product.product_name} - #{product.category.name}", :itemprop => "image"
+        = image_tag product.product.styles.first.primary_image.image_url, :class => 'img_file', :alt => product.product_name, :title => "#{product.product_name} - #{product.category.name}", :itemprop => "image", rel: 'nofollow'
     %a{:href => single_model_path(product, product.product.styles.first), :class => 'single_product_ajaxified_link more_link'}
       = "Подробнее"
   .product_description_wrapper

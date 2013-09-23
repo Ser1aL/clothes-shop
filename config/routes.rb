@@ -101,8 +101,8 @@ Watches::Application.routes.draw do
     post 'update_article'
   end
 
-  #match '/404', to: 'errors#not_found'
-  #match '/500', to: 'errors#internal_server_error'
+  match '/404', to: 'errors#not_found'
+  match '/500', to: 'errors#internal_server_error'
 
   match 'preload', :to => 'item_models#preload', :as => 'preload'
   root :to => 'item_models#index'

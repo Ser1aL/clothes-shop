@@ -56,6 +56,7 @@ ru:
     show_video: 'Показать видео'
     name: 'Название:'
     width: 'Полнота:'
+  familiar_products: 'Похожие товары:'
   browse_brands_by_letter: 'Бренды в алфавитном порядке: '
   uncategorized: 'Без подкатегории'
   category_list: 'Разделы:'
@@ -119,10 +120,9 @@ ru:
   default_seo_header: 'Доставка товаров с eBay, Amazon, 6pm'
 
   meta:
-    single_product_title: '%{product_name}: купить %{product_name}, описание, цена в Украине | Shop-mydostavka.com'
-    single_product_keywords: '%{product_name}, купить %{product_name}, %{product_name} цена'
-    single_product_description: 'Покупайте %{product_name} у нас - приятная цена, все размеры, различные цвета, доставка по Украине! %{product_name} в интернет магазине Shop-mydostavka.com.'
-    single_product_seo_header: '%{product_name}'
+    single_product_title: '%{category} %{brand} %{product_name}: цены, описание | Shop-mydostavka.com'
+    single_product_description: "Купить %{category} %{brand} %{product_name} в интернет-магазине Shop-mydostavka.com — оригинальные брендовые %{category} из США с доставкой по Украине."
+    single_product_seo_header: '%{category} %{brand} %{product_name}'
 
     brand_letter_title: 'Каталог брендов на букву %{letter} представленные в нашем интернет магазине | Shop-mydostavka.com'
     brand_letter_keywords: 'бренды на букву %{letter}, каталог брендов на букву %{letter}'
@@ -135,15 +135,22 @@ ru:
     single_brand_description: 'Подробная информация о бренде %{brand}, история бренда %{brand} на страницах интернет магазина Shop-mydostavka.com'
     single_brand_seo_header: '%{brand}'
 
-    sub_category_title: "%{sub_category}: купить брендовые %{sub_category}, описание, цена в Украине | Shop-mydostavka.com"
-    sub_category_keywords: "%{sub_category}, купить %{sub_category}, %{sub_category} цены, брендовые %{sub_category}"
-    sub_category_description: "%{sub_category} известных брендов, широкий ассортимент и приятные цены только у нас! Купить %{sub_category} с доставкой по Украине - Shop-mydostavka.com."
-    sub_category_header: "%{sub_category}"
+    category_title: "%{category} купить из США: цены, фото | Shop-mydostavka.com"
+    category_description: "Купить %{category} в интернет-магазине Shop-mydostavka.com — оригинальные брендовые %{category} из США с доставкой по Украине."
+    category_header: "%{category} из США"
+
+    category_brand_title: "%{category} %{brand} купить из США: цены, описание | Shop-mydostavka.com"
+    category_brand_description: "Купить %{category} %{brand} в интернет-магазине Shop-mydostavka.com — оригинальные брендовые %{category} %{brand} из США с доставкой по Украине."
+    category_brand_header: "%{category} %{brand} из США"
+
+    category_gender_title: "%{category} %{gender} купить из США: цены, описание | Shop-mydostavka.com"
+    category_gender_description: "Купить %{category} %{gender} в интернет-магазине Shop-mydostavka.com — оригинальные брендовые %{category} %{gender} из США с доставкой по Украине."
+    category_gender_header: "%{category} %{gender} из США"
 
     about_us:
       meta_title: 'Информация о магазине Shop-mydostavka.com'
       meta_keywords: 'о нас, о магазине, информация о магазине'
-      meta_description: 'Информация о интернет-магазине Shop-mydostavka.com.'
+      meta_description: 'Компания «TRADEUKRAINEMARKET» является международной транспортно-экспедиторской компанией. Мы осуществляем транспортировку любых грузов авиатранспортом с территории США.'
       seo_header: 'О магазине'
 
     payments:
@@ -169,6 +176,57 @@ ru:
       meta_keywords: 'отзывы, благодарности, жалобы'
       meta_description: 'Благодарности, жалобы и отзывы посетителей интернет магазина Shop-mydostavka.com.'
       seo_header: 'Отзывы'
+
+    articles:
+      meta_title: 'Статьи и последние новости | Shop-mydostavka.com'
+      meta_keywords: 'отзывы, благодарности, жалобы'
+      meta_description: 'Статьи и новости магазина Shop-mydostavka.com. Мы предлагаем широкий ассортимент одежды, обуви, аксессуаров из магазинов США. Огромный выбор, удобство заказа, гарантированная доставка!'
+      seo_header: 'Статьи и последние новости'
+
+    sitemaps:
+      meta_title: 'Просмотр всех страниц сайта. Карта сайта | Shop-mydostavka.com'
+      meta_keywords: 'отзывы, благодарности, жалобы'
+      meta_description: 'Просмотр всех страниц сайта Shop-mydostavka.com. Мы предлагаем широкий ассортимент одежды, обуви, аксессуаров из магазинов США. Огромный выбор, удобство заказа, гарантированная доставка!'
+      seo_header: 'Просмотр всех страниц сайта'
+
+#   ROOT CATEGORIES
+    root_category_1:
+      meta_title: 'Одежа из США. Купить брендовую одежду с доставкой из Америки | Shop-mydostavka.com'
+      meta_keywords: ''
+      meta_description: 'Купить брендовую одежду из США на Shop-mydostavka.com. Мы предлагаем широкий ассортимент одежды из магазинов США. Огромный выбор, удобство заказа, гарантированная доставка!'
+      seo_header: 'Одежда из США'
+
+    root_category_2:
+      meta_title: 'Обувь из США. Купить брендовую обувь с доставкой из Америки | Shop-mydostavka.com'
+      meta_keywords: ''
+      meta_description: 'Купить брендовую обувь из США на Shop-mydostavka.com. Мы предлагаем широкий ассортимент обуви из магазинов США. Огромный выбор, удобство заказа, гарантированная доставка!'
+      seo_header: 'Обувь из США'
+
+    root_category_3:
+      meta_title: 'Аксессуары из США. Купить брендовые аксессуары с доставкой из Америки | Shop-mydostavka.com'
+      meta_keywords: ''
+      meta_description: 'Купить брендовые аксессуары из США на Shop-mydostavka.com. Мы предлагаем широкий ассортимент аксессуаров из магазинов США. Огромный выбор, удобство заказа, гарантированная доставка!'
+      seo_header: 'Аксессуары из США'
+
+    root_category_4:
+      meta_title: 'Часы из США. Купить брендовые часы с доставкой из Америки | Shop-mydostavka.com'
+      meta_keywords: ''
+      meta_description: 'Купить брендовые часы из США на Shop-mydostavka.com. Мы предлагаем широкий ассортимент часов из магазинов США. Огромный выбор, удобство заказа, гарантированная доставка!'
+      seo_header: 'Часы из США'
+
+    root_category_5:
+      meta_title: 'Очки из США. Купить брендовые очки с доставкой из Америки | Shop-mydostavka.com'
+      meta_keywords: ''
+      meta_description: 'Купить брендовые очки из США на Shop-mydostavka.com. Мы предлагаем широкий ассортимент очков из магазинов США. Огромный выбор, удобство заказа, гарантированная доставка!'
+      seo_header: 'Очки из США'
+
+    root_category_6:
+      meta_title: 'Сумки из США. Купить брендовые сумки с доставкой из Америки | Shop-mydostavka.com'
+      meta_keywords: ''
+      meta_description: 'Купить брендовые сумки из США на Shop-mydostavka.com. Мы предлагаем широкий ассортимент сумок из магазинов США. Огромный выбор, удобство заказа, гарантированная доставка!'
+      seo_header: 'Сумки из США'
+
+
 
 
 

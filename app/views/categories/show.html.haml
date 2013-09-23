@@ -1,10 +1,24 @@
-- if @category_id.present?
-  - content_for :meta_title, t('meta.sub_category_title', :sub_category => @categories.first.name)
-  - content_for :meta_keywords, t('meta.sub_category_keywords', :sub_category => @categories.first.name)
-  - content_for :meta_description, t('meta.sub_category_description', :sub_category => @categories.first.name)
-  - content_for :seo_header, t('meta.sub_category_header', :sub_category => @categories.first.name)
+- if @running_root_request
+  - root_cat_id = params[:top_level_cat_id].gsub(/\-.*/, '')
+  - content_for :meta_title, t("meta.root_category_#{root_cat_id}.meta_title")
+  - content_for :meta_description, t("meta.root_category_#{root_cat_id}.meta_description")
+  - content_for :seo_header, t("meta.root_category_#{root_cat_id}.meta_header")
+- elsif @category_id.present? && @brand_id.blank? && @gender.blank?
+  - content_for :meta_title, t('meta.category_title', :category => @categories.first.name)
+  - content_for :meta_description, t('meta.category_description', :category => @categories.first.name)
+  - content_for :seo_header, t('meta.category_header', :category => @categories.first.name)
+- elsif @category_id.present? && @brand_id.present? && @gender.blank?
+  - content_for :meta_title, t('meta.category_brand_title', :category => @categories.first.name, :brand => @brand.name)
+  - content_for :meta_description, t('meta.category_brand_description', :category => @categories.first.name, :brand => @brand.name)
+  - content_for :seo_header, t('meta.category_brand_header', :category => @categories.first.name, :brand => @brand.name)
+- elsif @category_id.present? && @brand_id.blank? && @gender.present?
+  - content_for :meta_title, t('meta.category_gender_title', :category => @categories.first.name, :gender => @item_models.first.try(:gender).try(:name))
+  - content_for :meta_description, t('meta.category_gender_description', :category => @categories.first.name, :gender => @item_models.first.try(:gender).try(:name))
+  - content_for :seo_header, t('meta.category_gender_header', :category => @categories.first.name, :gender => @item_models.first.try(:gender).try(:name))
 - else
   = set_meta(@categories.first.try(:top_category_name))
+
+- content_for :no_index, 'true' if @set_no_index
 - steps = [link_to(t(@categories.first.top_category_name), category_url(@categories.first.top_category))]
 
 - if @category_id.present? && @categories.present?
@@ -34,6 +48,7 @@
       .content
         %ul.main_category
           - @gender_counts.each do |count_value|
+            - next if [1,2].include?(count_value.gender_id.to_i)
             %li.mcl_link
               - gender_name = count_value.try(:type_name) rescue count_value.try(:gender_name)
               - gender_value = count_value.try(:count_value) rescue count_value.try(:value)
@@ -105,7 +120,7 @@
         - brand_group.each do |brand|
           - next if brand.blank? || brand.logo_url.blank?
           %a.category_logos{ :href => build_uri( request.filtered_parameters.merge({:brand => brand.to_param}) ) }
-            = image_tag brand.logo_url, alt: brand.name, title: brand.name
+            = image_tag brand.logo_url, alt: brand.name, title: brand.name, rel: 'nofollow'
           .cl_delimeter
 
   .delimiter
@@ -117,7 +132,7 @@
         - brand_group.each do |brand|
           - next if brand.blank? || brand.logo_url.blank?
           %a.category_logos{ :href => build_uri( request.filtered_parameters.merge({:brand => brand.to_param}) ) }
-            = image_tag brand.logo_url, alt: brand.name, title: brand.name
+            = image_tag brand.logo_url, alt: brand.name, title: brand.name, rel: 'nofollow'
           .cl_delimeter
 
   .delimiter
@@ -129,5 +144,5 @@
         - brand_group.each do |brand|
           - next if brand.blank? || brand.logo_url.blank?
           %a.category_logos{ :href => build_uri( request.filtered_parameters.merge({:brand => brand.to_param}) ) }
-            = image_tag brand.logo_url, alt: brand.name, title: brand.name
+            = image_tag brand.logo_url, alt: brand.name, title: brand.name, rel: 'nofollow'
           .cl_delimeter

@@ -3,10 +3,14 @@
   %head
     %meta{:content => "text/html; charset=utf-8", "http-equiv" => "Content-Type"}/
     %meta{:name => 'description', :content => content_for?(:meta_description) ? yield(:meta_description) : t('meta_description')}
-    %meta{:name => 'keywords', :content => content_for?(:meta_keywords) ? yield(:meta_keywords) : t('meta_keywords')}
+    -#%meta{:name => 'keywords', :content => content_for?(:meta_keywords) ? yield(:meta_keywords) : t('meta_keywords')}
     %meta{:name => 'robots', :content => 'all'}
     %meta{:name => 'language', :content => 'ru'}
-    %meta{:name => 'yandex-verification', :content => '6b669eb5a94238c9'}
+    %meta{:name => 'yandex-verification', :content => '61489bed884f28aa'}
+    %link{ rel: 'shortcut icon', href: '/favicon.ico', type: 'image/x-icon' }
+    %link{ rel: 'icon', href: '/favicon.ico', type: 'image/x-icon' }
+
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
     - if content_for?(:canonical_url)
       %link{ :rel => "canonical", :href => yield(:canonical_url) }
     - if content_for?(:no_index)
@@ -18,7 +22,6 @@
     = render :partial => '/layouts/partials/google_analytics'
     = render :partial => '/layouts/partials/yandex_analytics'
   %body{:itemscope => '', :itemtype => 'http://schema.org/WebPage'}
-    -#%h1.seo_header.invisible= content_for?(:seo_header) ? yield(:seo_header) : t('default_seo_header')
     - if flash[:message_type]
       = render :partial => "/flash/#{flash[:message_type]}"
     #loader
@@ -104,9 +107,9 @@
           - hash_map.each do |name, translation|
             - addition = name == params[:id] ? "catalog_button_style_active" : ''
             = link_to translation, category_url(name), :class => "catalog_button_style #{addition}"
+          %h1.seo_header= content_for?(:seo_header) ? yield(:seo_header) : t('default_seo_header')
         .separator_header
       #content_wraper
-        %h1.seo_header= content_for?(:seo_header) ? yield(:seo_header) : t('default_seo_header')
         #ajax_content
           = yield
         .delimiter

@@ -8,5 +8,6 @@ Disallow: /*from=adwords
 Disallow: /*utm_source*
 Disallow: /*gclid=
 Disallow: /*pdf
+disallow: *payment
 Host: shop-mydostavka.com
 Sitemap: http://shop-mydostavka.com/sitemap.xml
