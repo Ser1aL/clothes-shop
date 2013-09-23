@@ -46,6 +46,10 @@ class ShoppingCartController < ApplicationController
       redirect_to :back and return
     end
 
+    @product = Product.find(params[:product_id]) rescue nil
+    @style = @product.styles.find(params[:style]) rescue nil
+    @stock = @style.stocks.find(params[:stock_id]) rescue nil
+
     if @product && @style && @stock
       if session[:shopping_cart_id].nil?
         @shopping_cart = ShoppingCart.create!(:user_id => nil, :status => :open)
@@ -73,6 +77,9 @@ class ShoppingCartController < ApplicationController
           )
         end
       end
+    else
+      flash[:message_type] = 'product_does_not_exist'
+      redirect_to :back and return
     end
     prepare_cart
     render 'show'
