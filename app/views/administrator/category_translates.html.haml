@@ -5,6 +5,7 @@
     = hidden_field_tag :type, "category"
     = hidden_field_tag :category_id, category.id
     = text_field_tag :name, category.name, :disabled => true
+    = text_field_tag :original_name, category.original_name, :disabled => true
     = text_field_tag :display_name
     = submit_tag t("save"), :class => 'ajaxified_translation'
 
@@ -16,6 +17,7 @@
     = hidden_field_tag :type, "sub_category"
     = hidden_field_tag :sub_category_id, sub_category.id
     = text_field_tag :name, sub_category.name, :disabled => true
+    = text_field_tag :original_name, sub_category.original_name, :disabled => true
     = text_field_tag :display_name
     = submit_tag t("save"), :class => 'ajaxified_translation'
 
@@ -26,5 +28,6 @@
     = hidden_field_tag :type, "gender"
     = hidden_field_tag :gender_id, gender.id
     = text_field_tag :name, gender.name, :disabled => true
+    = text_field_tag :original_name, gender.original_name, :disabled => true
     = text_field_tag :display_name
     = submit_tag t("save"), :class => 'ajaxified_translation'

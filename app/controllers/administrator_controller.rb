@@ -76,9 +76,9 @@ class AdministratorController < ApplicationController
   end
 
   def category_translates
-    @categories = Category.order("ifnull(display_name, name)")
-    @sub_categories = SubCategory.order("ifnull(display_name, name)")
-    @genders = Gender.order(:display_name)
+    @categories = Category.order("ifnull(display_name, name)").select('categories.name as original_name, categories.*')
+    @sub_categories = SubCategory.order("ifnull(display_name, name)").select('sub_categories.name as original_name, sub_categories.*')
+    @genders = Gender.order(:display_name).select('genders.name as original_name, genders.*')
   end
 
   def category_translate
