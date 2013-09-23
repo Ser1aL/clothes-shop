@@ -48,7 +48,7 @@
       .content
         %ul.main_category
           - @gender_counts.each do |count_value|
-            - next if [1,2].include?(count_value.gender_id.to_i)
+            - next if [3,5].include?(count_value.gender_id.to_i)
             %li.mcl_link
               - gender_name = count_value.try(:type_name) rescue count_value.try(:gender_name)
               - gender_value = count_value.try(:count_value) rescue count_value.try(:value)
