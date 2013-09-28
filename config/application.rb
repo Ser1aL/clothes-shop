@@ -24,6 +24,8 @@ module Watches
 
     config.i18n.default_locale = :ru
 
+    config.cache_store = :dalli_store, { namespace: 'shop-dalli', expires_in: 86400, compress: true }
+
     # Custom directories with classes and modules you want to be autoloadable.
     # config.autoload_paths += %W(#{config.root}/extras)
 

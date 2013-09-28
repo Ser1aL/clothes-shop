@@ -129,6 +129,7 @@ GEM
     compass-rails (1.0.3)
       compass (>= 0.12.2, < 0.14)
     daemon_controller (1.1.0)
+    dalli (2.6.4)
     debug_inspector (0.0.2)
     devise (2.1.2)
       bcrypt-ruby (~> 3.0)
@@ -303,6 +304,7 @@ DEPENDENCIES
   childprocess!
   coffee-rails (~> 3.2.1)
   compass-rails
+  dalli
   devise
   erb2haml
   factory_girl_rails

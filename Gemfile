@@ -20,6 +20,7 @@ gem 'validates_timeliness', :git => 'git://github.com/adzap/validates_timeliness
 gem 'nokogiri', '1.5.0', :require => 'nokogiri'
 gem 'zappos', '0.4.1', :git => 'git://github.com/makenai/zappos.git'
 gem 'passenger'
+gem 'dalli'
 
 #gem 'rack', :git => "git://github.com/rack/rack.git", :tag => '1.3.2'
 #gem 'sprockets', :git => "git://github.com/sstephenson/sprockets.git"
