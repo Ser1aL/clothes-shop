@@ -16,29 +16,32 @@ class ShoppingCartController < ApplicationController
     @style = @product.styles.find(params[:style])
     @stock = @style.stocks.find(params[:stock_id])
 
-    # update product availability
-    exists_at_6pm, exists_at_zappos = true, true
-    begin
-      exists_at_6pm = false unless @style.update_6pm_prices(@product.item_model)
-    rescue => e
-      Rails.logger.debug '---------GOT 6pm EXCEPTION---------------'
-      Rails.logger.debug e.inspect
-      Rails.logger.debug e.message
-      Rails.logger.debug '------------------------'
-    end
-    begin
-      if @style.update_zappos_prices(@product.item_model)
-      else
-        exists_at_zappos = false
+    exists = true
+    if @product.item_model.origin == '6pm' || @product.item_model.origin.blank?
+      begin
+        exists = @style.update_6pm_prices(@product.item_model)
+        Rails.logger.debug "Exists at 6pm: #{exists.inspect}"
+      rescue => e
+        Rails.logger.debug '---------GOT 6pm EXCEPTION---------------'
+        Rails.logger.debug e.inspect
+        Rails.logger.debug e.message
+        Rails.logger.debug '------------------------'
       end
-    rescue => e
-      Rails.logger.debug '---------GOT zappos EXCEPTION---------------'
-      Rails.logger.debug e.inspect
-      Rails.logger.debug e.message
-      Rails.logger.debug '------------------------'
     end
 
-    if exists_at_6pm || exists_at_zappos
+    if ( @product.item_model.origin == 'zappos' || @product.item_model.origin.blank? ) && !exists
+      begin
+        exists = @style.update_zappos_prices(@product.item_model)
+        Rails.logger.debug "Exists at zappos: #{exists.inspect}"
+      rescue => e
+        Rails.logger.debug '---------GOT zappos EXCEPTION---------------'
+        Rails.logger.debug e.inspect
+        Rails.logger.debug e.message
+        Rails.logger.debug '------------------------'
+      end
+    end
+
+    if exists
       @style.update_attribute(:hidden, false)
     else
       @style.update_attribute(:hidden, true)

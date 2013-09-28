@@ -57,6 +57,7 @@ class Style < ActiveRecord::Base
     begin
       html = Nokogiri::HTML(open(path_to_product))
     rescue OpenURI::HTTPError => error
+      Rails.logger.debug "openuri error: #{error.message}"
       return false if error.message == '404 Not Found'
     end
 
@@ -64,7 +65,7 @@ class Style < ActiveRecord::Base
 
 
     # ensure we are on this page
-    return unless html.css("#detailImage").to_s =~ /#{external_style_id}/
+    return false unless html.css("#detailImage").to_s =~ /#{external_style_id}/
 
     html.css("ul li#priceSlot .oldPrice").text =~ %r(\$([\d\.]*))
     original_price = $1
@@ -81,7 +82,7 @@ class Style < ActiveRecord::Base
     # recreating stocks
     feed_stocks = html.css("select[name=dimensionValues] option")
 
-    return if price.blank? || original_price.blank? || feed_stocks.size <= 0
+    return false if price.blank? || original_price.blank? || feed_stocks.size <= 0
 
     percent_off = (1 - price.to_f / original_price.to_f).round(2) * 100
 
