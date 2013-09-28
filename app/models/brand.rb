@@ -22,12 +22,15 @@ class Brand < ActiveRecord::Base
       }
       countings.each do |counting|
         next if tree[:root][countings.first.category_name][:tree].map{|node| node[:id]}.include?(counting.sub_category_id)
-
-        tree[:root][countings.first.category_name][:tree] << {
-            :sub_category => SubCategory.find(counting.sub_category_id),
-            :name => counting.sub_category_name,
-            :count => counting.value
-        } if counting.sub_category_name.present? && tree[:root][countings.first.category_name][:tree].try(:[], :name).blank?
+        if counting.sub_category_name.present?
+          if tree[:root][countings.first.category_name][:tree].select { |node| node[:name] == counting.sub_category_name }.blank?
+            tree[:root][countings.first.category_name][:tree] << {
+                :sub_category => SubCategory.find(counting.sub_category_id),
+                :name => counting.sub_category_name,
+                :count => counting.value
+            }
+          end
+        end
       end
     end
     tree
