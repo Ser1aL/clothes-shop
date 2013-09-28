@@ -1,5 +1,6 @@
 class ErrorsController < ApplicationController
 
+  helper :all
 
   def not_found
     @categories = Category.all.group_by(&:top_category).delete_if{ |key, _| key.blank? }

@@ -19,7 +19,7 @@
               - next if @countings[category.id].blank?
               %div
                 .sub_category_name
-                  = link_to category.name, "/advanced_search#cat=#{category.id}"
+                  = link_to category.name, category_sub_category_url("#{top_level_category_id}-#{categories.first.top_category_name}", category)
                 .sub_category_count
                   = "(#{@countings[category.id].sum(&:value)})"
               .delimiter
