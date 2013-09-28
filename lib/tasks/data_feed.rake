@@ -268,7 +268,7 @@ namespace :data_feed do
   desc 'update styles'
   task :update_styles => :environment do
     output_file = File.open("log/update_styles.txt", "a+")
-    10000.times do |cycle|
+    4000.times do |cycle|
       hidden_styles_count = 0
       output_file.puts "[#{Time.now.to_s(:db)} - Cycle start] Updating #{cycle*100}-#{(cycle+1)*100} styles"
       Style.where(:hidden => false).order("created_at DESC").limit(100).offset(100*cycle).each_with_index do |style, index|

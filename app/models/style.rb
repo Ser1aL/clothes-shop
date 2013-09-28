@@ -32,6 +32,10 @@ class Style < ActiveRecord::Base
     9a3e643501faa5feecc03ea9d1ec1fdf9217dcf1
   )
 
+  SIXPM_KEY_LIST = %w(
+    94342811fde7123e23978f827a654f5856cabcad
+  )
+
 
   def original_price_extra(exchange_rate, markup)
     ((original_price + original_price * markup / 100) * exchange_rate).to_i
@@ -50,57 +54,41 @@ class Style < ActiveRecord::Base
   end
 
   def update_6pm_prices(item_model)
-    path_to_product = "http://6pm.com/product/#{item_model.external_product_id}/color/#{external_color_id}"
-    Rails.logger.debug "---------------------------------------------"
-    Rails.logger.debug("updating info from 6pm url: #{path_to_product}")
+    product_search_opts = {
+        :includes => %w(styles sortedSizes styles stocks onSale),
+        :excludes => %w(productId brandName productName defaultImageUrl defaultProductUrl )
+    }
+    key = SIXPM_KEY_LIST.sample
+    client = Zappos::Client.new(key, { :base_url => 'api.6pm.com' })
+    response = client.product( product_search_opts.merge!({:id => item_model.external_product_id}) )
 
-    begin
-      html = Nokogiri::HTML(open(path_to_product))
-    rescue OpenURI::HTTPError => error
-      Rails.logger.debug "openuri error: #{error.message}"
-      return false if error.message == '404 Not Found'
+    Rails.logger.debug "===6PM RESPONSE: #{response.inspect}============="
+
+    raise if response.data.statusCode.to_i == 401
+    product = response.data.product
+    return false unless product
+    styles = product.first.styles
+    updated_styles_count = 0
+    styles.each do |feed_style|
+      next unless feed_style.styleId == external_style_id
+      updated_styles_count += 1
+      update_attributes(
+          :original_price => feed_style.originalPrice[1..-1].to_f,
+          :discount_price => feed_style.price[1..-1].to_f,
+          :percent_off => feed_style.percentOff.to_i,
+          :on_sale => feed_style.onSale == "true"
+      )
+      stocks.destroy_all
+      feed_style.stocks.each do |feed_stock|
+        self.stocks.create(
+            :size => feed_stock['size'],
+            :quantity => feed_stock.onHand,
+            :width => feed_stock.width,
+            :external_stock_id => feed_stock.stockId
+        )
+      end
     end
-
-    Rails.logger.debug "HTML PAGE FETCHED"
-
-
-    # ensure we are on this page
-    return false unless html.css("#detailImage").to_s =~ /#{external_style_id}/
-
-    html.css("ul li#priceSlot .oldPrice").text =~ %r(\$([\d\.]*))
-    original_price = $1
-    if original_price.blank?
-      html.css(".discount").text =~ %r(\$([\d\.]*))
-      original_price = $1
-    end
-    html.css("ul li#priceSlot .price").text =~ %r(\$([\d\.]*))
-    price = $1
-    if price.blank?
-      html.css("#price").text =~ %r(\$([\d\.]*))
-      price = $1
-    end
-    # recreating stocks
-    feed_stocks = html.css("select[name=dimensionValues] option")
-
-    return false if price.blank? || original_price.blank? || feed_stocks.size <= 0
-
-    percent_off = (1 - price.to_f / original_price.to_f).round(2) * 100
-
-    Rails.logger.debug "percent_off = #{percent_off}"
-    Rails.logger.debug "price = #{price}"
-    Rails.logger.debug "original_price = #{original_price}"
-    Rails.logger.debug "feed_stocks = #{feed_stocks}"
-
-
-    stocks.destroy_all
-    feed_stocks[1..feed_stocks.size].each{ |stock| self.stocks.create(:size => stock.text, :quantity => 1) }
-    self.update_attributes(
-      :original_price => original_price,
-      :discount_price => price,
-      :percent_off => percent_off
-    )
-    Rails.logger.debug "---------------------------------------------"
-    true
+    updated_styles_count > 0 ? true : false
   end
 
   def update_zappos_prices(item_model, key_index = 0)
