@@ -21,6 +21,9 @@ gem 'nokogiri', '1.5.0', :require => 'nokogiri'
 gem 'zappos', '0.4.1', :git => 'git://github.com/makenai/zappos.git'
 gem 'passenger'
 gem 'dalli'
+gem 'jquery-rails'
+gem 'jquery-ui-rails'
+gem 'tinymce-rails'
 
 #gem 'rack', :git => "git://github.com/rack/rack.git", :tag => '1.3.2'
 #gem 'sprockets', :git => "git://github.com/sstephenson/sprockets.git"
@@ -54,9 +57,6 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
   gem 'compass-rails'
 end
-
-gem 'jquery-rails'
-gem 'tinymce-rails'
 
 group :test do
   gem 'factory_girl_rails'#, :git => "git://github.com/thoughtbot/factory_girl_rails.git"
