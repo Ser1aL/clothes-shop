@@ -27,7 +27,7 @@ class Brand < ActiveRecord::Base
             :sub_category => SubCategory.find(counting.sub_category_id),
             :name => counting.sub_category_name,
             :count => counting.value
-        } if counting.sub_category_name.present?
+        } if counting.sub_category_name.present? && tree[:root][countings.first.category_name][:tree].try(:[], :name).blank?
       end
     end
     tree

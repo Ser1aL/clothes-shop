@@ -1,9 +1,8 @@
 - if @running_root_request
-  - Rails.logger.info ">>> RUNNING ROOT REQUEST"
   - root_cat_id = params[:top_level_cat_id].gsub(/\-.*/, '')
   - content_for :meta_title, t("meta.root_category_#{root_cat_id}.meta_title")
   - content_for :meta_description, t("meta.root_category_#{root_cat_id}.meta_description")
-  - content_for :seo_header, t("meta.root_category_#{root_cat_id}.meta_header")
+  - content_for :seo_header, t("meta.root_category_#{root_cat_id}.seo_header")
 - elsif @category_id.present? && @brand_id.blank? && @gender.blank?
   - content_for :meta_title, t('meta.category_title', :category => @categories.first.name)
   - content_for :meta_description, t('meta.category_description', :category => @categories.first.name)

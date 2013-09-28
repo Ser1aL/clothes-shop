@@ -3729,13 +3729,11 @@ a.previews .previews_img_file{
 }
 
 .seo_header{
-    float: right;
-    font-size: 13px;
     font-weight: normal;
     padding: 0;
-    margin-top: 10px;
-    margin-right: 4px;
-}
+    font-size: 20px;
+    margin: 0 auto;
+    width: 540px;}
 
 .shipping_adres .input_style, .reg_form .input_style{
     width: 277px;

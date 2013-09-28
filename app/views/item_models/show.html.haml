@@ -1,7 +1,7 @@
 = javascript_include_tag "http://translate.google.com/translate_a/element.js?cb=googleSectionalElementInit&ug=section&hl=ru"
 - content_for :meta_title, t('meta.single_product_title', :product_name => @product.product_name, :category => @product.try(:category).try(:name), :brand => @product.try(:brand).try(:name))
 - content_for :meta_description, t('meta.single_product_description', :product_name => @product.product_name, :category => @product.try(:category).try(:name), :brand => @product.try(:brand).try(:name))
-- content_for :seo_header, t('meta.single_product_seo_header', :product_name => @product.product_name, :category => @product.try(:category).try(:name), :brand => @product.try(:brand).try(:name))
+-#- content_for :seo_header, t('meta.single_product_seo_header', :product_name => @product.product_name, :category => @product.try(:category).try(:name), :brand => @product.try(:brand).try(:name))
 -#- content_for(:canonical_url) { single_model_url(@product, @product.product.styles.first) }
 
 %span.path_link{ :itemprop => 'breadcrumb'}
@@ -27,7 +27,7 @@
   .top_single_product_wrapper
     .left_block
       .product_description_name
-        %span{:itemprop => "name"}= @product.product_name.truncate(25).html_safe
+        %span{:itemprop => "name"}= t('meta.single_product_seo_header', :product_name => @product.product_name, :category => @product.try(:category).try(:name), :brand => @product.try(:brand).try(:name))
       %ul.product_description_ul
         %li.pd_li_style
           .pd_li_label= t('product_description.category')

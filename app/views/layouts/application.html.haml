@@ -9,8 +9,6 @@
     %meta{:name => 'yandex-verification', :content => '61489bed884f28aa'}
     %link{ rel: 'shortcut icon', href: '/favicon.ico', type: 'image/x-icon' }
     %link{ rel: 'icon', href: '/favicon.ico', type: 'image/x-icon' }
-
-    <link rel="icon" href="/favicon.ico" type="image/x-icon">
     - if content_for?(:canonical_url)
       %link{ :rel => "canonical", :href => yield(:canonical_url) }
     - if content_for?(:no_index)
@@ -75,8 +73,7 @@
                 = link_to @cart_line_count, checkout_path, :class => 'text1_price_quantity'
                 %p.text1,   на сумму
                 = link_to @shopping_cart.total, checkout_path, :class => 'text1_price_quantity'
-                %p.text1
-                  = @currency
+                %p.text1= @currency
           .separator_header
         #navigation
           .navigation_buttons
@@ -107,6 +104,9 @@
           - hash_map.each do |name, translation|
             - addition = name == params[:id] ? "catalog_button_style_active" : ''
             = link_to translation, category_url(name), :class => "catalog_button_style #{addition}"
+        - if params[:controller] == 'item_models' && params[:action] == 'show'
+        - else
+          .separator_header
           %h1.seo_header= content_for?(:seo_header) ? yield(:seo_header) : t('default_seo_header')
         .separator_header
       #content_wraper
