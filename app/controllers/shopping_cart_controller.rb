@@ -82,7 +82,7 @@ class ShoppingCartController < ApplicationController
         end
       end
     else
-      flash[:message_type] = 'product_does_not_exist'
+      flash[:message_type] = 'product_with_this_size_does_not_exist'
       redirect_to :back and return
     end
     prepare_cart
