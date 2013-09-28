@@ -16,6 +16,7 @@ class ShoppingCartController < ApplicationController
     @style = @product.styles.find(params[:style])
     @stock = @style.stocks.find(params[:stock_id])
 
+    selected_stock_size = @stock.size
     exists = true
     if @product.item_model.origin == '6pm' || @product.item_model.origin.blank?
       begin
@@ -51,7 +52,7 @@ class ShoppingCartController < ApplicationController
 
     @product = Product.find(params[:product_id]) rescue nil
     @style = @product.styles.find(params[:style]) rescue nil
-    @stock = @style.stocks.find(params[:stock_id]) rescue nil
+    @stock = @style.stocks.where(size: selected_stock_size).first rescue nil
 
     if @product && @style && @stock
       if session[:shopping_cart_id].nil?
