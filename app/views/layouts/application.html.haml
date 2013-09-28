@@ -104,7 +104,7 @@
           - hash_map.each do |name, translation|
             - addition = name == params[:id] ? "catalog_button_style_active" : ''
             = link_to translation, category_url(name), :class => "catalog_button_style #{addition}"
-        - if params[:controller] == 'item_models' && params[:action] == 'show'
+        - if ['item_models', 'categories'].include?(params[:controller]) && params[:action] == 'show'
         - else
           .separator_header
           %h1.seo_header= content_for?(:seo_header) ? yield(:seo_header) : t('default_seo_header')

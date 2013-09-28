@@ -1,22 +1,29 @@
+- seo_header = ''
 - if @running_root_request
   - root_cat_id = params[:top_level_cat_id].gsub(/\-.*/, '')
   - content_for :meta_title, t("meta.root_category_#{root_cat_id}.meta_title")
   - content_for :meta_description, t("meta.root_category_#{root_cat_id}.meta_description")
-  - content_for :seo_header, t("meta.root_category_#{root_cat_id}.seo_header")
-- elsif @category_id.present? && @brand_id.blank? && @gender.blank?
+  - seo_header = t("meta.root_category_#{root_cat_id}.seo_header")
+- elsif @category_id.present? && @brand_id.blank? && @gender.blank? # category
   - content_for :meta_title, t('meta.category_title', :category => @categories.first.name)
-  - content_for :meta_description, t('meta.category_description', :category => @categories.first.name)
-  - content_for :seo_header, t('meta.category_header', :category => @categories.first.name)
-- elsif @category_id.present? && @brand_id.present? && @gender.blank?
-  - content_for :meta_title, t('meta.category_brand_title', :category => @categories.first.name, :brand => @brand.name)
-  - content_for :meta_description, t('meta.category_brand_description', :category => @categories.first.name, :brand => @brand.name)
-  - content_for :seo_header, t('meta.category_brand_header', :category => @categories.first.name, :brand => @brand.name)
-- elsif @category_id.present? && @brand_id.blank? && @gender.present?
-  - content_for :meta_title, t('meta.category_gender_title', :category => @categories.first.name, :gender => @item_models.first.try(:gender).try(:name))
-  - content_for :meta_description, t('meta.category_gender_description', :category => @categories.first.name, :gender => @item_models.first.try(:gender).try(:name))
-  - content_for :seo_header, t('meta.category_gender_header', :category => @categories.first.name, :gender => @item_models.first.try(:gender).try(:name))
+  - content_for :meta_description, t('meta.category_description', :category => @categories.first.name.try(:mb_chars).downcase)
+  - seo_header = t('meta.category_header', :category => @categories.first.name)
+- elsif @category_id.present? && @brand_id.present? && @gender.blank? # category + brand
+  - content_for :meta_title, t('meta.category_brand_title', :category => @categories.first.name, :brand => @brand.name.try(:mb_chars).downcase)
+  - content_for :meta_description, t('meta.category_brand_description', :category => @categories.first.name.try(:mb_chars).downcase, :brand => @brand.name.try(:mb_chars).downcase)
+  - seo_header = t('meta.category_brand_header', :category => @categories.first.name, :brand => @brand.name.try(:mb_chars).downcase)
+- elsif @category_id.present? && @brand_id.blank? && @gender.present? # category + gender
+  - content_for :meta_title, t('meta.category_gender_title', :category => @categories.first.name, :gender => @item_models.first.try(:gender).try(:name).try(:mb_chars).try(:downcase))
+  - content_for :meta_description, t('meta.category_gender_description', :category => @categories.first.name.try(:mb_chars).downcase, :gender => @item_models.first.try(:gender).try(:name).try(:mb_chars).try(:downcase))
+  - seo_header = t('meta.category_gender_header', :category => @categories.first.name, :gender => @item_models.first.try(:gender).try(:name).try(:mb_chars).try(:downcase))
 - else
   = set_meta(@categories.first.try(:top_category_name))
+
+-#- elsif @category_id.blank? && @brand_id.blank? && @gender.present? # gender
+-#  - content_for :meta_title, t('meta.category_gender_title', :category => @categories.first.name, :gender => @item_models.first.try(:gender).try(:name).try(:downcase))
+-#  - content_for :meta_description, t('meta.category_gender_description', :category => @categories.first.name.downcase, :gender => @item_models.first.try(:gender).try(:name).try(:downcase))
+-#  - seo_header = t('meta.category_gender_header', :category => @categories.first.name, :gender => @item_models.first.try(:gender).try(:name).try(:downcase))
+
 
 - content_for :no_index, 'true' if @set_no_index
 - steps = [link_to(t(@categories.first.top_category_name), category_url(@categories.first.top_category))]
@@ -29,6 +36,9 @@
   - steps << link_to(@item_models.first.sub_category.name, build_uri(top_level_cat_id: @categories.first.top_category, category: @categories.first.to_param, sub_category: @item_models.first.sub_category.to_param))
 = bread_crumbs(steps)
 .separator_header
+%h1.seo_header= seo_header
+.separator_header
+
 
 
 .category-page.search_wrapper.advanced_search_wrapper
