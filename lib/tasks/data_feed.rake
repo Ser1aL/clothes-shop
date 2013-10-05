@@ -66,14 +66,14 @@ namespace :data_feed do
     start_from_page = ENV['start_from_page'].blank? ? 0 : ENV['start_from_page']
     key_index = 0
 
-
+    request_counter = 0
     #[ItemModel, Category, SubCategory, Brand, ImageAttachment, Gender].each &:destroy_all
     begin
+      break if request_counter >= 1200
       key_index = 0 if six_pm_key_list[key_index].blank?
       puts "using key=#{six_pm_key_list[key_index]}"
 
       client = Zappos::Client.new(six_pm_key_list[key_index], { :base_url => 'api.6pm.com' })
-      request_counter = 0
       # 6pm req #1.1
       response = client.search(:limit => 1)
       request_counter += 1
@@ -81,7 +81,7 @@ namespace :data_feed do
       puts "found total #{total_count}"
 
       (total_count.to_f/search_opts[:limit].to_f).ceil.times do |index|
-        next if request_counter >= 5000
+        next if request_counter >= 1200
         begin
           key_index = 0 if six_pm_key_list[key_index].blank?
           client = Zappos::Client.new(six_pm_key_list[key_index], { :base_url => 'api.6pm.com' })
@@ -97,6 +97,7 @@ namespace :data_feed do
               puts "started item #{item.productId}"
 
               # reload item if not 6pm
+              # if found item is zappos or else, remove it as we prioritize 6pm products
               existing_item = ItemModel.find_by_external_product_id(item.productId)
               if existing_item
                 if existing_item.origin == '6pm'
@@ -228,70 +229,40 @@ namespace :data_feed do
 
   end
 
-  desc "updates item model prices"
-  task :update_prices => :environment do
-    #output_file = File.open("log/price_update_output.txt", "w")
-    #key_index = 0
-    #Style.where(:hidden => false).order("created_at DESC").limit(4000).each_with_index do |style, index|
-    #  output_file.puts "Style: #{style.inspect}"
-    #  sleep 5 if index % 50 == 0
-    #  begin
-    #    output_file.puts "Requesting 6pm. Color id: #{style.external_color_id}"
-    #    if style.update_6pm_prices(style.product.item_model)
-    #      style.update_attribute(:hidden, false) and next
-    #    end
-    #  rescue
-    #  end
-    #  begin
-    #    output_file.puts "Requesting zappos. Color id: #{style.external_color_id}"
-    #    if style.update_zappos_prices(style.product.item_model, key_index)
-    #      style.update_attribute(:hidden, false)
-    #    else
-    #      style.update_attribute(:hidden, true)
-    #    end
-    #  rescue
-    #    key_index += 1 and next
-    #  end
-    #end
-    # Remove hidden
-    #Style.where(:hidden => true).each do |style|
-    #  output_file.puts "Removing style: #{style.inspect}"
-    #  item_model = style.product.item_model
-    #  style.destroy
-    #  unless item_model.product.styles.any?
-    #    output_file.puts "Removing item model: #{item_model.inspect}"
-    #    item_model.destroy
-    #  end
-    #end
-  end
-
   desc 'update styles'
   task :update_styles => :environment do
     output_file = File.open("log/update_styles.txt", "a+")
+    sixpm_request_counter, zappos_request_counter = 0, 0
     4000.times do |cycle|
       hidden_styles_count = 0
       output_file.puts "[#{Time.now.to_s(:db)} - Cycle start] Updating #{cycle*100}-#{(cycle+1)*100} styles"
       Style.where(:hidden => false).order("created_at DESC").limit(100).offset(100*cycle).each_with_index do |style, index|
         sleep 5 if index % 10 == 0
-        begin
-          output_file.puts "[#{Time.now.to_s(:db)} - ##{index}] Requesting 6pm. Item Model: ##{style.product.item_model.external_product_id}, Color id: ##{style.external_color_id}"
-          if style.update_6pm_prices(style.product.item_model)
-            style.update_attribute(:hidden, false) and next
+        if sixpm_request_counter < 800
+          begin
+            output_file.puts "[#{Time.now.to_s(:db)} - ##{index}] Requesting 6pm. Item Model: ##{style.product.item_model.external_product_id}, Color id: ##{style.external_color_id}"
+            if style.update_6pm_prices(style.product.item_model)
+              style.update_attribute(:hidden, false) and next
+            end
+            sixpm_request_counter += 1
+          rescue => e
+            output_file.puts "[#{Time.now.to_s(:db)} - ##{index}] Exception updating HTML 6pm: #{e.message}"
           end
-        rescue => e
-          output_file.puts "[#{Time.now.to_s(:db)} - ##{index}] Exception updating HTML 6pm: #{e.message}"
         end
 
-        begin
-          output_file.puts "[#{Time.now.to_s(:db)} - ##{index}] Requesting zappos. Item Model: ##{style.product.item_model.external_product_id}, Color id: ##{style.external_color_id}"
-          if style.update_zappos_prices(style.product.item_model)
-            style.update_attribute(:hidden, false)
-          else
-            hidden_styles_count += 1
-            style.update_attribute(:hidden, true)
+        if zappos_request_counter < 800
+          begin
+            output_file.puts "[#{Time.now.to_s(:db)} - ##{index}] Requesting zappos. Item Model: ##{style.product.item_model.external_product_id}, Color id: ##{style.external_color_id}"
+            if style.update_zappos_prices(style.product.item_model)
+              style.update_attribute(:hidden, false)
+            else
+              hidden_styles_count += 1
+              style.update_attribute(:hidden, true)
+            end
+            zappos_request_counter += 1
+          rescue => e
+            output_file.puts "[#{Time.now.to_s(:db)} - ##{index}] Exception updating API zappos: #{e.message}"
           end
-        rescue => e
-          output_file.puts "[#{Time.now.to_s(:db)} - ##{index}] Exception updating API zappos: #{e.message}"
         end
 
       end
@@ -336,8 +307,8 @@ namespace :data_feed do
 
   end
 
-  desc "loads facets"
-  task :load_facets => :environment do
+  #desc "loads facets"
+  #task :load_facets => :environment do
     #key_index = 0
     #ItemModel.where(:facet_loaded => false).order(:external_product_id).each do |item_model|
     #  begin
@@ -359,10 +330,10 @@ namespace :data_feed do
     #    key_index += 1
     #  end
     #end
-  end
+  #end
 
-  desc "load swatch images for existing styles"
-  task :load_swatches => :environment do
+  #desc "load swatch images for existing styles"
+  #task :load_swatches => :environment do
     #styles = Style.where(:swatch_url => nil, :hidden => false).order("id desc")
     #key_index = 0
     #image_search_opts = { :recipe => "SWATCH" }
@@ -383,5 +354,5 @@ namespace :data_feed do
     #    next
     #  end
     #end
-  end
+  #end
 end
