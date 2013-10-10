@@ -62,7 +62,7 @@ class Style < ActiveRecord::Base
     client = Zappos::Client.new(key, { :base_url => 'api.6pm.com' })
     response = client.product( product_search_opts.merge!({:id => item_model.external_product_id}) )
 
-    Rails.logger.debug "===6PM RESPONSE: #{response.inspect}============="
+    Rails.logger.debug "===#{Time.now.utc} 6PM RESPONSE: #{response.inspect} #{response.response.instance_variable_get(:@header).inspect}============="
 
     raise if response.data.statusCode.to_i == 401
     product = response.data.product
@@ -100,7 +100,7 @@ class Style < ActiveRecord::Base
     client = Zappos::Client.new(key, { :base_url => 'api.zappos.com' })
     response = client.product( product_search_opts.merge!({:id => item_model.external_product_id}) )
 
-    Rails.logger.debug "===ZAPPOS RESPONSE: #{response.inspect}============="
+    Rails.logger.debug "===#{Time.now.utc} ZAPPOS RESPONSE: #{response.inspect} #{response.response.instance_variable_get(:@header).inspect}============="
 
     raise if response.data.statusCode.to_i == 401
     product = response.data.product
