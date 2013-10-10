@@ -42,7 +42,7 @@
         - if @style.is_shoes?
           %li.pd_li_style
             .pd_li_label= t('product_description.width')
-            .pd_li_labe2= @style.stocks[0].width
+            .pd_li_labe2= @style.stocks.try(:[], 0).try(:width).to_s
         %li.pd_li_style
           .pd_li_label SKU #:
           .pd_li_labe2= @product.external_product_id
