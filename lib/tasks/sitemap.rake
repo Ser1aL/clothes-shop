@@ -22,7 +22,7 @@ namespace :sitemap do
     ("A".."Z").each{ |letter| pages.push("http://shop-mydostavka.com/brands?letter=#{letter}") }
     Brand.all.each{ |brand| pages.push(brand_url(brand)) }
 
-    (1..6).each{ |category_id| pages.push("http://shop-mydostavka.com/categories/#{category_id}") }
+    (1..6).each{ |category_id| pages.push("http://shop-mydostavka.com/c/#{category_id}") }
 
     # first build non-product sitemap
     xml = Builder::XmlMarkup.new(:target => File.open(File.join(Rails.root, 'public/sitemap_non_product.xml'), 'w'), :indent => 1)
