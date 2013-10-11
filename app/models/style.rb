@@ -46,6 +46,7 @@ class Style < ActiveRecord::Base
   end
 
   def is_shoes?
+    return false if stocks.blank?
     stocks[0].width.to_i.to_s != stocks[0].width && stocks[0].width != 'One Size'
   end
 
