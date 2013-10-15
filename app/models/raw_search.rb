@@ -24,7 +24,7 @@ class RawSearch
     end
 
 
-    conditions = conditions.blank? ? "" : "AND " + conditions.join(" AND ")
+    conditions = conditions.blank? ? "1=1" : conditions.join(" AND ")
 
     search_query = <<-SQL
       SELECT #{type.to_s.pluralize}.id as #{type.to_s}_id,
@@ -70,7 +70,7 @@ class RawSearch
       conditions << "styles.discount_price < #{max_price.to_i}"
     end
 
-    conditions = conditions.blank? ? "" : "AND " + conditions.join(" AND ")
+    conditions = conditions.blank? ? "1=1" : conditions.join(" AND ")
 
     search_query = <<-SQL
       SELECT stocks.size
