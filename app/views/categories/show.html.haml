@@ -26,7 +26,10 @@
 
 
 - content_for :no_index, 'true' if @set_no_index
-- steps = [link_to(t(@categories.first.top_category_name), category_url(@categories.first.top_category))]
+- if @categories.present?
+  - steps = [link_to(t(@categories.first.top_category_name), category_url(@categories.first.top_category))]
+- else
+  - steps = []
 
 - if @category_id.present? && @categories.present?
   - steps << link_to(@categories.first.name, build_uri(top_level_cat_id: @categories.first.top_category, category: @categories.first.to_param))

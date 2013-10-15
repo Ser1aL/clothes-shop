@@ -29,15 +29,16 @@ class RawSearch
     search_query = <<-SQL
       SELECT #{type.to_s.pluralize}.id as #{type.to_s}_id,
         IFNULL(#{type.to_s.pluralize}.display_name,#{type.to_s.pluralize}.name) as type_name
-      FROM brands, genders, products, styles, stocks, categories, item_models
+      FROM item_models
         LEFT JOIN sub_categories ON sub_categories.id = item_models.sub_category_id
-      WHERE brands.id = item_models.brand_id
-        AND genders.id = item_models.gender_id
-        AND categories.id = item_models.category_id
-        AND products.item_model_id = item_models.id
-        AND styles.product_id = products.id
-        AND stocks.style_id = styles.id
-      #{conditions}
+      INNER JOIN brands ON brands.id = item_models.brand_id
+      INNER JOIN genders ON genders.id = item_models.gender_id
+      INNER JOIN categories ON categories.id = item_models.category_id
+      INNER JOIN products ON products.item_model_id = item_models.id
+      INNER JOIN styles ON styles.product_id = products.id
+      INNER JOIN stocks ON stocks.style_id = styles.id
+      WHERE
+        #{conditions}
       GROUP BY item_models.id, #{type.to_s.pluralize}.id
       ORDER BY type_name
     SQL
@@ -73,10 +74,11 @@ class RawSearch
 
     search_query = <<-SQL
       SELECT stocks.size
-      FROM item_models, products, styles, stocks
-      WHERE products.item_model_id = item_models.id
-        AND styles.product_id = products.id
-        AND stocks.style_id = styles.id
+      FROM stocks
+      INNER JOIN styles ON stocks.style_id = styles.id
+      INNER JOIN products ON styles.product_id = products.id
+      INNER JOIN item_models ON products.item_model_id = item_models.id
+      WHERE
         #{conditions}
       GROUP BY stocks.size
       LIMIT 30
@@ -113,11 +115,12 @@ class RawSearch
 
     search_query = <<-SQL
       SELECT count(item_models.id) as count, styles.color, styles.swatch_url
-      FROM item_models, products, styles, stocks
-      WHERE products.item_model_id = item_models.id
-        AND styles.product_id = products.id
-        AND stocks.style_id = styles.id
-        AND styles.swatch_url IS NOT NULL
+      FROM item_models
+      INNER JOIN products ON products.item_model_id = item_models.id
+      INNER JOIN styles ON styles.product_id = products.id
+      INNER JOIN stocks ON stocks.style_id = styles.id
+      WHERE
+        styles.swatch_url IS NOT NULL
         #{conditions}
       GROUP BY item_models.id, styles.color
       LIMIT 21

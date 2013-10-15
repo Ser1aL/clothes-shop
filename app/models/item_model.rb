@@ -50,7 +50,7 @@ class ItemModel < ActiveRecord::Base
     conditions << "gender_id = '#{params[:gender]}'" if params[:gender]
     conditions << "sub_category_id = '#{params[:sub_category]}'" if params[:sub_category]
     conditions << "category_id = '#{params[:category]}'" if params[:category]
-    conditions << "item_models.category_id IN (select id from categories where top_category = '#{params[:top_level_cat_id]}')"  if params[:top_level_cat_id]
+    conditions << "categories.top_category = '#{params[:top_level_cat_id]}')" if params[:top_level_cat_id]
     if params[:price_range].present?
       min_price, max_price = params[:price_range].split("-")
       min_price = (min_price.to_i - min_price.to_i * markup / 100 ) / exchange_rate
