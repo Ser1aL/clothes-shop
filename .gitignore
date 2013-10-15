@@ -7,3 +7,4 @@ public/system*
 .idea
 .sass-cache/
 public/assets/
+config/database.yml
