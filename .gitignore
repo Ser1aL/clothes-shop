@@ -8,3 +8,4 @@ public/system*
 .sass-cache/
 public/assets/
 config/database.yml
+./tags
