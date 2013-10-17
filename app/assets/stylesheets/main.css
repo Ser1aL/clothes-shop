@@ -3786,6 +3786,13 @@ a.previews .previews_img_file{
     color: #444;
 }
 
+.product_description_name h1{
+    font-size: 18px;
+    color: #444;
+    padding: 0;
+    margin: 0;
+}
+
 .product_description_ul{
     width: 245px;
     overflow: hidden;

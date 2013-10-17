@@ -10,8 +10,8 @@
   - seo_header = t('meta.category_header', :category => @categories.first.name)
 - elsif @category_id.present? && @brand_id.present? && @gender.blank? # category + brand
   - content_for :meta_title, t('meta.category_brand_title', :category => @categories.first.name, :brand => @brand.name.try(:mb_chars).downcase)
-  - content_for :meta_description, t('meta.category_brand_description', :category => @categories.first.name.try(:mb_chars).downcase, :brand => @brand.name.try(:mb_chars).downcase)
-  - seo_header = t('meta.category_brand_header', :category => @categories.first.name, :brand => @brand.name.try(:mb_chars).downcase)
+  - content_for :meta_description, t('meta.category_brand_description', :category => @categories.first.name.try(:mb_chars).downcase, :brand => @brand.name)
+  - seo_header = t('meta.category_brand_header', :category => @categories.first.name, :brand => @brand.name)
 - elsif @category_id.present? && @brand_id.blank? && @gender.present? # category + gender
   - content_for :meta_title, t('meta.category_gender_title', :category => @categories.first.name, :gender => @item_models.first.try(:gender).try(:name).try(:mb_chars).try(:downcase))
   - content_for :meta_description, t('meta.category_gender_description', :category => @categories.first.name.try(:mb_chars).downcase, :gender => @item_models.first.try(:gender).try(:name).try(:mb_chars).try(:downcase))

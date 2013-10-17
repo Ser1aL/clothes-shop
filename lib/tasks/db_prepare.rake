@@ -12,12 +12,12 @@ namespace :db_prepare do
         brands.name
       FROM categories, genders, brands, item_models
         LEFT JOIN sub_categories ON item_models.sub_category_id = sub_categories.id
-        # INNER JOIN products ON item_models.id = products.item_model_id
-        # INNER JOIN styles ON styles.product_id = products.id
+        INNER JOIN products ON item_models.id = products.item_model_id
+        INNER JOIN styles ON styles.product_id = products.id
       WHERE item_models.category_id = categories.id
         AND item_models.gender_id = genders.id
         AND item_models.brand_id = brands.id
-        # AND styles.hidden = 0
+        AND styles.hidden = 0
       GROUP BY item_models.brand_id, item_models.category_id, item_models.sub_category_id, item_models.gender_id
     SQL
 

@@ -120,8 +120,13 @@ ru:
   default_seo_header: 'Доставка товаров с eBay, Amazon, 6pm'
 
   meta:
-    single_product_title: '%{category} %{brand} %{product_name}: цены, описание | Shop-mydostavka.com'
-    single_product_description: "Купить %{category} %{brand} %{product_name} в интернет-магазине Shop-mydostavka.com — оригинальные брендовые %{category} из США с доставкой по Украине."
+    single_product_title: '%{category} %{product_name} купить в Киеве (Украина): цена, фото | Shop-mydostavka.com'
+    single_product_title_no_country: '%{category} %{product_name} купить в Киеве: цена, фото | Shop-mydostavka.com'
+    single_product_title_no_price: '%{category} %{product_name} купить в Киеве | Shop-mydostavka.com'
+    single_product_description: "Купить %{category} %{product_name} в Киеве с доставкой по всей Украине, России, Молдове в интернет-магазине.Оригинальные брендовые %{category}. Цена и фото в каталоге. Доставка с США."
+    single_product_description_no_country: "Купить %{category} %{product_name} в Киеве с доставкой по всей Украине, России, Молдове в интернет-магазине.Оригинальные брендовые %{category}. Цена и фото в каталоге."
+    single_product_description_no_price: "Купить %{category} %{product_name} в Киеве с доставкой по всей Украине, России, Молдове в интернет-магазине.Оригинальные брендовые %{category}."
+    single_product_description_no_cat: "Купить %{category} %{product_name} в Киеве с доставкой по всей Украине, России, Молдове в интернет-магазине."
     single_product_seo_header: '%{category} %{brand} %{product_name}'
 
     brand_letter_title: 'Каталог брендов на букву %{letter} представленные в нашем интернет магазине | Shop-mydostavka.com'
