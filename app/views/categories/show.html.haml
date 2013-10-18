@@ -128,7 +128,9 @@
   - unless @running_root_request
     = paginate @item_models, :window => 6
   .delimiter
+  = render "/texts/#{@rewrite_meta_text_partial}" if @rewrite_meta_text_partial.present?
 
+  .delimiter
   - if @male_brands.present?
     .separator_header
     %h4= t 'brands_in_male'

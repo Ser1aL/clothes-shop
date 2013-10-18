@@ -4,6 +4,7 @@
     %th Title
     %th Meta Description
     %th H1 хедер
+    %th Текст
     %th
 
   %tbody
@@ -13,6 +14,7 @@
         %td= seo_page.title
         %td= seo_page.description
         %td= seo_page.header
+        %td= seo_page.text_partial
         %td= button_to 'Удалить', administrator_seo_pages_remove_path(seo_page), method: :get
 .articles
   = paginate(@seo_pages, :window => 5)
@@ -33,4 +35,7 @@
     = label_tag '[meta_rewrite][header]', 'H1'
     = text_field_tag '[meta_rewrite][header]'
     .delimiter
-    = submit_tag 'Создать '
+    = label_tag '[meta_rewrite][text_partial]', 'Шаблон текста(оставить пустым):'
+    = text_field_tag '[meta_rewrite][text_partial]'
+    .delimiter
+    = submit_tag 'Создать'

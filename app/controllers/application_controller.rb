@@ -28,11 +28,12 @@ class ApplicationController < ActionController::Base
   end
 
   def prepare_meta_rewrite_conditions
-    condition = MetaRewrite.where(path: request.path).first
+    condition = MetaRewrite.where(path: request.fullpath).first
     if condition.present?
       @rewrite_meta_title = condition.title
       @rewrite_meta_description = condition.description
       @rewrite_meta_header = condition.header
+      @rewrite_meta_text_partial = condition.text_partial
     end
   end
 end
