@@ -39,6 +39,8 @@
   - steps << link_to(@item_models.first.brand.name, build_uri(top_level_cat_id: @categories.first.top_category, category: @categories.first.to_param))
 - if params[:sub_category].present? && @item_models.present?
   - steps << link_to(@item_models.first.sub_category.name, build_uri(top_level_cat_id: @categories.first.top_category, category: @categories.first.to_param, sub_category: @item_models.first.sub_category.to_param))
+- if @rewrite_meta_header.present?
+  - steps << @rewrite_meta_header
 = bread_crumbs(steps)
 .separator_header
 %h1.seo_header= seo_header
