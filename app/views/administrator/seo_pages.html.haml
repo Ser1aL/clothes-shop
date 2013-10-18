@@ -1,0 +1,36 @@
+%table.seo_pages
+  %tr
+    %th Путь
+    %th Title
+    %th Meta Description
+    %th H1 хедер
+    %th
+
+  %tbody
+    - @seo_pages.each do |seo_page|
+      %tr
+        %td= seo_page.path
+        %td= seo_page.title
+        %td= seo_page.description
+        %td= seo_page.header
+        %td= button_to 'Удалить', administrator_seo_pages_remove_path(seo_page), method: :get
+.articles
+  = paginate(@seo_pages, :window => 5)
+
+.delimiter{ :style => 'border-top: 1px #eee solid'}
+%h3 Добавить сео страницу
+.seo_page_form
+  = form_tag administrator_seo_pages_create_path do
+    = label_tag '[meta_rewrite][path]', 'Путь(должен начинаться с /):'
+    = text_field_tag '[meta_rewrite][path]'
+    .delimiter
+    = label_tag '[meta_rewrite][title]', 'Title'
+    = text_field_tag '[meta_rewrite][title]'
+    .delimiter
+    = label_tag '[meta_rewrite][description]', 'Meta description'
+    = text_field_tag '[meta_rewrite][description]'
+    .delimiter
+    = label_tag '[meta_rewrite][header]', 'H1'
+    = text_field_tag '[meta_rewrite][header]'
+    .delimiter
+    = submit_tag 'Создать '

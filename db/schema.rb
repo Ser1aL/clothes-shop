@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130409175832) do
+ActiveRecord::Schema.define(:version => 20131018061210) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "user_id"
@@ -193,6 +193,15 @@ ActiveRecord::Schema.define(:version => 20130409175832) do
   add_index "item_models", ["gender_id"], :name => "index_item_models_on_gender_id"
   add_index "item_models", ["product_name"], :name => "index_item_models_on_product_name"
   add_index "item_models", ["sub_category_id"], :name => "index_item_models_on_sub_category_id"
+
+  create_table "meta_rewrites", :force => true do |t|
+    t.string   "path"
+    t.text     "title"
+    t.text     "description"
+    t.text     "header"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
 
   create_table "order_lines", :force => true do |t|
     t.integer  "order_id"

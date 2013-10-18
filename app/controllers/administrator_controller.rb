@@ -163,6 +163,18 @@ class AdministratorController < ApplicationController
     redirect_to :back
   end
 
+  def seo_pages
+    @seo_pages = MetaRewrite.page(params[:page]).per(20)
+  end
+
+  def seo_pages_remove
+    MetaRewrite.find(params[:id]).destroy and redirect_to administrator_seo_pages_path
+  end
+
+  def seo_pages_create
+    MetaRewrite.create(params[:meta_rewrite]) and redirect_to administrator_seo_pages_path
+  end
+
 private
 
   def check_admin

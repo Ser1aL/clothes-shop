@@ -2888,6 +2888,24 @@ a.previews .previews_img_file{
     font-family: Arial;
 }
 
+.admin table.seo_pages {
+    width: 100%;
+}
+
+.admin table.seo_pages td,
+.admin table.seo_pages th {
+    border: 1px #eee solid;
+}
+
+.admin .seo_page_form label{
+    width: 241px;
+    display: inline-block;
+}
+
+.admin .seo_page_form input[type='text'] {
+    width: 520px;
+}
+
 .admin #detailed_order div span{
     font-weight: bold;
 }

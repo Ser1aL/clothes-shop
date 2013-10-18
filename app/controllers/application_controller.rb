@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
 
-  before_filter :prepare_cart, :set_exchange_rate
+  before_filter :prepare_cart, :set_exchange_rate, :prepare_meta_rewrite_conditions
   private
 
   def prepare_cart
@@ -24,6 +24,15 @@ class ApplicationController < ActionController::Base
     rescue
       rate = ExchangeRate.first
       [rate.value, rate.currency, rate.markup]
+    end
+  end
+
+  def prepare_meta_rewrite_conditions
+    condition = MetaRewrite.where(path: request.path).first
+    if condition.present?
+      @rewrite_meta_title = condition.title
+      @rewrite_meta_description = condition.description
+      @rewrite_meta_header = condition.header
     end
   end
 end

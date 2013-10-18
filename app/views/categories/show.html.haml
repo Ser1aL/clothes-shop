@@ -1,5 +1,7 @@
 - seo_header = ''
-- if @running_root_request
+- if @rewrite_meta_header.present?
+  - seo_header = @rewrite_meta_header
+- elsif @running_root_request
   - root_cat_id = params[:top_level_cat_id].gsub(/\-.*/, '')
   - content_for :meta_title, t("meta.root_category_#{root_cat_id}.meta_title")
   - content_for :meta_description, t("meta.root_category_#{root_cat_id}.meta_description")

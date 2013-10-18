@@ -73,6 +73,7 @@ Watches::Application.routes.draw do
   get 'administrator', :to => 'administrator#orders'
   post 'administrator/set_order_status/:order_id', :to => 'administrator#set_order_status', :as => :administrator_set_order_status
   get 'administrator/edit_article/:id', to: 'administrator#edit_article', :as => :administrator_edit_article
+  get 'administrator/seo_pages_remove/:id', to: 'administrator#seo_pages_remove', :as => :administrator_seo_pages_remove
   namespace :administrator do
     get 'orders'
     get 'login'
@@ -99,6 +100,8 @@ Watches::Application.routes.draw do
     get 'articles'
     post 'create_article'
     post 'update_article'
+    get 'seo_pages'
+    post 'seo_pages_create'
   end
 
   match '/404', to: 'errors#not_found'

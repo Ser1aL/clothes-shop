@@ -2,7 +2,10 @@
 %html{:lang => "en"}
   %head
     %meta{:content => "text/html; charset=utf-8", "http-equiv" => "Content-Type"}/
-    %meta{:name => 'description', :content => content_for?(:meta_description) ? yield(:meta_description) : t('meta_description')}
+    - if @rewrite_meta_description.present?
+      %meta{:name => 'description', :content => @rewrite_meta_description}
+    - else
+      %meta{:name => 'description', :content => content_for?(:meta_description) ? yield(:meta_description) : t('meta_description')}
     -#%meta{:name => 'keywords', :content => content_for?(:meta_keywords) ? yield(:meta_keywords) : t('meta_keywords')}
     %meta{:name => 'robots', :content => 'all'}
     %meta{:name => 'language', :content => 'ru'}
@@ -13,7 +16,11 @@
       %link{ :rel => "canonical", :href => yield(:canonical_url) }
     - if content_for?(:no_index)
       %meta{ :name => "robots", :content => "noindex, follow" }
-    %title= content_for?(:meta_title) ? yield(:meta_title) : t('meta_title')
+    %title
+      - if @rewrite_meta_title.present?
+        = @rewrite_meta_title
+      - else
+        = content_for?(:meta_title) ? yield(:meta_title) : t('meta_title')
     = stylesheet_link_tag 'application'
     = javascript_include_tag 'application'
     = csrf_meta_tag
@@ -107,7 +114,11 @@
         - if ['item_models', 'categories'].include?(params[:controller]) && params[:action] == 'show'
         - else
           .separator_header
-          %h1.seo_header= content_for?(:seo_header) ? yield(:seo_header) : t('default_seo_header')
+          %h1.seo_header
+            - if @rewrite_meta_header.present?
+              = @rewrite_meta_header
+            - else
+              = content_for?(:seo_header) ? yield(:seo_header) : t('default_seo_header')
         .separator_header
       #content_wraper
         #ajax_content
