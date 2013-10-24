@@ -77,11 +77,11 @@
           - if @style.try(:not_zoomed_image_attachments).blank?
             = image_tag 'thumb/missing.png', :class => 'missing', :alt => @product.product_name, :title => "#{@product.product_name} - #{@product.category.name}"
           - else
-            %a.inner_zoom{:href => @style.primary_image.image_url, :rel => @style.primary_image.zoom_image, :title => 'zoom', rel: 'nofollow' }
+            %a.inner_zoom{:href => @style.primary_image.image_url, :rel => @style.primary_image.zoom_image, :title => 'zoom' }
               = image_tag @style.primary_image.image_url, :class => 'img_file', :title => "#{@product.product_name.html_safe} - #{@product.category.name}", :alt => @product.product_name, :itemprop => "image", rel: 'nofollow'
             .other_images
               - @style.not_zoomed_image_attachments.each_with_index do |image_attachment, index|
-                %a.previews{:href => image_attachment.image_url, :rel => image_attachment.zoom_image, :title => 'zoom', rel: 'nofollow'}
+                %a.previews{:href => image_attachment.image_url, :rel => image_attachment.zoom_image, :title => 'zoom'}
                   - if index < 6
                     = image_tag image_attachment.image_url, :class => 'previews_img_file', :title => "#{@product.product_name} - #{@product.category.name} - #{index}", :alt => "#{@product.product_name} - #{index}", rel: 'nofollow'
 
