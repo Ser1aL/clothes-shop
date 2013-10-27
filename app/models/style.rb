@@ -170,6 +170,7 @@ class Style < ActiveRecord::Base
     conditions << "item_models.category_id = '#{params[:category]}'" if params[:category]
     conditions << "styles.color = '#{params[:color]}'" if params[:color]
     conditions << "stocks.size = '#{params[:size].gsub(/\\/, '\&\&').gsub(/'/, "''")}'" if params[:size]
+    conditions << "categories.top_category = '#{params[:top_level_cat_id]}'" if params[:top_level_cat_id]
     if params[:price_range].present?
       min_price, max_price = params[:price_range].split("-")
       min_price = (min_price.to_i - min_price.to_i * markup / 100 ) / exchange_rate
@@ -179,7 +180,7 @@ class Style < ActiveRecord::Base
     end
     # relation = joins(:brand, :gender, "LEFT JOIN `sub_categories` ON `sub_categories`.`id` = `item_models`.`sub_category_id` ", :product => [:styles => :stocks])
     # relation = relation.order("MIN(styles.discount_price) ASC").group('item_models.id')
-    relation = joins(:stocks).joins(:product => [:item_model => [:brand, :gender]]).joins('LEFT JOIN `sub_categories` ON `sub_categories`.`id` = `item_models`.`sub_category_id` ')
+    relation = joins(:stocks).joins(:product => [:item_model => [:brand, :gender, :category]]).joins('LEFT JOIN `sub_categories` ON `sub_categories`.`id` = `item_models`.`sub_category_id` ')
     relation = relation.group('styles.id')
     relation.where(conditions.join(' AND ')).page(params[:page]).per(10)
   end
