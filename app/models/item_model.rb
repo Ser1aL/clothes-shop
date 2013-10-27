@@ -25,6 +25,10 @@ class ItemModel < ActiveRecord::Base
     [brand.name, sub_category.try(:name).to_s, category.name, gender.name].delete_if{ |x| x.blank? }.join ', '
   end
 
+  def product_name
+    super.gsub('&#8482;', ' TM ')
+  end
+
   def self.counts_by_type(type)
     return [] unless %w(brand category gender sub_category).include?(type.to_s)
     type = type.to_s
