@@ -26,7 +26,7 @@ class ItemModel < ActiveRecord::Base
   end
 
   def product_name
-    super.gsub('&#8482;', ' TM ')
+    super.gsub('&#8482;', ' TM ').gsub('&#174;', ' (R) ')
   end
 
   def self.counts_by_type(type)
