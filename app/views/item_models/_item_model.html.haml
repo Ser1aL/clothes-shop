@@ -6,7 +6,7 @@
 .block.advanced_search{:itemscope => '', :item_type => "http://schema.org/Product"}
   .title_product
     %a.single_product_ajaxified_link.title_product-a{:href => single_model_path(product, style)}
-      %span{:itemprop => "name"}= "#{item_model.try(:category).try(:name)} #{item_model.product_name}"
+      %span{:itemprop => "name"}= "#{item_model.try(:category).try(:name)} #{item_model.product_name.html_safe}"
   .product_image
     %a{:href => single_model_path(product, style), :class => 'single_product_ajaxified_link'}
       - if product.try(:product).try(:styles).try(:first).try(:not_zoomed_image_attachments).blank?
