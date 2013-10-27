@@ -153,9 +153,7 @@ class Style < ActiveRecord::Base
       conditions << "styles.discount_price < #{max_price.to_i}"
     end
 
-    #joins(:product => :styles).group('item_models.id').where(conditions.join(' AND ')).order("MIN(styles.discount_price) ASC").page(params[:page]).per(6)
-    #joins( [{:product => :styles}, :category]).group('styles.id').where(conditions.join(' AND ')).page(params[:page]).per(10)
-    joins(:product => [:item_model => :category]).group('styles.id').where(conditions.join(' AND ')).page(params[:page]).per(10)
+    joins(:product => [:item_model => :category]).group('styles.id').where(conditions.join(' AND ')).order(:discount_price).page(params[:page]).per(10)
   end
 
   def self.get_items_extended(params, exchange_rate, markup)
@@ -178,10 +176,8 @@ class Style < ActiveRecord::Base
       conditions << "styles.discount_price > #{min_price}"
       conditions << "styles.discount_price < #{max_price}"
     end
-    # relation = joins(:brand, :gender, "LEFT JOIN `sub_categories` ON `sub_categories`.`id` = `item_models`.`sub_category_id` ", :product => [:styles => :stocks])
-    # relation = relation.order("MIN(styles.discount_price) ASC").group('item_models.id')
     relation = joins(:stocks).joins(:product => [:item_model => [:brand, :gender, :category]]).joins('LEFT JOIN `sub_categories` ON `sub_categories`.`id` = `item_models`.`sub_category_id` ')
-    relation = relation.group('styles.id')
+    relation = relation.order(:discount_price).group('styles.id')
     relation.where(conditions.join(' AND ')).page(params[:page]).per(10)
   end
 
