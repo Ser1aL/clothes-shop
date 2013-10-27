@@ -66,13 +66,11 @@
       .content
         %ul.main_category
           - @brand_counts.each do |count_value|
-            - next if [3,5].include?(count_value.gender_id.to_i)
             %li.mcl_link
-              - gender_name = count_value.try(:type_name) rescue count_value.try(:gender_name)
-              - gender_value = count_value.try(:count_value) rescue count_value.try(:value)
-              %a.mcl_link_left{ :href => build_uri(request.filtered_parameters.merge({ brand: "#{count_value.brand_id}-#{gender_name}".parameterize })) }= gender_name
-              %a.mcl_link_right{ :href => build_uri(request.filtered_parameters.merge({ brand: "#{count_value.brand_id}-#{gender_name}".parameterize })) }= gender_value
-
+              - brand_name = count_value.try(:type_name) rescue count_value.try(:brand_name)
+              - brand_value = count_value.try(:count_value) rescue count_value.try(:value)
+              %a.mcl_link_left{ :href => build_uri(request.filtered_parameters.merge({ brand: "#{count_value.brand_id}-#{brand_name}".parameterize })) }= brand_name
+              %a.mcl_link_right{ :href => build_uri(request.filtered_parameters.merge({ brand: "#{count_value.brand_id}-#{brand_name}".parameterize })) }= brand_value
 
     .genders
       .brows_lable
