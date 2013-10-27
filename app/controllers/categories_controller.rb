@@ -37,9 +37,18 @@ class CategoriesController < ApplicationController
 
     # if page is category root get from countings and disable price/color/size
     if @running_root_request
-      @category_counts =  CategoryCounting.order(:category_name).group_by(&:category_id).sort_by{|_, countings| countings.sum(&:value) }.reverse.first(15)
-      @brand_counts =  CategoryCounting.group(:brand_id).select("sum(value) as value, brand_name, brand_id").limit(15)
-      @gender_counts =  CategoryCounting.group(:gender_id).select("sum(value) as value, gender_name, gender_id").limit(15)
+      @category_counts =  CategoryCounting.joins(:category).
+          where('categories.top_category = ?', top_level_category_id).
+          order(:category_name).group_by(&:category_id).
+          sort_by{|_, countings| countings.sum(&:value) }.reverse.first(15)
+      @brand_counts =  CategoryCounting.joins(:category).
+          where('categories.top_category = ?', top_level_category_id).
+          group(:brand_id).select("sum(value) as value, brand_name, brand_id").
+          limit(15)
+      @gender_counts =  CategoryCounting.joins(:category).
+          where('categories.top_category = ?', top_level_category_id).
+          group(:gender_id).select("sum(value) as value, gender_name, gender_id").
+          limit(15)
     else
       @sub_categories_counts = RawSearch.get_counts(params, :sub_category, @exchange_rate, @markup)
       @brand_counts = RawSearch.get_counts(params, :brand, @exchange_rate, @markup)
