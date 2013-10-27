@@ -8,7 +8,7 @@ class Brand < ActiveRecord::Base
   end
 
   def name
-    display_name.blank? ? super : display_name
+    display_name.blank? ? super.gsub('&#8482;', ' TM ').gsub('&#174;', ' (R) ') : display_name
   end
 
   def build_category_tree
