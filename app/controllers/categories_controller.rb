@@ -6,7 +6,7 @@ class CategoriesController < ApplicationController
 
   def show
     # filter heavy requests
-    if params[:category].blank? && params[:sub_category].blank? && params[:gender].blank?
+    if params[:category].blank? && params[:sub_category].blank? && params[:gender].blank? && params[:brand].blank?
       @running_root_request = true
       if params[:price_range].present? || params[:color].present? || params[:size].present?
         redirect_to category_path(params[:top_level_cat_id]) and return
