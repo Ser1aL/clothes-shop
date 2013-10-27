@@ -65,7 +65,7 @@
         .bl_image
       .content
         %ul.main_category
-          - @brand_counts.each do |count_value|
+          - @brand_counts.sample(25).each do |count_value|
             %li.mcl_link
               - brand_name = count_value.try(:type_name) rescue count_value.try(:brand_name)
               - brand_value = count_value.try(:count_value) rescue count_value.try(:value)
