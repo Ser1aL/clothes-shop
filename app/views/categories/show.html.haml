@@ -1,4 +1,5 @@
 - seo_header = ''
+- gender = @styles.first.product.item_model.gender.name.mb_chars.downcase rescue ''
 - if @rewrite_meta_header.present?
   - seo_header = @rewrite_meta_header
 - elsif @running_root_request
@@ -15,9 +16,9 @@
   - content_for :meta_description, t('meta.category_brand_description', :category => @categories.first.name.try(:mb_chars).downcase, :brand => @brand.name)
   - seo_header = t('meta.category_brand_header', :category => @categories.first.name, :brand => @brand.name)
 - elsif @category_id.present? && @brand_id.blank? && @gender.present? # category + gender
-  - content_for :meta_title, t('meta.category_gender_title', :category => @categories.first.name, :gender => @item_models.first.try(:gender).try(:name).try(:mb_chars).try(:downcase))
-  - content_for :meta_description, t('meta.category_gender_description', :category => @categories.first.name.try(:mb_chars).downcase, :gender => @item_models.first.try(:gender).try(:name).try(:mb_chars).try(:downcase))
-  - seo_header = t('meta.category_gender_header', :category => @categories.first.name, :gender => @item_models.first.try(:gender).try(:name).try(:mb_chars).try(:downcase))
+  - content_for :meta_title, t('meta.category_gender_title', :category => @categories.first.name, :gender => gender)
+  - content_for :meta_description, t('meta.category_gender_description', :category => @categories.first.name.try(:mb_chars).downcase, :gender => gender)
+  - seo_header = t('meta.category_gender_header', :category => @categories.first.name, :gender => gender)
 - else
   = set_meta(@categories.first.try(:top_category_name))
 
@@ -57,6 +58,21 @@
       - @categories.each do |category|
         %li.mcl_link
           = link_to category.name, build_uri(request.filtered_parameters.merge({ category: category.to_param }))
+
+    .brands
+      .brows_lable
+        .bl_style= t("brands")
+        .bl_image
+      .content
+        %ul.main_category
+          - @brand_counts.each do |count_value|
+            - next if [3,5].include?(count_value.gender_id.to_i)
+            %li.mcl_link
+              - gender_name = count_value.try(:type_name) rescue count_value.try(:gender_name)
+              - gender_value = count_value.try(:count_value) rescue count_value.try(:value)
+              %a.mcl_link_left{ :href => build_uri(request.filtered_parameters.merge({ brand: "#{count_value.brand_id}-#{gender_name}".parameterize })) }= gender_name
+              %a.mcl_link_right{ :href => build_uri(request.filtered_parameters.merge({ brand: "#{count_value.brand_id}-#{gender_name}".parameterize })) }= gender_value
+
 
     .genders
       .brows_lable
@@ -123,45 +139,11 @@
                     - if count_value.present?
                       %td
                         %a{ :href => build_uri(request.filtered_parameters.merge({ size: count_value.size_value })) }= count_value.size_value
-
-  = render @item_models, locals: { params: params }
+  .styles
+    = render partial: 'item_models/style', collection: @styles, locals: { params: params }
   - unless @running_root_request
-    = paginate @item_models, :window => 6
+    = paginate @styles, :window => 10
   .delimiter
   = render "/texts/#{@rewrite_meta_text_partial}" if @rewrite_meta_text_partial.present?
 
   .delimiter
-  - if @male_brands.present?
-    .separator_header
-    %h4= t 'brands_in_male'
-    .category_logos_block
-      - @male_brands.in_groups_of(3).each do |brand_group|
-        - brand_group.each do |brand|
-          - next if brand.blank? || brand.logo_url.blank?
-          %a.category_logos{ :href => build_uri( request.filtered_parameters.merge({:brand => brand.to_param}) ) }
-            = image_tag brand.logo_url, alt: brand.name, title: brand.name, rel: 'nofollow'
-          .cl_delimeter
-
-  .delimiter
-  - if @female_brands.present?
-    .separator_header
-    %h4= t 'brands_in_female'
-    .category_logos_block
-      - @female_brands.in_groups_of(3).each do |brand_group|
-        - brand_group.each do |brand|
-          - next if brand.blank? || brand.logo_url.blank?
-          %a.category_logos{ :href => build_uri( request.filtered_parameters.merge({:brand => brand.to_param}) ) }
-            = image_tag brand.logo_url, alt: brand.name, title: brand.name, rel: 'nofollow'
-          .cl_delimeter
-
-  .delimiter
-  - if @kids_brands.present?
-    .separator_header
-    %h4= t 'brands_in_kids'
-    .category_logos_block
-      - @kids_brands.in_groups_of(3).each do |brand_group|
-        - brand_group.each do |brand|
-          - next if brand.blank? || brand.logo_url.blank?
-          %a.category_logos{ :href => build_uri( request.filtered_parameters.merge({:brand => brand.to_param}) ) }
-            = image_tag brand.logo_url, alt: brand.name, title: brand.name, rel: 'nofollow'
-          .cl_delimeter

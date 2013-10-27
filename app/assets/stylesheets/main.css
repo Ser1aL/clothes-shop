@@ -3959,3 +3959,8 @@ a.previews .previews_img_file{
 .familiars .cpb_delimeter {
     display: none;
 }
+
+.category-page .styles {
+    width: 650px;
+    float: right;
+}

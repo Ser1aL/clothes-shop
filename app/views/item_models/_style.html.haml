@@ -1,0 +1,40 @@
+- product = style.product.item_model
+.block.advanced_search{:itemscope => '', :item_type => "http://schema.org/Product"}
+  .title_product
+    %a.single_product_ajaxified_link.title_product-a{:href => single_model_path(product, style)}
+      %span{:itemprop => "name"}= "#{product.try(:category).try(:name)} #{product.product_name}"
+  .product_image
+    %a{:href => single_model_path(product, style), :class => 'single_product_ajaxified_link'}
+      - if product.try(:product).try(:styles).try(:first).try(:not_zoomed_image_attachments).blank?
+        = image_tag 'thumb/missing.png', :class => 'missing', :alt => product.product_name, :title => "#{product.product_name} - #{product.category.name}"
+      - else
+        = image_tag style.primary_image.image_url, :alt => product.product_name, :title => "#{product.product_name} - #{product.category.name}", :class => 'img_file', :itemprop => "image", rel: 'nofollow'
+  .product_description_wrapper
+    .product_description= t('product_description.brand')
+    = link_to product.brand.name.html_safe, brand_path(product.brand), :class => "product_description1"
+    .product_description= t('product_description.category')
+    %a.product_description1{ :href => '#'}= product.category.name
+    .product_description= t('product_description.gender')
+    %a.product_description1{:href => "#"}= product.gender.name
+
+  .grey_area{ :itemprop => "offers", :itemscope => '', :itemtype => "http://schema.org/Offer"}
+    - if product.product && !style.hidden?
+      .presence_color
+      .price
+        = t('product_description.price')
+      %div
+        %a.sum-a{:href => "#"}
+          %span{ :itemprop => "price" }= number_to_currency(style.discount_price_extra(@exchange_rate, @markup), :unit => '')
+      .price
+        = @currency
+    - else
+      .presence_color_no
+      .presence_note_no
+        = t('product_not_exists')
+    .product_details_link
+      = link_to t('more'), single_model_path(product, style), :class => 'more', :itemprop => "url"
+      .image_arrow1
+- if style_counter % 2 == 0
+  .cpb_delimeter
+- if style_counter % 2 == 1
+  .delimiter

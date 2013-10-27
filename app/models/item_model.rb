@@ -40,54 +40,6 @@ class ItemModel < ActiveRecord::Base
       LIMIT 10").map(&:attributes)
   end
 
-  def self.get_items(params = {}, exchange_rate = 1, markup = 1)
-    [:brand, :gender, :sub_category, :category, :top_level_cat_id].each do |param|
-      params[param] = $1 if params[param] =~ /(\d*)-(.*)/
-    end
-
-    conditions = ["styles.hidden = 0"]
-    conditions << "brand_id = '#{params[:brand]}'" if params[:brand]
-    conditions << "gender_id = '#{params[:gender]}'" if params[:gender]
-    conditions << "sub_category_id = '#{params[:sub_category]}'" if params[:sub_category]
-    conditions << "category_id = '#{params[:category]}'" if params[:category]
-    conditions << "categories.top_category = '#{params[:top_level_cat_id]}'" if params[:top_level_cat_id]
-    if params[:price_range].present?
-      min_price, max_price = params[:price_range].split("-")
-      min_price = (min_price.to_i - min_price.to_i * markup / 100 ) / exchange_rate
-      max_price = (max_price.to_i - max_price.to_i * markup / 100 ) / exchange_rate
-      conditions << "styles.discount_price > #{min_price.to_i}"
-      conditions << "styles.discount_price < #{max_price.to_i}"
-    end
-
-    #joins(:product => :styles).group('item_models.id').where(conditions.join(' AND ')).order("MIN(styles.discount_price) ASC").page(params[:page]).per(6)
-    joins( [{:product => :styles}, :category]).group('item_models.id').where(conditions.join(' AND ')).page(params[:page]).per(6)
-  end
-
-  def self.get_items_extended(params, exchange_rate, markup)
-    [:brand, :gender, :sub_category, :category, :top_level_cat_id].each do |param|
-      params[param] = $1 if params[param] =~ /(\d*)-(.*)/
-    end
-
-    conditions = ["styles.hidden = 0"]
-    conditions << "item_models.brand_id = '#{params[:brand]}'" if params[:brand]
-    conditions << "item_models.gender_id = '#{params[:gender]}'" if params[:gender]
-    conditions << "item_models.sub_category_id = '#{params[:sub_category]}'" if params[:sub_category]
-    conditions << "item_models.category_id = '#{params[:category]}'" if params[:category]
-    conditions << "styles.color = '#{params[:color]}'" if params[:color]
-    conditions << "stocks.size = '#{params[:size].gsub(/\\/, '\&\&').gsub(/'/, "''")}'" if params[:size]
-    if params[:price_range].present?
-      min_price, max_price = params[:price_range].split("-")
-      min_price = (min_price.to_i - min_price.to_i * markup / 100 ) / exchange_rate
-      max_price = (max_price.to_i - max_price.to_i * markup / 100 ) / exchange_rate
-      conditions << "styles.discount_price > #{min_price}"
-      conditions << "styles.discount_price < #{max_price}"
-    end
-    relation = joins(:brand, :gender, "LEFT JOIN `sub_categories` ON `sub_categories`.`id` = `item_models`.`sub_category_id` ", :product => [:styles => :stocks])
-    #relation = relation.order("MIN(styles.discount_price) ASC").group('item_models.id')
-    relation = relation.group('item_models.id')
-    relation.where(conditions.join(' AND ')).page(params[:page]).per(6)
-  end
-
   def to_param
     "#{id}-#{product_name.parameterize}"
   end
