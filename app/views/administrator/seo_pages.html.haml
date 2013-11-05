@@ -4,6 +4,7 @@
     %th Title
     %th Meta Description
     %th H1 хедер
+    %th Шаблон текста
     %th Текст
     %th
 
@@ -15,6 +16,7 @@
         %td= seo_page.description
         %td= seo_page.header
         %td= seo_page.text_partial
+        %td= raw(truncate(seo_page.raw_text, length: 250))
         %td= button_to 'Удалить', administrator_seo_pages_remove_path(seo_page), method: :get
 .articles
   = paginate(@seo_pages, :window => 5)
@@ -37,5 +39,8 @@
     .delimiter
     = label_tag '[meta_rewrite][text_partial]', 'Шаблон текста(оставить пустым):'
     = text_field_tag '[meta_rewrite][text_partial]'
+    .delimiter
+    = label_tag '[meta_rewrite][raw_text]', 'Текст(должен быть HTML разметкой):'
+    = text_area_tag '[meta_rewrite][raw_text]', nil, class: 'raw_text_meta'
     .delimiter
     = submit_tag 'Создать'

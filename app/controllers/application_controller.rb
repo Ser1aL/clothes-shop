@@ -34,6 +34,7 @@ class ApplicationController < ActionController::Base
       @rewrite_meta_description = condition.description
       @rewrite_meta_header = condition.header
       @rewrite_meta_text_partial = condition.text_partial
+      @rewrite_meta_raw_text = condition.raw_text
     end
   end
 end

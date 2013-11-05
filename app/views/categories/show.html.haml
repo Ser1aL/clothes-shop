@@ -143,5 +143,6 @@
     = paginate @styles, :window => 10
   .delimiter
   = render "/texts/#{@rewrite_meta_text_partial}" if @rewrite_meta_text_partial.present?
+  = raw(@rewrite_meta_raw_text) if @rewrite_meta_raw_text.present?
 
   .delimiter

@@ -2,7 +2,7 @@ require 'addressable/uri'
 
 class CategoriesController < ApplicationController
 
-  caches_action :show, :layout => false, :cache_path => Proc.new { |c| c.params }, :expires_in => 1.hour
+  caches_action :show, :layout => true, :cache_path => Proc.new { |c| c.params }, :expires_in => 1.hour
 
   def show
     # filter heavy requests
