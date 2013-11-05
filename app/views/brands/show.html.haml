@@ -25,3 +25,5 @@
       = image_tag @brand.image_attachments[0].try(:image_url), rel: 'nofollow', :alt => @brand.name, :title => @brand.name
   .brands_description
     = @brand.description.try(:html_safe)
+
+= raw(@rewrite_meta_raw_text) if @rewrite_meta_raw_text.present?
