@@ -236,7 +236,7 @@ namespace :data_feed do
     4000.times do |cycle|
       hidden_styles_count = 0
       output_file.puts "[#{Time.now.to_s(:db)} - Cycle start] Updating #{cycle*100}-#{(cycle+1)*100} styles"
-      Style.where(:hidden => false).order("created_at DESC").limit(100).offset(100*cycle).each_with_index do |style, index|
+      Style.where(:hidden => false).order("created_at DESC, original_price ASC").limit(100).offset(100*cycle).each_with_index do |style, index|
         sleep 5 if index % 10 == 0
         if sixpm_request_counter < 800
           begin
