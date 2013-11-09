@@ -37,12 +37,12 @@ class Style < ActiveRecord::Base
   )
 
 
-  def original_price_extra(exchange_rate, markup)
-    ((original_price + original_price * markup / 100) * exchange_rate).to_i
+  def original_price_extra(exchange_rate, markup, fixed_markup)
+    ((original_price + original_price * markup / 100) * exchange_rate + fixed_markup.to_i).to_i
   end
 
-  def discount_price_extra(exchange_rate, markup)
-    ((discount_price + discount_price * markup / 100) * exchange_rate).to_i
+  def discount_price_extra(exchange_rate, markup, fixed_markup)
+    ((discount_price + discount_price * markup / 100) * exchange_rate + fixed_markup.to_i * ( discount_price / original_price ) ).to_i
   end
 
   def is_shoes?

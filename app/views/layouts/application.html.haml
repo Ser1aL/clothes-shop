@@ -45,43 +45,116 @@
         = render :partial => '/layouts/partials/login_form'
       #content_wraper_header
         #header
-          #logo
-          #menu
-            = link_to 'О нас', about_us_url, :class => 'link_menu'
-            = link_to 'Отзывы', reviews_url, :class => 'link_menu'
-            = link_to 'Статьи', articles_url, :class => 'link_menu'
-            = link_to 'Оплата', payments_url, :class => 'link_menu'
-            = link_to 'Доставка', deliveries_url, :class => 'link_menu'
-            %b
-              = link_to 'Сервис покупок в зарубежных интернет магазинах', "http://mydostavka.com/", :class => 'link_menu', :target => "_blank", :rel => 'nofollow'
-            = link_to 'Контакты', contacts_url, :class => 'link_menu'
-            - if !current_user
-              %a.login_button.button{:href => "#"}
-                .button_left
-                .button_mid Войти
-                .button_right
-            - else
-              %a.button{:href => destroy_user_session_path}
-                .button_left
-                .button_mid Выйти
-                .button_right
+          #logo_timework
+            %a#logo
+            #timework
+              с
+              %span 9:00
+              до
+              %span 21:00
+              без выходных
+          #container_menu
+            #menu
+              = link_to 'О нас', about_us_url, :class => 'link_menu'
+              = link_to 'Отзывы', reviews_url, :class => 'link_menu'
+              -#= link_to 'Статьи', articles_url, :class => 'link_menu'
+              = link_to 'Оплата', payments_url, :class => 'link_menu'
+              = link_to 'Доставка', deliveries_url, :class => 'link_menu'
+              %b
+                = link_to 'Сервис покупок в зарубежных интернет магазинах', "http://mydostavka.com/", :class => 'link_menu', :target => "_blank", :rel => 'nofollow'
+              = link_to 'Контакты', contacts_url, :class => 'link_menu'
+              - if !current_user
+                %a.button.login_button{:href => "#"}
+                  .button_left
+                  .button_mid Войти
+                  .button_right
+              - else
+                %a.button{:href => destroy_user_session_path}
+                  .button_left
+                  .button_mid Выйти
+                  .button_right
+            #contact_shoppingcart
+              #header_contact
+                .hc_phone
+                  +38(098)023-93-07
+                  -#%a.support_call{:href => "#"} Заказать звонок
+                .hc_chat_skype_email
+                  %a.hc_chat{:href => "#"} Онлайн-чат
+                  %a.hc_skype{:href => "skype:udg2010?call"} UDG2010
+                  %a.hc_email{:href => "mailto:mydostavka@gmail.com"} mydostavka@gmail.com
+              #shoppingcart_container
+                #shoppincart
+                  %div
+                    %a.in_shoppingcart_now{:href => checkout_path} Сейчас в корзине:
+                  #shoppincart_items
+                    %a.shoppincart_items{:href => checkout_path}= @cart_line_count
+                    покупок на сумму:
+                    %a.shoppincart_items{:href => checkout_path}= @shopping_cart.total
+                    грн.
+                .shoppingcart_buttons
+                  - if @shopping_cart.total > 0
+                    %a.button{:href => checkout_path}
+                      .button_left
+                      .button_mid Оформить заказ
+                      .button_right
           .separator_header
           .gray_area_conteiner_header
             .gray_area_content_header
               %span
-                = link_to "Главная", root_path
+                = link_to 'Главная', root_path
               - if current_user
                 = link_to current_user.full_name, user_path(current_user)
               - else
                 = link_to 'Зарегистрироваться?', new_user_registration_path, :id => 'register_link'
-              #shopping_cart
-                %a.shopping_cart_icon{:href => checkout_path}
-                %p.text1 В корзине товаров:
-                = link_to @cart_line_count, checkout_path, :class => 'text1_price_quantity'
-                %p.text1,   на сумму
-                = link_to @shopping_cart.total, checkout_path, :class => 'text1_price_quantity'
-                %p.text1= @currency
+              /
+                <div id="shopping_cart">
+                <a href="#" class="shopping_cart_icon"></a>
+                <p class="text1">В корзине:</p>
+                <a href="#" class="text1_price_quantity">0</a>
+                <p class="text1">товара,   на сумму</p>
+                <a href="#" class="text1_price_quantity">0</a>
+                <p class="text1">грн.</p>
+                </div>
           .separator_header
+
+        -##header
+        -#  #logo
+        -#  #menu
+        -#    = link_to 'О нас', about_us_url, :class => 'link_menu'
+        -#    = link_to 'Отзывы', reviews_url, :class => 'link_menu'
+        -#    = link_to 'Статьи', articles_url, :class => 'link_menu'
+        -#    = link_to 'Оплата', payments_url, :class => 'link_menu'
+        -#    = link_to 'Доставка', deliveries_url, :class => 'link_menu'
+        -#    %b
+        -#      = link_to 'Сервис покупок в зарубежных интернет магазинах', "http://mydostavka.com/", :class => 'link_menu', :target => "_blank", :rel => 'nofollow'
+        -#    = link_to 'Контакты', contacts_url, :class => 'link_menu'
+        -#    - if !current_user
+        -#      %a.login_button.button{:href => "#"}
+        -#        .button_left
+        -#        .button_mid Войти
+        -#        .button_right
+        -#    - else
+        -#      %a.button{:href => destroy_user_session_path}
+        -#        .button_left
+        -#        .button_mid Выйти
+        -#        .button_right
+        -#  .separator_header
+        -#  .gray_area_conteiner_header
+        -#    .gray_area_content_header
+        -#      %span
+        -#        = link_to "Главная", root_path
+        -#      - if current_user
+        -#        = link_to current_user.full_name, user_path(current_user)
+        -#      - else
+        -#        = link_to 'Зарегистрироваться?', new_user_registration_path, :id => 'register_link'
+        -#      #shopping_cart
+        -#        %a.shopping_cart_icon{:href => checkout_path}
+        -#        %p.text1 В корзине товаров:
+        -#        = link_to @cart_line_count, checkout_path, :class => 'text1_price_quantity'
+        -#        %p.text1,   на сумму
+        -#        = link_to @shopping_cart.total, checkout_path, :class => 'text1_price_quantity'
+        -#        %p.text1= @currency
+        -#  .separator_header
         #navigation
           .navigation_buttons
             %a.button{:href => sitemaps_path}

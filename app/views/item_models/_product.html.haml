@@ -42,7 +42,7 @@
         = t('product_description.price')
       %div
         %a.sum-a{:href => "#"}
-          %span{ :itemprop => "price" }= number_to_currency(product.product.styles.first.discount_price_extra(@exchange_rate, @markup), :unit => '')
+          %span{ :itemprop => "price" }= number_to_currency(product.product.styles.first.discount_price_extra(@exchange_rate, @markup, @fixed_markup), :unit => '')
       .price
         = @currency
     - else

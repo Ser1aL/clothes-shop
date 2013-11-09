@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131105185254) do
+ActiveRecord::Schema.define(:version => 20131109163459) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "user_id"
@@ -89,12 +89,13 @@ ActiveRecord::Schema.define(:version => 20131105185254) do
   end
 
   create_table "exchange_rates", :force => true do |t|
-    t.decimal  "value",      :precision => 10, :scale => 2
-    t.decimal  "markup",     :precision => 10, :scale => 2
+    t.decimal  "value",        :precision => 10, :scale => 2
+    t.decimal  "markup",       :precision => 10, :scale => 2
     t.string   "currency"
     t.string   "domain"
-    t.datetime "created_at",                                :null => false
-    t.datetime "updated_at",                                :null => false
+    t.datetime "created_at",                                  :null => false
+    t.datetime "updated_at",                                  :null => false
+    t.integer  "fixed_markup"
   end
 
   create_table "genders", :force => true do |t|

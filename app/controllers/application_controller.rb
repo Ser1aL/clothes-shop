@@ -18,12 +18,12 @@ class ApplicationController < ActionController::Base
 
   def set_exchange_rate
     domain = request.env['SERVER_NAME'].gsub(/www\./, '')
-    @exchange_rate, @currency, @markup = begin
+    @exchange_rate, @currency, @markup, @fixed_markup = begin
       rate = ExchangeRate.find_by_domain(domain)
-      [rate.value, rate.currency, rate.markup]
+      [rate.value, rate.currency, rate.markup, rate.fixed_markup]
     rescue
       rate = ExchangeRate.first
-      [rate.value, rate.currency, rate.markup]
+      [rate.value, rate.currency, rate.markup, rate.fixed_markup]
     end
   end
 

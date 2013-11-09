@@ -113,7 +113,7 @@
         .price Цена:
         %div
           %a.sum-a{:style => "font-size: 13px;"}
-            %span{:itemprop => "price"}= number_to_currency(@style.original_price_extra(@exchange_rate, @markup), :unit => '')
+            %span{:itemprop => "price"}= number_to_currency(@style.original_price_extra(@exchange_rate, @markup, @fixed_markup), :unit => '')
         .price грн.
         - if @style.percent_off > 0
           .price= t('product_description.price_off')
@@ -121,7 +121,7 @@
             %a.sum-a= "#{@style.percent_off}%"
       .pd_price
         .price= t('product_description.discount_price') + " (#{t('currency')})"
-        .pd_total_price{ :itemprop => "price" }= number_to_currency(@style.discount_price_extra(@exchange_rate, @markup), :unit => '')
+        .pd_total_price{ :itemprop => "price" }= number_to_currency(@style.discount_price_extra(@exchange_rate, @markup, @fixed_markup), :unit => '')
         - if @product.product && !@style.hidden?
           .pd_presence_color
             .pd_presence_note= t('product_exists')
@@ -129,6 +129,8 @@
           .pd_presence_color_no
             .pd_presence_note= t('product_not_exists')
       .pd_price
+      .free-delivery
+        = image_tag 'free-delivery.jpg'
     - if @product.product && !@style.hidden?
       .buy_button
         %a.button

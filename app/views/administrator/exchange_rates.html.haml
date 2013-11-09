@@ -7,6 +7,8 @@
   %br
   Четвертое поле - процент наценки(возможно дробное число)
   %br
+  Пятое поле - фиксированная наценка
+  %br
   %br
 - @exchange_rates.each do |exchange_rate|
   - next if exchange_rate.domain.blank?
@@ -17,4 +19,5 @@
       = text_field_tag :value, exchange_rate.value
       = text_field_tag :currency, exchange_rate.currency
       = text_field_tag :markup, exchange_rate.markup
+      = text_field_tag :fixed_markup, exchange_rate.fixed_markup
       = submit_tag t("submit")

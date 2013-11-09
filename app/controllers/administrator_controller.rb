@@ -103,7 +103,8 @@ class AdministratorController < ApplicationController
     ExchangeRate.find(params[:id]).update_attributes(
       :value => params[:value],
       :currency => params[:currency],
-      :markup => params[:markup]
+      :markup => params[:markup],
+      :fixed_markup => params[:fixed_markup]
     ) and redirect_to :back
 
   end

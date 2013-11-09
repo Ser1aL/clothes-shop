@@ -1,4 +1,4 @@
-adsb_contentbody {
+body {
 	margin: 0;
 	padding: 0;
 	border: 0;
@@ -1400,12 +1400,12 @@ a.submit_comment{
 
 
 .functional_container {
-	width: 466px;
+  width: 466px;
   height: 449px;
   overflow: hidden;
   float: left;
   position: absolute;
-  top: 132px;
+  top: 204px;
   display: none;
 }
 
@@ -3049,7 +3049,7 @@ a.previews .previews_img_file{
 }
 
 .exchange_rates input{
-    width: 150px;
+    width: 122px;
 }
 
 .admin .hint{
@@ -3969,3 +3969,236 @@ a.previews .previews_img_file{
     border: 1px #AAAAAA solid;
     min-height: 450px;
 }
+
+/* Добавления 11,02,2013 */
+
+#logo_timework{
+    width: 206px;
+    float: left;
+    /*overflow: hidden;*/
+}
+
+#timework{
+    width: 206px;
+    height: 23px;
+    color: #818181;
+    font-size: 13px;
+    font-family: Arial;
+    background: url('work_time_icon.png') 0 0px no-repeat;
+    float: left;
+    margin-top: 10px;
+    padding-top: 3px;
+    padding-left: 26px;
+}
+#timework span{
+    color: #444444;
+    font-weight: bold;
+}
+
+
+#logo {
+    height: 93px;
+    width: 206px;
+    margin-top: 5px;
+    background: url('sm_logo.png');
+    display: block;
+    float: left;
+}
+
+
+.link_menu {
+    float: left;
+    padding-right: 16px;
+    padding-top: 7px;
+    color: #444444;
+    font-size: 13px;
+    font-family: Arial;
+}
+
+#container_menu{
+    float: left;
+    overflow: hidden;
+    width: 754px;
+}
+
+#contact_shoppingcart{
+    width: 754px;
+    overflow: hidden;
+    height: 90px;
+    margin-top: 10px;
+    float: left;
+}
+
+#menu {
+    height: 33px;
+    float: left;
+    margin-top: 20px;
+    overflow: hidden;
+}
+
+#header_contact{
+    width: 400px;
+    overflow: hidden;
+    float: left;
+    margin-right: 20px;
+}
+
+.hc_phone{
+    width: 400px;
+    height: 21px;
+    color: #444444;
+    font-weight: bold;
+    font-size: 18px;
+    font-family: Arial;
+    background: url('header_phone_icon.png')0 0px no-repeat;
+    float: left;
+    padding-left: 18px;
+    margin-left: 14px;
+    margin-top: 18px;
+}
+
+.support_call{
+    color: #ef2d50;
+    font-size: 12px;
+    font-family: Arial;
+    text-decoration: none;
+    border-bottom: 1px dashed #ef2d50;
+}
+
+.support_call:hover{
+    font-size: 12px;
+    border-bottom: none;
+    text-decoration: none;
+}
+
+.hc_chat_skype_email{
+    width: 406px;
+    height: 21px;
+    float: left;
+    margin-left: 14px;
+    margin-top: 10px;
+
+}
+
+.hc_chat{
+    color: #40aae6;
+    font-size: 12px;
+    font-family: Arial;
+    text-decoration: underline;
+    background: url('header_chat_icon.png')0 0px no-repeat;
+    padding-left: 17px;
+    margin-right: 20px;
+}
+
+.hc_chat:hover{
+    color: #40aae6;
+    font-size: 12px;
+    text-decoration: none;
+}
+
+.hc_skype{
+    color: #444444;
+    font-size: 12px;
+    font-family: Arial;
+    text-decoration: none;
+    background: url('header_skype_icon.png')0 0px no-repeat;
+    padding-left: 17px;
+    margin-right: 20px;
+}
+
+.hc_skype:hover{
+    color: #444444;
+    font-size: 12px;
+    text-decoration: underline;
+}
+.hc_email{
+    color: #444444;
+    font-size: 12px;
+    font-family: Arial;
+    text-decoration: none;
+    background: url('header_email_icon.png')0 0px no-repeat;
+    padding-left: 17px;
+    margin-right: 20px;
+}
+
+.hc_email:hover{
+    color: #444444;
+    font-size: 12px;
+    text-decoration: underline;
+}
+
+#shoppingcart_container{
+    width: 312px;
+    height: 78px;
+    float: left;
+    overflow: hidden;
+    border: 1px solid #dfdfdf;
+    background: #f7f7f7;
+    padding: 5px 10px;
+}
+
+#shoppincart{
+    width: 272px;
+    height: 45px;
+    overflow: hidden;
+    float: left;
+    background: url('shopping_cart_icon.png') 0 0px no-repeat;
+    padding-left: 40px;
+}
+
+.in_shoppingcart_now{
+    color: #444444;
+    font-size: 11px;
+    font-family: Arial;
+    text-decoration: none;
+    border-bottom: 1px dashed #444444;
+}
+
+.in_shoppingcart_now:hover{
+    font-size: 11px;
+    border-bottom: none;
+    text-decoration: none;
+    color: #444444;
+}
+
+#shoppincart_items{
+    width: 272px;
+    overflow: hidden;
+    margin-top:10px;
+    color: #444444;
+    font-size: 11px;
+    font-family: Arial;
+}
+
+.shoppincart_items{
+    color: #ef2d50;
+    font-size: 13px;
+    font-family: Arial;
+    font-weight: bold;
+}
+
+.shoppincart_items:hover{
+    color: #ef2d50;
+    font-size: 13px;
+    font-family: Arial;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.shoppingcart_buttons{
+    height: 33px;
+    float: left;
+    overflow: hidden;
+}
+
+.free-delivery{
+    width: 190px;
+    height: 133px;
+    margin-bottom: 17px;
+}
+
+.free-delivery img {
+    width: 127px;
+    margin-left: 26px;
+}
+
