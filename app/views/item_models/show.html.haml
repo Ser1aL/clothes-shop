@@ -131,13 +131,13 @@
       .pd_price
       .free-delivery
         = image_tag 'free-delivery.jpg'
-    - if @product.product && !@style.hidden?
-      .buy_button
-        %a.button
-        .button_left
-        .button_mid.add_to_cart_link
-          %a.button= link_to t('add_to_cart'), nil
-        .button_right
+      - if @product.product && !@style.hidden?
+        .buy_button
+          %a.button
+          .button_left
+          .button_mid.add_to_cart_link
+            %a.button= link_to t('add_to_cart'), nil
+          .button_right
 
     .size_grid= link_to t("size_grid"), '/assets/size_grid.png', :class => 'size_grid'
 

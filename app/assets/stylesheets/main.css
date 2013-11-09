@@ -720,7 +720,7 @@ a.submit_comment{
 .new_single_product .right_block .size_grid,
 .new_single_product .right_block .size,
 .new_single_product .right_block .buy_button{
-    float: right;
+    float: left;
     margin-bottom: 10px;
 }
 
