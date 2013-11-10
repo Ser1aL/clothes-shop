@@ -60,7 +60,7 @@ class ShoppingCartController < ApplicationController
         @shopping_cart.shopping_cart_lines.create(
           :product_id => params[:product_id],
           :quantity => 1,
-          :price => @style.discount_price_extra(@exchange_rate, @markup),
+          :price => @style.discount_price_extra(@exchange_rate, @markup, @fixed_markup),
           :style => @style,
           :stock_size => @stock.size,
           :currency => @currency
@@ -74,7 +74,7 @@ class ShoppingCartController < ApplicationController
           @shopping_cart.shopping_cart_lines.create(
             :product_id => params[:product_id],
             :quantity => 1,
-            :price => @style.discount_price_extra(@exchange_rate, @markup),
+            :price => @style.discount_price_extra(@exchange_rate, @markup, @fixed_markup),
             :style => @style,
             :stock_size => @stock.size,
             :currency => @currency
