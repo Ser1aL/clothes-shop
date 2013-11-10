@@ -79,7 +79,7 @@
                   +38(098)023-93-07
                   -#%a.support_call{:href => "#"} Заказать звонок
                 .hc_chat_skype_email
-                  %a.hc_chat{:href => "#"} Онлайн-чат
+                  %a.hc_chat{:href => 'javascript:void(0);', :onclick => "window.open('https://siteheart.com/webconsultation/29010', 'Site Heart. Shop-Mydostavka.com.ua', 'width=700,height=500,top=30,left=30,resizable=yes')" } Онлайн-чат
                   %a.hc_skype{:href => "skype:udg2010?call"} UDG2010
                   %a.hc_email{:href => "mailto:mydostavka@gmail.com"} mydostavka@gmail.com
               #shoppingcart_container
@@ -106,55 +106,8 @@
                 = link_to current_user.full_name, user_path(current_user)
               - else
                 = link_to 'Зарегистрироваться?', new_user_registration_path, :id => 'register_link'
-              /
-                <div id="shopping_cart">
-                <a href="#" class="shopping_cart_icon"></a>
-                <p class="text1">В корзине:</p>
-                <a href="#" class="text1_price_quantity">0</a>
-                <p class="text1">товара,   на сумму</p>
-                <a href="#" class="text1_price_quantity">0</a>
-                <p class="text1">грн.</p>
-                </div>
           .separator_header
 
-        -##header
-        -#  #logo
-        -#  #menu
-        -#    = link_to 'О нас', about_us_url, :class => 'link_menu'
-        -#    = link_to 'Отзывы', reviews_url, :class => 'link_menu'
-        -#    = link_to 'Статьи', articles_url, :class => 'link_menu'
-        -#    = link_to 'Оплата', payments_url, :class => 'link_menu'
-        -#    = link_to 'Доставка', deliveries_url, :class => 'link_menu'
-        -#    %b
-        -#      = link_to 'Сервис покупок в зарубежных интернет магазинах', "http://mydostavka.com/", :class => 'link_menu', :target => "_blank", :rel => 'nofollow'
-        -#    = link_to 'Контакты', contacts_url, :class => 'link_menu'
-        -#    - if !current_user
-        -#      %a.login_button.button{:href => "#"}
-        -#        .button_left
-        -#        .button_mid Войти
-        -#        .button_right
-        -#    - else
-        -#      %a.button{:href => destroy_user_session_path}
-        -#        .button_left
-        -#        .button_mid Выйти
-        -#        .button_right
-        -#  .separator_header
-        -#  .gray_area_conteiner_header
-        -#    .gray_area_content_header
-        -#      %span
-        -#        = link_to "Главная", root_path
-        -#      - if current_user
-        -#        = link_to current_user.full_name, user_path(current_user)
-        -#      - else
-        -#        = link_to 'Зарегистрироваться?', new_user_registration_path, :id => 'register_link'
-        -#      #shopping_cart
-        -#        %a.shopping_cart_icon{:href => checkout_path}
-        -#        %p.text1 В корзине товаров:
-        -#        = link_to @cart_line_count, checkout_path, :class => 'text1_price_quantity'
-        -#        %p.text1,   на сумму
-        -#        = link_to @shopping_cart.total, checkout_path, :class => 'text1_price_quantity'
-        -#        %p.text1= @currency
-        -#  .separator_header
         #navigation
           .navigation_buttons
             %a.button{:href => sitemaps_path}
@@ -309,8 +262,9 @@
           .coperait
             %p.link_menu © 2011 MyDostavka.com
           %a{:href => "http://designcraft.com.ua", :rel => 'nofollow'}
-            %img#logo_dc{:src => "/assets/designcraft_logo.png"}/
+          -#= render 'layouts/partials/site_heart_code'
           -#<!-- Yandex.Metrika informer -->
           %a{ href: 'http://metrika.yandex.ru/stat/?id=22344136&amp;from=informer', target: '_blank', rel: 'nofollow'}
             %img{ src: '//bs.yandex.ru/informer/22344136/3_1_FFFFFFFF_EFEFEFFF_0_pageviews', style: 'width:88px; height:31px; border:0; float: right; margin: 0 10px 0 0;', title: 'Яндекс.Метрика: данные за сегодня(просмотры, визиты и уникальные посетители)', onclick: "try{Ya.Metrika.informer({i:this,id:22344136,lang:'ru'});return false}catch(e){}"}
           -#<!-- /Yandex.Metrika informer -->
+            %img#logo_dc{:src => "/assets/designcraft_logo.png"}/

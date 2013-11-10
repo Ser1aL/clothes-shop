@@ -129,8 +129,7 @@
           .pd_presence_color_no
             .pd_presence_note= t('product_not_exists')
       .pd_price
-      .free-delivery
-        = image_tag 'free-delivery.jpg'
+      .free-delivery= t 'free_delivery_text'
       - if @product.product && !@style.hidden?
         .buy_button
           %a.button
