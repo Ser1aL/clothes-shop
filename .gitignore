@@ -9,3 +9,4 @@ public/system*
 public/assets/
 config/database.yml
 ./tags
+.ruby-version
