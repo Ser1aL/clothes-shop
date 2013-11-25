@@ -116,7 +116,23 @@ $(function(){
   });
 
   activate_selection_popups();
-  if($('#flash_message').length > 0) $('#flash_message').modal();
+  if($('#flash_message').length > 0) {
+      if ($('#flash_message').hasClass('noclose')) {
+          $('#flash_message').modal({close: false});
+      }
+      else {
+          $('#flash_message').modal();
+      }
+  }
+
+  $('.callback-button a').click(function(event){
+      event.preventDefault();
+      $(this).closest('form').submit();
+
+      $('#simplemodal-overlay').hide();
+      $('#simplemodal-container').hide();
+  });
+
 
   $(".ajaxified_translation").click(function(){
     $(this).val("Сохраняем");

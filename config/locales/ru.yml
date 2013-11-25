@@ -108,6 +108,7 @@ ru:
   delivery_header: 'Способ доставки'
   hide: 'Свернуть'
   payment_button: 'Перейти к странице оплаты'
+  submit_order: 'Оформить'
   invalid_address_information: 'Вы неверно ввели данные о получателе'
   order_submitted_successfully: 'Заказ оформлен'
   new_order: 'Новый заказ оформлен'

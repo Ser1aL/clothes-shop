@@ -44,6 +44,7 @@ Watches::Application.routes.draw do
   match 'contacts', :to => 'static#contacts', :as => 'contacts'
   match 'about-us', :to => 'static#about_us', :as => 'about_us'
 
+
   match 'search', :to => 'item_models#search', :as => 'search'
   match 'checkout', :to => 'shopping_cart#show', :as => 'checkout'
 
@@ -68,6 +69,7 @@ Watches::Application.routes.draw do
   post 'review', :to => 'shopping_cart#review', :as => 'review'
   post 'change_quantity/:cart_line_id', :to => 'shopping_cart#change_quantity', :as => 'change_quantity'
   post 'remove_cart_line/:cart_line_id', :to => 'shopping_cart#remove_cart_line', :as => 'remove_cart_line'
+  match 'mark_callback', :to => 'shopping_cart#mark_callback', :as => 'mark_callback'
   get 'item_models/:id', :to => 'item_models#show'
 
   get 'administrator', :to => 'administrator#orders'

@@ -17,6 +17,10 @@
     %span
       = order.user.phone_number
   %div
+    Звонить в:
+    %span
+      = order.callback.blank? ? 'Не указано' : order.callback
+  %div
     Общая сумма заказа:
     %span
       = order.total

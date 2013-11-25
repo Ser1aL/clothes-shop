@@ -1,36 +1,12 @@
-Ув.,
-= @user.full_name
 %p
-  Ваш заказ
-  %b
-    = "#" + "%05d" % @order.id
-  был успешно оформлен.
-  %br
-  Детали Вашего заказа указаны ниже:
+  Добрый день! Ваш Номер заказа: ##{"%05d" % @order.id}
 %p
-  Вы заказали следующее:
-  - @order.order_lines.each do |order_line|
-    %p
-      = order_line.product.item_model.brand.name
-      = order_line.product.item_model.product_name
-      Количество:
-      = order_line.quantity
-      Цена:
-      = order_line.price
-      = order_line.currency
-      Сумма:
-      = order_line.total
-      = order_line.currency
+  Стоимость вашего заказа #{@order.total.to_i} грн.
 %p
-  Адрес доставки:
-  = [@order.city, @order.address].join(', ')
+  Оплату можно произвести через любой терминал Приват банка либо через Приват24 на карту 5457-0929-0008-6707. Получатель - Роман Сардарян.
 %p
-  Всего к оплате:
-  = @order.total
-  = @order.order_lines.first.currency
+  После оплаты вам необходимо подтвердить платеж  телефонным звонком на номер 098-023-93-07 (сообщить время и сумму платежа).
 %p
-  Вы указали контактный номер телефона:
-  = @order.user.phone_number
+  Регламентный срок доставки 10-18 бизнес дней. Оплата за вес посылки производится из расчета 80 грн. за кг.
 %p
-  %br
-  Администрация shop-mydostavka.com
+  Доставка по Украине бесплатно.

@@ -22,53 +22,45 @@
 #custom_block
   = StaticPage.find_by_name("delivery_block").try(:text).try(:html_safe)
 - if @shopping_cart.total > 0
-  = form_tag payment_path, :id => 'prepayment_form' do
+  = form_tag create_order_path, :id => 'prepayment_form' do
     .delimiter
     .tips
       .tips_text
-        Адрес доставки
+        Введите свои данные
     .separator_content
     .shipping_adres
       #payment
-        - if @address_validation_errors
-          .lable_input
-            = @address_validation_errors[0]
+        .error= @user_validation_errors.try(:messages).try(:values).try(:flatten).try(:first) if @user_validation_errors
+        .lable_input
+          .lable
+            Имя:
+            %span *
+          .input_left_side
+          .input_style
+            = text_field_tag '[user][first_name]'
+          .input_right_side
+
+        .lable_input
+          .lable
+            Email:
+            %span *
+          .input_left_side
+          .input_style
+            = text_field_tag '[user][email]'
+          .input_right_side
+
         .lable_input
           .lable
             Телефон:
             %span *
           .input_left_side
           .input_style
-            = text_field_tag 'phone_number', current_user ? current_user.phone_number : ''
-          .input_right_side
-        .lable_input
-          .lable
-            Город:
-            %span *
-          .input_left_side
-          .input_style
-            = text_field_tag 'city', current_user ? current_user.city : ''
-          .input_right_side
-        .lable_input
-          .lable
-            Адрес:
-            %span *
-          .input_left_side
-          .input_style
-            = text_field_tag 'address', current_user ? current_user.address : ''
-          .input_right_side
-        .lable_input
-          .lable
-            Страна:
-            %span *
-          .input_left_side
-          .input_style
-            = text_field_tag 'country', current_user ? current_user.country : ''
+            = text_field_tag '[user][phone_number]'
           .input_right_side
     .delimiter
     .shipping_adres_order_button
       %a.button{:href => "#", :id => 'payment_button'}
         %span.button_left
         %span.button_mid
-          = t('payment_button')
+          = t('submit_order')
         %span.button_right

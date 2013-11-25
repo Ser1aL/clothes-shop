@@ -10,13 +10,17 @@ class Usermail < ActionMailer::Base
   def order_details order
     @order = order
     @user = order.user
-    mail :to => "#{@user.full_name} <#{@user.email}>", :subject => t('order_submitted_successfully')
+    mail :to => "#{@user.full_name} <#{@user.email}>", :subject => t('order_submitted_successfully'), :from => "customer-service@shop.mydostavka@gmail.com"
   end
 
   def staff_notification order
     @order = order
     @user = order.user
-    mail :to => "Grisha <gri74@bk.ru>", :subject => t('new_order')
+    if Rails.env.development?
+      mail :to => "max.reznichenko@gmail.com", :subject => t('new_order')
+    else
+      mail :to => "Grisha <gri74@bk.ru>", :subject => t('new_order')
+    end
   end
 
 end

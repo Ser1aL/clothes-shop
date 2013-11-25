@@ -18,27 +18,30 @@ class ShoppingCartController < ApplicationController
 
     selected_stock_size = @stock.size
     exists = true
-    if @product.item_model.origin == '6pm' || @product.item_model.origin.blank?
-      begin
-        exists = @style.update_6pm_prices(@product.item_model)
-        Rails.logger.debug "Exists at 6pm: #{exists.inspect}"
-      rescue => e
-        Rails.logger.debug '---------GOT 6pm EXCEPTION---------------'
-        Rails.logger.debug e.inspect
-        Rails.logger.debug e.message
-        Rails.logger.debug '------------------------'
-      end
-    end
 
-    if ( @product.item_model.origin == 'zappos' || @product.item_model.origin.blank? ) && !exists
-      begin
-        exists = @style.update_zappos_prices(@product.item_model)
-        Rails.logger.debug "Exists at zappos: #{exists.inspect}"
-      rescue => e
-        Rails.logger.debug '---------GOT zappos EXCEPTION---------------'
-        Rails.logger.debug e.inspect
-        Rails.logger.debug e.message
-        Rails.logger.debug '------------------------'
+    unless Rails.env.development?
+      if @product.item_model.origin == '6pm' || @product.item_model.origin.blank?
+        begin
+          exists = @style.update_6pm_prices(@product.item_model)
+          Rails.logger.debug "Exists at 6pm: #{exists.inspect}"
+        rescue => e
+          Rails.logger.debug '---------GOT 6pm EXCEPTION---------------'
+          Rails.logger.debug e.inspect
+          Rails.logger.debug e.message
+          Rails.logger.debug '------------------------'
+        end
+      end
+
+      if ( @product.item_model.origin == 'zappos' || @product.item_model.origin.blank? ) && !exists
+        begin
+          exists = @style.update_zappos_prices(@product.item_model)
+          Rails.logger.debug "Exists at zappos: #{exists.inspect}"
+        rescue => e
+          Rails.logger.debug '---------GOT zappos EXCEPTION---------------'
+          Rails.logger.debug e.inspect
+          Rails.logger.debug e.message
+          Rails.logger.debug '------------------------'
+        end
       end
     end
 
@@ -103,52 +106,61 @@ class ShoppingCartController < ApplicationController
     @shopping_cart_line.destroy
   end
 
-  def payment
-    if Order.valid_attribute?(:address, params[:address]) &&
-        Order.valid_attribute?(:city, params[:city]) &&
-        Order.valid_attribute?(:country, params[:country]) &&
-        User.valid_attribute?(:phone_number, params[:phone_number])
-      params[:user] ||= {}
-    else
-      @address_validation_errors = [I18n.t('invalid_address_information')]
-      render :action => 'show'
-    end
-  end
+  # deprecated
+  #
+  #def payment
+  #  if Order.valid_attribute?(:address, params[:address]) &&
+  #      Order.valid_attribute?(:city, params[:city]) &&
+  #      Order.valid_attribute?(:country, params[:country]) &&
+  #      User.valid_attribute?(:phone_number, params[:phone_number])
+  #    params[:user] ||= {}
+  #  else
+  #    @address_validation_errors = [I18n.t('invalid_address_information')]
+  #    render :action => 'show'
+  #  end
+  #end
 
-  def review
-    @user = begin
-      if current_user
-        current_user
-      elsif finding = User.find_by_email(params[:user][:email])
-        finding
-      else
-        User.new(params[:user].merge({
-          :password => 'fake_password',
-         :password_confirmation => 'fake_password',
-         :phone_number => params[:phone_number] }))
-      end
-    end
-    if @user.valid?
-      @order = Order.new(
-          :address => params[:address],
-          :city => params[:city],
-          :country => params[:country],
-          :order_time => @shopping_cart.created_at,
-          :status => :submitted,
-          :user => @user
-        )
-      @shopping_cart.shopping_cart_lines.each do |sc_line|
-        @order.order_lines << OrderLine.new(:price => sc_line.price, :product => sc_line.product, :quantity => sc_line.quantity, :currency => @currency)
-      end
-      unless @order.valid?
-        @order_validation_errors = @order.errors
-        render :action => 'payment'
-      end
-    else
-      @user_validation_errors = @user.errors
-      render :action => 'payment'
-    end
-  end
+  # deprecated
+  #
+  #def review
+  #  @user = begin
+  #    if current_user
+  #      current_user
+  #    elsif finding = User.find_by_email(params[:email])
+  #      finding
+  #    else
+  #      User.new(
+  #        :email => params[:email],
+  #        :first_name => params[:name],
+  #        :password => 'fake_password',
+  #        :password_confirmation => 'fake_password',
+  #        :phone_number => params[:phone_number]
+  #      )
+  #    end
+  #  end
+  #  if @user.valid?
+  #    @order = Order.new(
+  #      :address => params[:address],
+  #      :city => params[:city],
+  #      :country => params[:country],
+  #      :order_time => @shopping_cart.created_at,
+  #      :status => :submitted,
+  #      :user => @user
+  #    )
+  #
+  #    @shopping_cart.shopping_cart_lines.each do |sc_line|
+  #      @order.order_lines << OrderLine.new(:price => sc_line.price, :product => sc_line.product, :quantity => sc_line.quantity, :currency => @currency)
+  #    end
+  #
+  #    unless @order.valid?
+  #      @order_validation_errors = @order.errors
+  #      render :action => 'show'
+  #    end
+  #  else
+  #    @user_validation_errors = @user.errors
+  #    render :action => 'show'
+  #  end
+  #end
 
   def create_order
     user = begin
@@ -157,9 +169,10 @@ class ShoppingCartController < ApplicationController
       elsif finding = User.find_by_email(params[:user][:email])
         finding
       else
-        User.auto_create(params[:user].merge({ :phone_number => params[:phone_number] }))[:user]
+        User.auto_create(params[:user])[:user]
       end
     end
+
     if user
       @order = Order.create(
         :address => params[:address],
@@ -184,25 +197,30 @@ class ShoppingCartController < ApplicationController
         @order_validation_errors = @order.errors
         render :action => 'payment'
       else
+
         @order.update_total
         @shopping_cart.close
-        @order.user.update_attribute(:address, params[:address]) if !@order.user.address
-        @order.user.update_attribute(:city, params[:city]) if !@order.user.city
-        @order.user.update_attribute(:country, params[:country]) if !@order.user.country
-        @order.user.update_attribute(:phone_number, params[:phone_number])
-        unless Rails.env.development?
-          Usermail.order_details(@order).deliver
-          Usermail.staff_notification(@order).deliver
-        end
+        @order.user.update_attribute(:phone_number, params[:user][:phone_number])
+
+        Usermail.order_details(@order).deliver
+        Usermail.staff_notification(@order).deliver
+
         session[:shopping_cart_id] = nil
         flash[:message_type] = 'order_submitted_successfully'
         flash[:order_id] = @order.id
         redirect_to root_path
-      end      
+      end
     else
       @user_validation_errors = User.auto_create(params[:user])[:validation_errors]
-      render :action => 'payment'
+      render 'show'
     end
+  end
+
+  def mark_callback
+    if Digest::SHA1.hexdigest(params[:order_id]) == params[:update_token]
+      Order.find(params[:order_id]).update_attributes(:callback => params[:callback])
+    end
+    render nothing: true
   end
 
   private

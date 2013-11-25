@@ -1,4 +1,4 @@
-#flash_message
+#flash_message.noclose
   .pop_up_help_style
     .functional_container_popup
       .functional_block.functional_block_popup
@@ -12,13 +12,22 @@
               №
               = "%05d" % flash[:order_id]
             оформлен.
-          .pop_up_text_style_end_order1 На указанный вами e-mail выслана копия заказа.
-          .pop_up_text_style_end_order2 После поступления оплаты, заказ будет отправлен по указанному Вами адресу.  С Вами свяжется мнеджер и на еmail будет выслан инвойс для оплаты заказа
+          .pop_up_text_style_end_order1 На указанный вами e-mail выслана копия заказа. Ожидайте, с Вам свяжется оператор в удобное для вас время.
+          .pop_up_text_style_end_order2
+            = form_tag mark_callback_path, remote: true do
+              = hidden_field_tag :update_token, Digest::SHA1.hexdigest(flash[:order_id].to_s)
+              = hidden_field_tag :order_id, flash[:order_id]
+              .pull-left.callback-select= select_tag :callback, options_for_select([['9:00-12:00', '9:00-12:00'], ['12:00-15:00', '12:00-15:00'], ['15:00-18:00', '15:00-18:00'], ['18:00-21:00', '18:00-21:00'], ['Любое время', 'Любое время']])
+              .callback-button.pull-left
+                %a.button{:href => "#"}
+                  .button_left
+                  .button_mid Отправить
+                  .button_right
+                .delimiter
+              .delimiter
+
+          .pop_up_text_style_end_order2 * ТОВАР В ОГРАНИЧЕННОМ КОЛИЧЕСТВЕ. РЕКОМЕНДУЕМ ВЫБРАТЬ «ЛЮБОЕ ВРЕМЯ» ОПЕРАТОР СВЯЖЕТСЯ С ВАМИ В ТЕЧЕНИИ 10-15 МИНУТ.
           .pop_up_text_style_end_order_separator
-          .pop_up_text_style_end_order3
-            = link_to 'Вернуться на главную', root_path
-            %span
-              %a{:href => "#", :class => 'simplemodal-close'} Закрыть
         /
           .functional_block_footer
             .functional_block_footer_left_bottom

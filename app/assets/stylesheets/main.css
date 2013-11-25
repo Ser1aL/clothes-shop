@@ -885,6 +885,22 @@ a.submit_comment{
   clear: both;
 }
 
+.pull-left {
+    float: left;
+}
+
+.pull-right {
+    float: right;
+}
+
+.callback-select {
+    margin: 0 0 0 121px;
+}
+
+.callback-select select{
+    font-size: 20px;
+}
+
 .pager{
 	height: 28px;
 	float: left;
@@ -1584,6 +1600,12 @@ a.submit_comment{
 	float: left;
 	margin-bottom: 80px;
 	padding-top: 25px;
+}
+
+.shipping_adres #payment .error {
+    font-weight: bold;
+    padding: 0 0 10px 111px;
+    color: #eb0000;
 }
 
 
@@ -3749,8 +3771,9 @@ a.previews .previews_img_file{
 .seo_header{
     font-weight: normal;
     padding: 0;
-    font-size: 15px;
-    margin: 0 auto;
+    font-size: 13px;
+    color: #444444;
+    margin-left: 24px;
     width: 540px;}
 
 .shipping_adres .input_style, .reg_form .input_style{
@@ -4195,4 +4218,8 @@ a.previews .previews_img_file{
     width: 190px;
     margin-bottom: 17px;
     font-weight: bold;
+}
+
+.order-submission .modalCloseImg {
+    display: none;
 }
