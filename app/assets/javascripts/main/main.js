@@ -76,9 +76,14 @@ $(function(){
     return false;
   });
 
-  $('#login_submit_detailed, #registration_submit_detailed').click(function(){
+  $('#registration_submit_detailed').click(function(){
     $('#user_new').submit();
     return false;
+  });
+
+  $('#login_submit_detailed').click(function() {
+      $('#login_form_detailed form').submit();
+      return false;
   });
 
   $("#edit_user").click(function(){

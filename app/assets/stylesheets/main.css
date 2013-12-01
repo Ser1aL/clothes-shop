@@ -1406,6 +1406,10 @@ a.submit_comment{
   height: 334px !important;
 }
 
+.user_edit_form .input_style {
+    width: 279px;
+}
+
 .hidden{
   display: none;
 }
@@ -2031,6 +2035,14 @@ a.submit_comment{
 
 .shipping_adres_description{
 	margin: 40px 0 10px 20px;
+}
+
+.login_block .input_style {
+    width: 275px;
+}
+
+.login_block .input_style input {
+    width: 280px;
 }
 
 .shipping_adres_description .shipping_adres_help_text_style{
@@ -4031,7 +4043,7 @@ a.previews .previews_img_file{
 
 .link_menu {
     float: left;
-    padding-right: 16px;
+    padding-right: 12px;
     padding-top: 7px;
     color: #444444;
     font-size: 13px;
