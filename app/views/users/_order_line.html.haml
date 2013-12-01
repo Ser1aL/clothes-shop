@@ -1,31 +1,32 @@
-%tr.shopping_card_content
-  %td.shopping_card_content_image
-    - if order_line.style.not_zoomed_image_attachments.empty?
-      %a{:href => single_model_path(order_line.product.item_model, order_line.style)}
-        .sc_clock_image
-          = image_tag 'thumb/missing.png'
-    - else
-      %a{:href => single_model_path(order_line.product.item_model, order_line.style)}
-        .sc_clock_image
+- if order_line.style.present?
+  %tr.shopping_card_content
+    %td.shopping_card_content_image
+      - if order_line.style.not_zoomed_image_attachments.empty?
+        %a{:href => single_model_path(order_line.product.item_model, order_line.style)}
           .sc_clock_image
-            = image_tag order_line.style.primary_image.image_url
-  %td.shopping_card_content_description
-    .shopping_card_content_title_product
-      %a.shopping_card_content_title_product-a{:href => single_model_path(order_line.product.item_model, order_line.style)}
-        = order_line.product.item_model.brand.name
-        = order_line.product.item_model.product_name
-    .shopping_card_content_product_description 
-      = order_line.product.item_model.full_description
-  %td.shopping_card_content_price
-    .price
-      = order_line.quantity
-  %td.shopping_card_content_price
-    .sum-a
-      = order_line.price
-    .price
-      = order_line.currency
-  %td.shopping_card_content_total
-    .sum-a
-      = order_line.total
-    .price
-      = order_line.currency
+            = image_tag 'thumb/missing.png'
+      - else
+        %a{:href => single_model_path(order_line.product.item_model, order_line.style)}
+          .sc_clock_image
+            .sc_clock_image
+              = image_tag order_line.style.primary_image.image_url
+    %td.shopping_card_content_description
+      .shopping_card_content_title_product
+        %a.shopping_card_content_title_product-a{:href => single_model_path(order_line.product.item_model, order_line.style)}
+          = order_line.product.item_model.brand.name
+          = order_line.product.item_model.product_name
+      .shopping_card_content_product_description
+        = order_line.product.item_model.full_description
+    %td.shopping_card_content_price
+      .price
+        = order_line.quantity
+    %td.shopping_card_content_price
+      .sum-a
+        = order_line.price
+      .price
+        = order_line.currency
+    %td.shopping_card_content_total
+      .sum-a
+        = order_line.total
+      .price
+        = order_line.currency
