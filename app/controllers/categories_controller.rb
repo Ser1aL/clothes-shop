@@ -29,7 +29,7 @@ class CategoriesController < ApplicationController
     end
 
     if @running_root_request
-      @styles = Style.get_items(params, @exchange_rate, @markup)
+      @banners = Banner.where("category_id = ?", params[:top_level_cat_id])
     else
       @styles = Style.get_items_extended(params, @exchange_rate, @markup)
     end

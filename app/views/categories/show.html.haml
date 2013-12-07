@@ -1,3 +1,7 @@
+- if @running_root_request
+  - left_banner = @banners.where(:side => "left").first
+  - right_banner = @banners.where(:side => "right").first
+
 - seo_header = ''
 - gender = @styles.first.product.item_model.gender.name.mb_chars.downcase rescue ''
 - if @rewrite_meta_header.present?
@@ -137,9 +141,24 @@
                     - if count_value.present?
                       %td
                         %a{ :href => build_uri(request.filtered_parameters.merge({ size: count_value.size_value })) }= count_value.size_value
-  .styles
-    = render partial: 'item_models/style', collection: @styles, locals: { params: params }
-  - unless @running_root_request
+  - if @running_root_request
+    .advertisement_block
+      .ab_main_banner
+        #slides.index_page
+          - @banners.where(:side => nil).each do |banner|
+            .slides_container
+              .banner_holder
+                %a{:href => banner.url}
+                  = image_tag banner.image_url, rel: 'nofollow'
+      .adsb_content
+        .adsbc_left
+          = image_tag left_banner.try(:image_url), rel: 'nofollow'
+        .adsbc_middle
+        .adsbc_right
+          = image_tag right_banner.try(:image_url), rel: 'nofollow'
+  - else
+    .styles
+      = render partial: 'item_models/style', collection: @styles, locals: { params: params }
     = paginate @styles, :window => 10
   .delimiter
   = render "/texts/#{@rewrite_meta_text_partial}" if @rewrite_meta_text_partial.present?

@@ -3013,8 +3013,7 @@ a.previews .previews_img_file{
 .slides_container {
     margin: 0 auto;
     width: 499px;
-    height: 345px;
-    padding-top: 17px;
+    padding-top: 2px;
 }
 
 .slides_container div {
@@ -3023,8 +3022,14 @@ a.previews .previews_img_file{
     display:block;
 }
 
+.slides_container .banner_holder {
+    padding: 4px;
+    border: 1px #EEE solid;
+    width: 640px;
+}
+
 .index_page .slides_container img{
-    width: 653px;
+    width: 640px;
 }
 
 .index_page .pagination{
@@ -3051,7 +3056,7 @@ a.previews .previews_img_file{
     width: 212px;
 }
 .slides_container img{
-    width:500px;
+    width: 640px;
 }
 
 
