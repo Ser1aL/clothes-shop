@@ -124,7 +124,10 @@
         .pd_total_price{ :itemprop => "price" }= number_to_currency(@style.discount_price_extra(@exchange_rate, @markup, @fixed_markup), :unit => '')
         - if @product.product && !@style.hidden?
           .pd_presence_color
-            .pd_presence_note= t('product_exists')
+            .pd_presence_note
+              = t('product_exists')
+              %br
+              * на складе в США
         - else
           .pd_presence_color_no
             .pd_presence_note= t('product_not_exists')
