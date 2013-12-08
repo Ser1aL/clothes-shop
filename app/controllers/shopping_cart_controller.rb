@@ -142,7 +142,6 @@ class ShoppingCartController < ApplicationController
         @order_validation_errors = @order.errors
         render :action => 'payment'
       else
-
         @order.update_total
         @shopping_cart.close
         @order.user.update_attribute(:phone_number, params[:user][:phone_number])
@@ -169,7 +168,7 @@ class ShoppingCartController < ApplicationController
   end
 
   def order_call
-    Usermail.staff_order_call(params[:phone_number]).deliver
+    Usermail.staff_order_call(params).deliver
     flash[:message_type] = 'call_ordered'
     redirect_to :back
   end

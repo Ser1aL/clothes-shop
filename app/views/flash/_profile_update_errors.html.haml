@@ -1,0 +1,17 @@
+#flash_message
+  .pop_up_help_style
+    .functional_container_popup
+      .functional_block.functional_block_popup
+        .functional_block_header_popup
+          .functional_block_header_left_top
+          .functional_block_header_right_top
+        .functional_block_body.functional_block_body_popup
+          .pop_up_text_style_end_order
+            Личный кабинет
+          .pop_up_text_style_end_order1
+            Ваши данные не обновлены!
+            %ul
+            - flash[:user_update_errors].each do |error|
+              %li= error
+          .pop_up_text_style_end_order2
+          .pop_up_text_style_end_order_separator

@@ -21,12 +21,10 @@
       .price
         = order_line.quantity
     %td.shopping_card_content_price
-      .sum-a
-        = order_line.price
       .price
-        = order_line.currency
+        = order_line.stock_size
     %td.shopping_card_content_total
       .sum-a
-        = order_line.total
+        = order_line.price
       .price
         = order_line.currency

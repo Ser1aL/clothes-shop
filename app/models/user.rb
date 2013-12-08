@@ -2,8 +2,8 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable
 
   attr_accessible :email, :password, :password_confirmation, :remember_me, :first_name, :middle_name, :last_name, :phone_number, :city, :address, :country
-  validates_presence_of :first_name, :phone_number
-  validates :phone_number, :format => { :with => /^[\+\d\ \(\)\-]{7,}$/ }
+  validates_presence_of :first_name #, :phone_number
+  # validates :phone_number, :format => { :with => /^[\+\d\ \(\)\-]{7,}$/ }
   has_many :shopping_carts
   has_many :addresses, :dependent => :restrict
   has_many :comments
@@ -14,8 +14,8 @@ class User < ActiveRecord::Base
     logger.debug user.inspect
     user[:password], user[:password_confirmation] = random_password, random_password
     user = self.new(user)
-    Usermail.autoregistration(user, random_password).deliver if user.valid?
-    user.save ? { :user => user } : { :user => nil, :validation_errors => user.errors }
+    Usermail.autoregistration(user, random_password).deliver if user.save
+    user.valid? ? { :user => user } : { :user => nil, :validation_errors => user.errors }
   end
 
   def full_name

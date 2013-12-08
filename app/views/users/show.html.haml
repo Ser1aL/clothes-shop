@@ -31,7 +31,6 @@
       .lable_input
         .lable
           Фамилия:
-          %span *
         .input_left_side
         .input_style
           = f.text_field :last_name
@@ -51,29 +50,47 @@
           = f.text_field :middle_name
         .input_right_side
       .lable_input
-        .lable 
+        .lable
           Телефон:
-          %span *
         .input_left_side
         .input_style
           = f.text_field :phone_number
         .input_right_side
       .lable_input
-        .lable 
+        .lable
           Адрес:
         .input_left_side
         .input_style
           = f.text_field :address
         .input_right_side
-      .lable_input
-        .lable 
-          Город:
-        .input_left_side
-        .input_style
-          = f.text_field :city
-        .input_right_side
       .button_right_functional
         %a.button{:href => "#", :id => 'edit_user'}
+          %span.button_left
+          %span.button_mid Готово
+          %span.button_right
+.delimiter
+= form_for current_user do |f|
+  .registration_block.user_edit_password_form.user_edit_form.hidden
+    %p Изменение пароля
+    .registration_block_body
+      .lable_input
+        .lable
+          Пароль:
+          %span *
+        .input_left_side
+        .input_style
+          = f.password_field :password
+        .input_right_side
+      .lable_input
+        .lable
+          Еще раз:
+          %span *
+        .input_left_side
+        .input_style
+          = f.password_field :password_confirmation
+        .input_right_side
+      .button_right_functional
+        %a.button{:href => "#", :id => 'edit_user_password'}
           %span.button_left
           %span.button_mid Готово
           %span.button_right

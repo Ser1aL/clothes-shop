@@ -51,7 +51,7 @@
               с
               %span 9:00
               до
-              %span 12:00
+              %span 21:00
               без выходных
           #container_menu
             #menu
@@ -69,9 +69,9 @@
                   .button_mid Мои заказы
                   .button_right
               - else
-                %a.button{:href => destroy_user_session_path}
+                %a.button{:href => user_path(current_user)}
                   .button_left
-                  .button_mid Выйти
+                  .button_mid Мои заказы
                   .button_right
             #contact_shoppingcart
               #header_contact
@@ -100,10 +100,10 @@
           .separator_header
           .gray_area_conteiner_header
             .gray_area_content_header
-              %span
-                = link_to 'Главная', root_path
+              %span= link_to 'Главная', root_path
               - if current_user
-                = link_to current_user.full_name, user_path(current_user)
+                %span= link_to current_user.full_name, user_path(current_user)
+                %span= link_to 'Выйти', destroy_user_session_path
           .separator_header
 
         #navigation
@@ -216,7 +216,7 @@
                   .footer_labe4
                     %a.text1{:href => "skype:udg2010?call"}
                       %b udg2010
-                    %span С 12:00 до 24:00
+                    %span С 09:00 до 21:00
           .footer_h_sep
           .footer_blok_content
             = form_for Review.new do |f|

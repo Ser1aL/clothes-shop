@@ -91,6 +91,11 @@ $(function(){
     return false;
   });
 
+  $("#edit_user_password").click(function(){
+      $(".user_edit_password_form").closest('form').submit();
+      return false;
+  });
+
   $("#hide_user_edit_form").click(function(){
     if($(".user_edit_form.hidden").is(':visible')){
       $(".user_edit_form.hidden").hide();

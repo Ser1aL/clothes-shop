@@ -15,8 +15,8 @@
     %tr.table_order_header
       %td.table_header_mane.real_mane{:colspan => 2} Товар
       %td.table_header_quantity Количество
-      %td.table_header_price Цена
-      %td.table_header_total Итого
+      %td.table_header_price Размер
+      %td.table_header_total Цена
     = render :partial => 'order_line', :collection => order.order_lines
     %tr.table_total.user_order_total
       %td.table_total_price

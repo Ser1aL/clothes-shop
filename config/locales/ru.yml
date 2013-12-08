@@ -304,6 +304,9 @@ ru:
             password:
               blank: 'Вы не ввели пароль'
               confirmation: 'Пароли не совпадают'
+              too_short: "Пароль слишком короткий(не менее 6 символов)"
+              too_long: "Пароль слишком длинный"
+              invalid: "Пароль введен неверно"
   devise:
     mailer:
       confirmation_instructions:

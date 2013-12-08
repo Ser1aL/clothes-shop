@@ -15,6 +15,7 @@
                 .input_left_bg
                 .input_style= text_field_tag :phone_number
                 .input_right_bg
+                .call-time= select_tag :call_time, options_for_select([['9:00-12:00', '9:00-12:00'], ['12:00-15:00', '12:00-15:00'], ['15:00-18:00', '15:00-18:00'], ['18:00-21:00', '18:00-21:00'], ['Любое время', 'Любое время']])
               .delimiter
             .submit_order_call
               %a.button{:href => "#"}

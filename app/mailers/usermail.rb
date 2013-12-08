@@ -23,8 +23,8 @@ class Usermail < ActionMailer::Base
     end
   end
 
-  def staff_order_call(phone_number)
-    @phone_number = phone_number
+  def staff_order_call(params)
+    @phone_number, @call_time = params[:phone_number], params[:call_time]
     if Rails.env.development?
       mail :to => "max.reznichenko@gmail.com", :subject => t('call_ordered')
     else
