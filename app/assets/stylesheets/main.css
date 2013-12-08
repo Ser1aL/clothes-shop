@@ -4103,6 +4103,7 @@ a.previews .previews_img_file{
     font-family: Arial;
     text-decoration: none;
     border-bottom: 1px dashed #ef2d50;
+    margin-left: 28px;
 }
 
 .support_call:hover{
