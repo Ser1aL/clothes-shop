@@ -30,6 +30,10 @@
     %span
       = order.created_at.to_formatted_s(:long)
   %div
+    Курьерская доставка:
+    %span
+      = order.delivery_city.blank? ? 'Не нужна' : 'г. ' + order.delivery_city
+  %div
     Статус заказа:
     = form_tag administrator_set_order_status_path(order) do
       = select_tag :status, options_for_select(order_statuses, order.status)

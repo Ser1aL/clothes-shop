@@ -4240,3 +4240,28 @@ a.previews .previews_img_file{
 .order-submission .modalCloseImg {
     display: none;
 }
+
+.other-brand-items{
+    padding: 0 0 12px 14px;
+    font-style: italic;
+    font-weight: bold;
+}
+
+#order_delivery {
+    width: 296px;
+    height: 31px;
+    line-height: 20px;
+    font-size: 16px;
+    margin-left: 3px;
+}
+
+.delivery_label_wrapper {
+    width: auto;
+}
+
+.delivery_label_wrapper .delivery_label {
+    width: 108px;
+    float: left;
+    color: #444444;
+}
+

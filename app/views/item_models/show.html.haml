@@ -56,7 +56,8 @@
         %li.pd_li_style
           .pd_li_label SKU #:
           .pd_li_labe2= @product.external_product_id
-
+      .other-brand-items
+        = link_to t('product_description.other_items'), brand_path(@product.try(:brand))
       - if @product.product.styles.size > 1
         .brows_lable
           .bl_style= t("product_description.other_colors")
@@ -69,7 +70,6 @@
                 = image_tag style.swatch_url, :alt => @product.product_name, rel: 'nofollow'
 
     .mid_block
-
       .image_tab.tabable
         .brand_logo
           = image_tag @product.brand.logo_url

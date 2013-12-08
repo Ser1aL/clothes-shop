@@ -57,6 +57,14 @@
           .input_style
             = text_field_tag '[user][phone_number]'
           .input_right_side
+        .delimiter
+        .delivery_label_wrapper
+          .delivery_label
+            Доставка курьером прямо в руки 15грн.
+          %div
+          %div
+            = select_tag :order_delivery, options_for_select(t('delivery_cities')), include_blank: true
+          %div
     .delimiter
     .shipping_adres_order_button
       %a.button{:href => "#", :id => 'payment_button'}

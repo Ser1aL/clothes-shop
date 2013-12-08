@@ -18,6 +18,7 @@ class Order < ActiveRecord::Base
 
   def update_total
     update_attribute :total, order_lines.map(&:total).sum
+    update_attribute :total, self.total + 15 if delivery_city.present?
   end
 
   def self.valid_attribute?(attr, value)

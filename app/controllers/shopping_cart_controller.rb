@@ -106,62 +106,6 @@ class ShoppingCartController < ApplicationController
     @shopping_cart_line.destroy
   end
 
-  # deprecated
-  #
-  #def payment
-  #  if Order.valid_attribute?(:address, params[:address]) &&
-  #      Order.valid_attribute?(:city, params[:city]) &&
-  #      Order.valid_attribute?(:country, params[:country]) &&
-  #      User.valid_attribute?(:phone_number, params[:phone_number])
-  #    params[:user] ||= {}
-  #  else
-  #    @address_validation_errors = [I18n.t('invalid_address_information')]
-  #    render :action => 'show'
-  #  end
-  #end
-
-  # deprecated
-  #
-  #def review
-  #  @user = begin
-  #    if current_user
-  #      current_user
-  #    elsif finding = User.find_by_email(params[:email])
-  #      finding
-  #    else
-  #      User.new(
-  #        :email => params[:email],
-  #        :first_name => params[:name],
-  #        :password => 'fake_password',
-  #        :password_confirmation => 'fake_password',
-  #        :phone_number => params[:phone_number]
-  #      )
-  #    end
-  #  end
-  #  if @user.valid?
-  #    @order = Order.new(
-  #      :address => params[:address],
-  #      :city => params[:city],
-  #      :country => params[:country],
-  #      :order_time => @shopping_cart.created_at,
-  #      :status => :submitted,
-  #      :user => @user
-  #    )
-  #
-  #    @shopping_cart.shopping_cart_lines.each do |sc_line|
-  #      @order.order_lines << OrderLine.new(:price => sc_line.price, :product => sc_line.product, :quantity => sc_line.quantity, :currency => @currency)
-  #    end
-  #
-  #    unless @order.valid?
-  #      @order_validation_errors = @order.errors
-  #      render :action => 'show'
-  #    end
-  #  else
-  #    @user_validation_errors = @user.errors
-  #    render :action => 'show'
-  #  end
-  #end
-
   def create_order
     user = begin
       if current_user
@@ -180,7 +124,8 @@ class ShoppingCartController < ApplicationController
         :country => params[:country],
         :order_time => @shopping_cart.created_at,
         :status => :submitted,
-        :user => user
+        :user => user,
+        :delivery_city => params[:order_delivery]
       )
 
       @shopping_cart.shopping_cart_lines.each do |sc_line|
