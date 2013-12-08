@@ -3967,7 +3967,7 @@ a.previews .previews_img_file{
 }
 
 .size-table {
-    padding-left: 4px;
+    border-spacing: 0;
 }
 
 .size-table td{
