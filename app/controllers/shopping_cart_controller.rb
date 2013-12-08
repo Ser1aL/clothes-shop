@@ -168,6 +168,12 @@ class ShoppingCartController < ApplicationController
     render nothing: true
   end
 
+  def order_call
+    Usermail.staff_order_call(params[:phone_number]).deliver
+    flash[:message_type] = 'call_ordered'
+    redirect_to :back
+  end
+
   private
   
   def redirect_if_no_shopping_cart

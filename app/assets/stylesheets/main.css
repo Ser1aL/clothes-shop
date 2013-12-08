@@ -4265,3 +4265,20 @@ a.previews .previews_img_file{
     color: #444444;
 }
 
+.hide {
+    display: none;
+}
+
+.phone_number_wrapper {
+    margin: 0 auto;
+    width: 307px;
+}
+
+.phone_number_wrapper .input_style {
+    width: 280px;
+}
+
+.submit_order_call {
+    margin: 11px auto 10px auto;
+    width: 120px;
+}

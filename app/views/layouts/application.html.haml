@@ -27,8 +27,8 @@
     = render :partial => '/layouts/partials/google_analytics'
     = render :partial => '/layouts/partials/yandex_analytics'
   %body{:itemscope => '', :itemtype => 'http://schema.org/WebPage'}
-    - if flash[:message_type]
-      = render :partial => "/flash/#{flash[:message_type]}"
+    = render :partial => "/flash/#{flash[:message_type]}" if flash[:message_type]
+    = render 'flash/order_call'
     #loader
     #top_line
       #top_line_wraper
@@ -77,7 +77,7 @@
               #header_contact
                 .hc_phone
                   +38(098)023-93-07
-                  -#%a.support_call{:href => "#"} Заказать звонок
+                  %a.support_call{:href => "#"} Заказать звонок
                 .hc_chat_skype_email
                   %a.hc_chat{:href => 'javascript:void(0);', :onclick => "window.open('https://siteheart.com/webconsultation/29010', 'Site Heart. Shop-Mydostavka.com.ua', 'width=700,height=500,top=30,left=30,resizable=yes')" } Онлайн-чат
                   %a.hc_skype{:href => "skype:udg2010?call"} UDG2010

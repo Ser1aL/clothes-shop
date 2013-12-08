@@ -113,6 +113,7 @@ ru:
   invalid_address_information: 'Вы неверно ввели данные о получателе'
   order_submitted_successfully: 'Заказ оформлен'
   new_order: 'Новый заказ оформлен'
+  call_ordered: 'Заказали звонок'
   user_autocreation_successfull: 'Автоматическая регистрация'
   email_not_found: 'Такой email не найден в базе'
 

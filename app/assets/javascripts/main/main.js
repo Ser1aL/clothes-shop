@@ -130,12 +130,24 @@ $(function(){
       }
   }
 
+  $('.support_call').click(function(event){
+      event.preventDefault();
+      $('#order_call').modal();
+  });
+
   $('.callback-button a').click(function(event){
       event.preventDefault();
       $(this).closest('form').submit();
 
       $('#simplemodal-overlay').hide();
       $('#simplemodal-container').hide();
+  });
+
+  $('.submit_order_call .button').click(function(event){
+      event.preventDefault();
+      if($('.phone_number_wrapper form .input_style input').val().length > 0) {
+          $('.phone_number_wrapper form').submit();
+      }
   });
 
 

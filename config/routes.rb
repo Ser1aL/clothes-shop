@@ -63,6 +63,7 @@ Watches::Application.routes.draw do
   resources :users
   
   match 'add/:product_id', :to => 'shopping_cart#add_to_cart', :as => 'add'
+  post '/order_call', to: 'shopping_cart#order_call', as: 'order_call'
 
   post 'payment', :to => 'shopping_cart#payment', :as => 'payment'
   post 'create_order', :to => 'shopping_cart#create_order', :as => 'create_order'
