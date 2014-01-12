@@ -1,0 +1,14 @@
+SHELL=/bin/bash
+PATH=/home/deploy/.rvm/gems/ruby-1.9.3-p194@clothes-shop/bin:/home/deploy/.rvm/gems/ruby-1.9.3-p194@global/bin:/home/deploy/.rvm/rubies/ruby-1.9.3-p194/bin:/home/deploy/.rvm/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games
+
+45 * * * * deploy cd /home/deploy/rails_apps/clothes-shop && source /home/deploy/.profile && source /home/deploy/.bashrc && source /home/deploy/.bash_login && rvm use ruby-1.9.3-p194 && bundle exec rake db_prepare:categorize RAILS_ENV=production >/dev/null 2>&1
+41 18 * * * deploy cd /home/deploy/rails_apps/clothes-shop && source /home/deploy/.profile && source /home/deploy/.bashrc && source /home/deploy/.bash_login && rvm use ruby-1.9.3-p194 && bundle exec rake data_feed:item_models RAILS_ENV=production >/dev/null 2>&1
+# 00 20 * * * deploy cd /home/deploy/rails_apps/clothes-shop && source /home/deploy/.profile && source /home/deploy/.bashrc && source /home/deploy/.bash_login && rvm use ruby-1.9.3-p194 && bundle exec rake data_feed:load_facets RAILS_ENV=production >/dev/null 2>&1
+00 18 * * Mon,Fri deploy cd /home/deploy/rails_apps/clothes-shop && source /home/deploy/.profile && source /home/deploy/.bashrc && source /home/deploy/.bash_login && rvm use ruby-1.9.3-p194 && bundle exec rake data_feed:update_styles RAILS_ENV=production >/dev/null 2>&1
+# 30 05 * * * deploy cd /home/deploy/rails_apps/clothes-shop && source /home/deploy/.profile && source /home/deploy/.bashrc && source /home/deploy/.bash_login && rvm use ruby-1.9.3-p194 && bundle exec rake data_feed:load_banners RAILS_ENV=production && rails runner "Rails.cache.clear" production && touch tmp/restart.txt >/dev/null 2>&1
+0 */2 * * * deploy cd /home/deploy/rails_apps/clothes-shop && source /home/deploy/.profile && source /home/deploy/.bashrc && source /home/deploy/.bash_login && rvm use ruby-1.9.3-p194 && bundle exec rake ts:index RAILS_ENV=production >/dev/null 2>&1
+0 20 * * * deploy cd /home/deploy/rails_apps/clothes-shop && source /home/deploy/.profile && source /home/deploy/.bashrc && source /home/deploy/.bash_login && rvm use ruby-1.9.3-p194 && bundle exec rake sitemap:build RAILS_ENV=production >/dev/null 2>&1
+
+*/15 * * * * deploy cd /home/deploy/rails_apps/clothes-shop && source /home/deploy/.profile && source /home/deploy/.bashrc && source /home/deploy/.bash_login && rvm use ruby-1.9.3-p194 && bundle exec rake db_prepare:visit_slow_pages RAILS_ENV=production >/dev/null 2>&1
+
+0 17 * * * deploy touch /home/deploy/rails_apps/clothes-shop/tmp/restart.txt

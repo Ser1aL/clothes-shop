@@ -80,8 +80,7 @@ class RawSearch
       INNER JOIN item_models ON products.item_model_id = item_models.id
       WHERE
         #{conditions}
-      GROUP BY stocks.size
-      LIMIT 30
+      LIMIT 200
     SQL
 
     ActiveRecord::Base.connection.select_all(search_query).map{|size|
@@ -90,7 +89,7 @@ class RawSearch
         :type_name => size["size"],
         :size_value => size["size"]
       }.merge!(params))
-    }.sort_by{|r| r[:type_name].first.capitalize}
+    }.sort_by{|r| r[:type_name].first.capitalize}[0..29]
   end
 
   def self.get_color_counts(params, exchange_rate, markup)
@@ -113,8 +112,9 @@ class RawSearch
 
     conditions = conditions.blank? ? "" : "AND " + conditions.join(" AND ")
 
+    # pick first 200, but return only 21 unique
     search_query = <<-SQL
-      SELECT count(item_models.id) as count, styles.color, styles.swatch_url
+      SELECT styles.color, styles.swatch_url
       FROM item_models
       INNER JOIN products ON products.item_model_id = item_models.id
       INNER JOIN styles ON styles.product_id = products.id
@@ -123,17 +123,16 @@ class RawSearch
         styles.swatch_url IS NOT NULL
         #{conditions}
       GROUP BY item_models.id, styles.color
-      LIMIT 21
+      LIMIT 200
     SQL
 
     ActiveRecord::Base.connection.select_all(search_query).group_by{|r| r["color"]}.map do |color, group|
       Hashie::Mash.new({
-        :count => group.size,
         :type_name => color,
         :swatch_url => group.first['swatch_url'],
         :color => color
       }).merge!(params)
-    end.sort_by{|r| r[:type_name].first.capitalize}
+    end.sort_by{|r| r[:type_name].first.capitalize}[0..20]
   end
 
 end

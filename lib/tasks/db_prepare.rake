@@ -26,5 +26,23 @@ namespace :db_prepare do
     ActiveRecord::Base.connection.execute(category_counts_sql)
   end
 
+  desc 'visit and cache slow pages'
+  task :visit_slow_pages do
+
+    slow_pages = []
+    100.times do |t|
+      slow_pages << "http://shop-mydostavka.com/c/2/g/1?page=#{t+1}"
+      slow_pages << "http://shop-mydostavka.com/c/2/g/2?page=#{t+1}"
+      slow_pages << "http://shop-mydostavka.com/c/1/g/1?page=#{t+1}"
+      slow_pages << "http://shop-mydostavka.com/c/1/g/2?page=#{t+1}"
+    end
+
+    slow_pages.each do |page|
+      `curl #{page} >/dev/null`
+      sleep 1
+    end
+  end
+
+
 end
 
