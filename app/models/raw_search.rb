@@ -39,8 +39,7 @@ class RawSearch
       INNER JOIN stocks ON stocks.style_id = styles.id
       WHERE
         #{conditions}
-      GROUP BY item_models.id, #{type.to_s.pluralize}.id
-      ORDER BY type_name
+      GROUP BY #{type.to_s.pluralize}.id
     SQL
 
     ActiveRecord::Base.connection.select_all(search_query).group_by{|r| r["#{type.to_s}_id"]}.map do |type_id, group|
