@@ -83,13 +83,13 @@ class RawSearch
       LIMIT 200
     SQL
 
-    ActiveRecord::Base.connection.select_all(search_query).map{|size|
+    ActiveRecord::Base.connection.select_all(search_query).group_by{|r| r['size']}.map do |size, group|
       Hashie::Mash.new({
         :count => 0,
-        :type_name => size["size"],
-        :size_value => size["size"]
+        :type_name => size,
+        :size_value => size
       }.merge!(params))
-    }.sort_by{|r| r[:type_name].first.capitalize}[0..29]
+    end.sort_by{|r| r[:type_name].first.capitalize}[0..29]
   end
 
   def self.get_color_counts(params, exchange_rate, markup)
