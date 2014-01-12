@@ -130,6 +130,61 @@ class Style < ActiveRecord::Base
     updated_styles_count > 0 ? true : false
   end
 
+  def raw_6pm_update(do_updates = false)
+    path_to_product = "http://6pm.com/product/#{self.product.item_model.external_product_id}/color/#{external_color_id}"
+    Rails.logger.debug "---------------------------------------------"
+    Rails.logger.debug("updating info from 6pm url: #{path_to_product}")
+
+    begin
+      html = Nokogiri::HTML(open(path_to_product))
+    rescue OpenURI::HTTPError => error
+      Rails.logger.debug "openuri error: #{error.message}"
+      return false if error.message == '404 Not Found'
+    end
+
+    Rails.logger.debug "HTML PAGE FETCHED"
+
+
+    # ensure we are on this page
+    return false unless html.css("#detailImage").to_s =~ /#{external_style_id}/
+
+    html.css("ul li#priceSlot .oldPrice").text =~ %r(\$([\d\.]*))
+    original_price = $1
+    if original_price.blank?
+      html.css(".discount").text =~ %r(\$([\d\.]*))
+      original_price = $1
+    end
+    html.css("ul li#priceSlot .price").text =~ %r(\$([\d\.]*))
+    price = $1
+    if price.blank?
+      html.css("#price").text =~ %r(\$([\d\.]*))
+      price = $1
+    end
+    # recreating stocks
+    feed_stocks = html.css("select[name=dimensionValues] option")
+
+    return false if price.blank? || original_price.blank? || feed_stocks.size <= 0
+
+    percent_off = (1 - price.to_f / original_price.to_f).round(2) * 100
+
+    Rails.logger.debug "percent_off = #{percent_off}"
+    Rails.logger.debug "price = #{price}"
+    Rails.logger.debug "original_price = #{original_price}"
+    Rails.logger.debug "feed_stocks = #{feed_stocks}"
+
+    if do_updates
+      stocks.destroy_all
+      feed_stocks[1..feed_stocks.size].each{ |stock| self.stocks.create(:size => stock.text, :quantity => 1) }
+      self.update_attributes(
+          :original_price => original_price,
+          :discount_price => price,
+          :percent_off => percent_off
+      )
+    end
+    Rails.logger.debug "---------------------------------------------"
+    true
+  end
+
   def primary_image
     not_zoomed_image_attachments.select{|i| i.image_url =~ /-p/ || i.image_url =~ /p-/ }.first || not_zoomed_image_attachments.first
   end
