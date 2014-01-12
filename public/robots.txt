@@ -1,3 +1,33 @@
+User-agent: Googlebot
+Disallow: /*users
+Disallow: /checkout
+Disallow: /add/
+Disallow: /search/
+Disallow: /*_openstat
+Disallow: /*from=adwords
+Disallow: /*utm_source*
+Disallow: /*gclid=
+Disallow: /*utm=
+Disallow: /*pdf
+Disallow: *payment
+Host: shop-mydostavka.com
+Sitemap: http://shop-mydostavka.com/sitemap.xml
+
+User-agent: Yandex
+Disallow: /*users
+Disallow: /checkout
+Disallow: /add/
+Disallow: /search/
+Disallow: /*_openstat
+Disallow: /*from=adwords
+Disallow: /*utm_source*
+Disallow: /*gclid=
+Disallow: /*utm=
+Disallow: /*pdf
+Disallow: *payment
+Host: shop-mydostavka.com
+Sitemap: http://shop-mydostavka.com/sitemap.xml
+
 User-agent: *
 Disallow: /*users
 Disallow: /checkout
@@ -7,7 +37,8 @@ Disallow: /*_openstat
 Disallow: /*from=adwords
 Disallow: /*utm_source*
 Disallow: /*gclid=
+Disallow: /*utm=
 Disallow: /*pdf
-disallow: *payment
+Disallow: *payment
 Host: shop-mydostavka.com
 Sitemap: http://shop-mydostavka.com/sitemap.xml

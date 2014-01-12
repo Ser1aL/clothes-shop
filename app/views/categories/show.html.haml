@@ -2,35 +2,40 @@
   - left_banner = @banners.where(:side => "left").first
   - right_banner = @banners.where(:side => "right").first
 
-- seo_header = ''
+- seo_header, meta_title, meta_description, meta_keywords = '', '', '', ''
 - gender = @styles.first.product.item_model.gender.name.mb_chars.downcase rescue ''
 - if @rewrite_meta_header.present?
   - seo_header = @rewrite_meta_header
 - elsif @running_root_request
   - root_cat_id = params[:top_level_cat_id].gsub(/\-.*/, '')
-  - content_for :meta_title, t("meta.root_category_#{root_cat_id}.meta_title")
-  - content_for :meta_description, t("meta.root_category_#{root_cat_id}.meta_description")
+  - meta_title = t("meta.root_category_#{root_cat_id}.meta_title")
+  - meta_description = t("meta.root_category_#{root_cat_id}.meta_description")
   - seo_header = t("meta.root_category_#{root_cat_id}.seo_header")
 - elsif @category_id.present? && @brand_id.blank? && @gender.blank? # category
-  - content_for :meta_title, t('meta.category_title', :category => @categories.first.name)
-  - content_for :meta_description, t('meta.category_description', :category => @categories.first.name.try(:mb_chars).downcase)
+  - meta_title = t('meta.category_title', :category => @categories.first.name)
+  - meta_description = t('meta.category_description', :category => @categories.first.name.try(:mb_chars).downcase)
   - seo_header = t('meta.category_header', :category => @categories.first.name)
 - elsif @category_id.present? && @brand_id.present? && @gender.blank? # category + brand
-  - content_for :meta_title, t('meta.category_brand_title', :category => @categories.first.name, :brand => @brand.name.try(:mb_chars).downcase)
-  - content_for :meta_description, t('meta.category_brand_description', :category => @categories.first.name.try(:mb_chars).downcase, :brand => @brand.name)
+  - meta_title = t('meta.category_brand_title', :category => @categories.first.name, :brand => @brand.name.try(:mb_chars).capitalize)
+  - meta_description = t('meta.category_brand_description', :category => @categories.first.name.try(:mb_chars).downcase, :brand => @brand.name)
   - seo_header = t('meta.category_brand_header', :category => @categories.first.name, :brand => @brand.name)
 - elsif @category_id.present? && @brand_id.blank? && @gender.present? # category + gender
-  - content_for :meta_title, t('meta.category_gender_title', :category => @categories.first.name, :gender => gender)
-  - content_for :meta_description, t('meta.category_gender_description', :category => @categories.first.name.try(:mb_chars).downcase, :gender => gender)
+  - meta_title = t('meta.category_gender_title', :category => @categories.first.name, :gender => gender)
+  - meta_description = t('meta.category_gender_description', :category => @categories.first.name.try(:mb_chars).downcase, :gender => gender)
   - seo_header = t('meta.category_gender_header', :category => @categories.first.name, :gender => gender)
 - else
-  = set_meta(@categories.first.try(:top_category_name))
+  - meta_title = t("meta.#{@categories.first.try(:top_category_name)}.meta_title")
+  - meta_description = t("meta.#{@categories.first.try(:top_category_name)}.meta_description")
+  - meta_keywords = t("meta.#{@categories.first.try(:top_category_name)}.meta_keywords")
+  - seo_header = t("meta.#{@categories.first.try(:top_category_name)}.seo_header")
 
--#- elsif @category_id.blank? && @brand_id.blank? && @gender.present? # gender
--#  - content_for :meta_title, t('meta.category_gender_title', :category => @categories.first.name, :gender => @item_models.first.try(:gender).try(:name).try(:downcase))
--#  - content_for :meta_description, t('meta.category_gender_description', :category => @categories.first.name.downcase, :gender => @item_models.first.try(:gender).try(:name).try(:downcase))
--#  - seo_header = t('meta.category_gender_header', :category => @categories.first.name, :gender => @item_models.first.try(:gender).try(:name).try(:downcase))
+- if params[:page].present?
+  - meta_title = inject_page_into_title(meta_title, params[:page])
+  - meta_description = inject_page_into_description(meta_description, params[:page])
 
+- content_for :meta_title, meta_title
+- content_for :meta_description, meta_description
+- content_for :meta_keywords, t("meta.#{meta_keywords}.meta_keywords") if meta_keywords.present?
 
 - content_for :no_index, 'true' if @set_no_index
 - if @categories.present?

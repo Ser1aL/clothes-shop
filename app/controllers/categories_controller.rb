@@ -13,7 +13,9 @@ class CategoriesController < ApplicationController
       end
     end
 
-    @set_no_index = true if request.fullpath =~ /\?/
+    if request.fullpath =~ /\?/ && params[:page].blank?
+      @set_no_index = true
+    end
 
     top_level_category_id = params[:id] || params[:top_level_cat_id]
     @category_id = params[:category]

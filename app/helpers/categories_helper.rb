@@ -37,4 +37,16 @@ module CategoriesHelper
     send(route, params)
   end
 
+  def inject_page_into_title(original_string, page)
+    if original_string =~ / \| Shop-mydostavka.com/
+      original_string.gsub(/ \| Shop-mydostavka.com/, '') + t('meta.page_addition_title', page: page) + '| Shop-mydostavka.com'
+    else
+      original_string + t('meta.page_addition_title', page: page)
+    end
+  end
+
+  def inject_page_into_description(original_string, page)
+    original_string + t('meta.page_addition_description', page: page)
+  end
+
 end
