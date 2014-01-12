@@ -274,7 +274,7 @@ namespace :data_feed do
   task :detect_styles_raw => :environment do
     output_file = File.open('log/6pm_raw_state_updates.csv', 'w')
     output_file.puts 'SKU|6pm page|Remove?'
-    4000.times do |cycle|
+    100.times do |cycle|
       Style.where(:hidden => false).order('original_price ASC').limit(100).offset(100*cycle).each_with_index do |style, _|
         begin
           page_url = "http://6pm.com/product/#{style.product.item_model.external_product_id}/color/#{style.external_color_id}"
@@ -291,7 +291,7 @@ namespace :data_feed do
 
   desc '6pm grabber for first styles. Collects data and removes'
   task :update_styles_raw => :environment do
-    4000.times do |cycle|
+    100.times do |cycle|
       Style.where(:hidden => false).order('original_price ASC').limit(100).offset(100*cycle).each_with_index do |style, _|
         begin
           style.raw_6pm_update(true)
