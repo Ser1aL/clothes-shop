@@ -294,7 +294,9 @@ namespace :data_feed do
     100.times do |cycle|
       Style.where(:hidden => false).order('original_price ASC').limit(100).offset(100*cycle).each_with_index do |style, _|
         begin
-          style.raw_6pm_update(true)
+          unless style.raw_6pm_update(true)
+            style.update_attribute(:hidden, true)
+          end
         rescue => e
           Rails.logger.debug "Got exception: #{e.inspect}"
         end
