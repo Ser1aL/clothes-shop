@@ -122,7 +122,7 @@ class RawSearch
       WHERE
         styles.swatch_url IS NOT NULL
         #{conditions}
-      GROUP BY item_models.id, styles.color
+      GROUP BY item_models.id
       LIMIT 200
     SQL
 
