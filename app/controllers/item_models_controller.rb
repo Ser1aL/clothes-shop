@@ -20,6 +20,7 @@ class ItemModelsController < ApplicationController
   def search
     params[:q].gsub!("+", " ")
     @products = ItemModel.search(params[:q], :page => params[:page])
+    @products.reject! { |product| product.styles.blank? }
   end
 
   private
