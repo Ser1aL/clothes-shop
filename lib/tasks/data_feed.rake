@@ -291,7 +291,7 @@ namespace :data_feed do
 
   desc '6pm grabber for first styles. Collects data and removes'
   task :update_styles_raw => :environment do
-    100.times do |cycle|
+    19001.times do |cycle|
       Style.where(:hidden => false).order('original_price ASC').limit(100).offset(100*cycle).each_with_index do |style, _|
         begin
           unless style.raw_6pm_update(true)
