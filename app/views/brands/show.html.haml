@@ -13,10 +13,16 @@
     - top_cat_name = "#{Category::TOP_CATEGORIES[root_child[:category].top_category_name]}-#{root_child[:category].top_category_name}"
     %ul.main_category
       %li.mc_lable
-        = link_to category_name, category_sub_category_with_brand_path(top_cat_name, root_child[:category], @brand)
+        - if top_cat_name.strip == '-'
+          = category_name
+        - else
+          = link_to category_name, category_sub_category_with_brand_path(top_cat_name, root_child[:category], @brand)
       - root_child[:tree].delete_if{ |child| child[:count].to_i <= 0 }.each do |child|
         %li.mcl_link
-          = link_to child[:name], category_sub_category_with_brand_and_sub_path(top_cat_name, root_child[:category], @brand, child[:sub_category] )
+          - if top_cat_name.strip == '-'
+            = child[:name]
+          - else
+            = link_to child[:name], category_sub_category_with_brand_and_sub_path(top_cat_name, root_child[:category], @brand, child[:sub_category] )
 .advertisement_block
   .ab_main_brands_logo
     = image_tag @brand.logo_url, :alt => @brand.name, :title => @brand.name, rel: 'nofollow'
